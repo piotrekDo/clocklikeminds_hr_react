@@ -4,6 +4,8 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { LuCalendarClock } from 'react-icons/lu';
 import logo from '../assets/CM-logo-color.png';
 import { backgroundGradient } from '../library';
+import { LuPalmtree } from "react-icons/lu";
+
 
 import { useState } from 'react';
 import { CgHome } from 'react-icons/cg';
@@ -16,7 +18,8 @@ export const Navbar = () => {
   };
   return (
     <VStack
-      w={!isExpanded ? '80px' : '400px'}
+      w={!isExpanded ? '80px' : '250px'}
+      minH={'100vh'}
       h={'100%'}
       py={5}
       bg={backgroundGradient}
@@ -45,7 +48,7 @@ export const Navbar = () => {
         </Flex>
         <Flex w={'400px'} justifyContent={'start'} alignItems={'center'}>
           <Flex cursor={'pointer'} w={'80px'} justifyContent={'center'}>
-            <LuCalendarClock size={'40px'} />
+            <LuPalmtree  size={'40px'} />
           </Flex>
           <Text>Urlopy</Text>
         </Flex>
