@@ -1,9 +1,20 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import { FaRegCircleUser } from 'react-icons/fa6';
+import { FaPowerOff } from 'react-icons/fa';
 
 import { backgroundGradient } from '../library';
+import useAuthentication from '../state/useAuthentication';
+import { useNavigate } from 'react-router-dom';
 
 export const LoggedUser = () => {
+  const navigate = useNavigate();
+  const logoutFromApp = useAuthentication(s => s.logout);
+
+  const onLogoutHandler = () => {
+    logoutFromApp();
+    navigate('/');
+  }
+
   return (
     <HStack
       position={'fixed'}
@@ -14,12 +25,13 @@ export const LoggedUser = () => {
       px={5}
       py={2}
       borderRadius={'20px 0 0 20px'}
-      cursor={'pointer'}
+      spacing={10}
     >
-      <Text>Piotr Domagalski</Text>
-      <Box>
+      <HStack cursor={'pointer'} fontSize={'1.3rem'}>
         <FaRegCircleUser />
-      </Box>
+        <Text>Piotr Domagalski</Text>
+      </HStack>
+      <FaPowerOff onClick={onLogoutHandler} size={'1.5rem'} cursor={'pointer'} />
     </HStack>
   );
 };

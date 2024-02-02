@@ -44,10 +44,8 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];
 
-          console.log(isDayOff);
-
           return (
-            <Popover>
+            <Popover key={index}>
               <PopoverTrigger>
                 <GridItem
                   key={index}

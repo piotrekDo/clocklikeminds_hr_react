@@ -20,3 +20,8 @@ export interface PtoRequestFormatted {
     businessDays: number;
     declineReason: string;
   }
+
+  export interface PtoSummary {
+    businessDays: number;
+    holidayDays: { desc: string; isWeekend: boolean }[];
+  }

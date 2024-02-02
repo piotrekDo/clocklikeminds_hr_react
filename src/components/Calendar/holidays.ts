@@ -1,3 +1,5 @@
+import { PtoSummary } from '../../model/Pto';
+
 const calculateEasterDate = (year: number) => {
   const a = year % 19;
   const b = Math.floor(year / 100);
@@ -39,4 +41,29 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
     ['1125', 'Boże Narodzenie 1-szy dzień'],
     ['1126', 'Boże Narodzenie 2-gi dzień'],
   ]);
+};
+
+export const calculateBusinessDays = (from: Date, to: Date): PtoSummary => {
+  let year = from.getFullYear();
+  let holidays = getHolidaysPoland(year);
+  let checkedDate = new Date(from);
+  let businessDays = 0;
+  const holidayDays: { desc: string; isWeekend: boolean }[] = [];
+
+  while (checkedDate <= to) {
+    if (checkedDate.getFullYear() !== year) {
+      holidays = getHolidaysPoland(checkedDate.getFullYear());
+    }
+    const holiday = holidays.get(checkedDate.getMonth() + '' + checkedDate.getDate());
+    const isWeekend = checkedDate.getDay() === 0 || checkedDate.getDay() === 6;
+
+    if (!holiday && !isWeekend) {
+      businessDays++;
+    } else if (holiday) {
+      holidayDays.push({ desc: holiday, isWeekend: isWeekend });
+    }
+    checkedDate.setDate(checkedDate.getDate() + 1);
+  }
+
+  return { businessDays, holidayDays };
 };
