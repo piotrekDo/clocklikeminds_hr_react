@@ -1,28 +1,29 @@
-import { Box, Circle, Flex, Image, Text, VStack } from '@chakra-ui/react';
-import { GoPeople } from 'react-icons/go';
-import { IoSettingsOutline } from 'react-icons/io5';
-import { LuCalendarClock } from 'react-icons/lu';
-import logo from '../assets/CM-logo-color.png';
-import { backgroundGradient } from '../library';
-import { LuPalmtree } from 'react-icons/lu';
-
+import { Box, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { CgHome } from 'react-icons/cg';
+import { GoPeople } from 'react-icons/go';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { LuPalmtree } from 'react-icons/lu';
 import { NavLink } from 'react-router-dom';
+import logo from '../assets/CM-logo-color.png';
+import { adminBackgroundGradient, backgroundGradient } from '../library';
+import useAuthentication from '../state/useAuthentication';
 
 export const Navbar = () => {
+  const isAdmin = useAuthentication(s => s.isAdmin);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const onLogoClickhandler = () => {
     setIsExpanded(s => !s);
   };
+
   return (
     <VStack
       w={!isExpanded ? '80px' : '250px'}
       minH={'100vh'}
       h={'100%'}
       py={5}
-      bg={backgroundGradient}
+      bg={isAdmin ? adminBackgroundGradient : backgroundGradient}
       justifyContent={'space-between'}
       transition={'width .25s'}
       overflow={'hidden'}
@@ -56,12 +57,16 @@ export const Navbar = () => {
             <Text>Urlopy</Text>
           </Flex>
         </NavLink>
-        <Flex w={'400px'} justifyContent={'start'} alignItems={'center'}>
-          <Flex cursor={'pointer'} w={'80px'} justifyContent={'center'}>
-            <GoPeople size={'40px'} />
-          </Flex>
-          <Text>Pracownicy</Text>
-        </Flex>
+        {isAdmin && (
+          <NavLink to={'/employees'}>
+            <Flex w={'400px'} justifyContent={'start'} alignItems={'center'}>
+              <Flex cursor={'pointer'} w={'80px'} justifyContent={'center'}>
+                <GoPeople size={'40px'} />
+              </Flex>
+              <Text>Pracownicy</Text>
+            </Flex>
+          </NavLink>
+        )}
         <NavLink to={'/profile'}>
           <Flex w={'400px'} justifyContent={'start'} alignItems={'center'}>
             <Flex cursor={'pointer'} w={'80px'} justifyContent={'center'}>

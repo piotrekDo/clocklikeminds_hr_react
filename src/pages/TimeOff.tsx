@@ -1,24 +1,12 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Flex,
   HStack,
   VStack,
-  useDisclosure,
-  Button,
-  InputGroup,
-  InputLeftAddon,
-  Input,
-  InputRightAddon,
+  useDisclosure
 } from '@chakra-ui/react';
-import { PtoSummary } from '../components/PtoSummary';
 import { Calendar } from '../components/Calendar/Calendar';
 import { PtoRequestModal } from '../components/PtoRequestModal';
+import { PtoSummary } from '../components/PtoSummary';
 
 export const TimeOff = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -14,6 +14,9 @@ export const backgroundGradient = `linear-gradient(
     hsl(227deg 91% 47%) 100%
   )`;
 
+export const adminBackgroundGradient =
+  'linear-gradient(144deg, rgba(199,151,151,1) 0%, rgba(219,72,89,1) 35%, rgba(255,0,0,1) 100%)';
+
 export const REACT_APP_API_BASE_URL = 'http://localhost:8080';
 export const REACT_APP_REDIRECT_URL = 'http://localhost:8080/login/oauth2/code/google';
 export const GOOGLE_AUTH_URL = `${REACT_APP_API_BASE_URL}/oauth2/authorize/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;

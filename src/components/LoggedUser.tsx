@@ -1,19 +1,20 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
-import { FaRegCircleUser } from 'react-icons/fa6';
+import { HStack, Text } from '@chakra-ui/react';
 import { FaPowerOff } from 'react-icons/fa';
+import { FaRegCircleUser } from 'react-icons/fa6';
 
-import { backgroundGradient } from '../library';
-import useAuthentication from '../state/useAuthentication';
 import { useNavigate } from 'react-router-dom';
+import { adminBackgroundGradient, backgroundGradient } from '../library';
+import useAuthentication from '../state/useAuthentication';
 
 export const LoggedUser = () => {
   const navigate = useNavigate();
   const logoutFromApp = useAuthentication(s => s.logout);
+  const isAdmin = useAuthentication(s => s.isAdmin);
 
   const onLogoutHandler = () => {
     logoutFromApp();
     navigate('/');
-  }
+  };
 
   return (
     <HStack
@@ -21,7 +22,7 @@ export const LoggedUser = () => {
       color={'whiteAlpha.900'}
       right={'0'}
       top={'20px'}
-      bg={backgroundGradient}
+      bg={isAdmin ? adminBackgroundGradient : backgroundGradient}
       px={5}
       py={2}
       borderRadius={'20px 0 0 20px'}
