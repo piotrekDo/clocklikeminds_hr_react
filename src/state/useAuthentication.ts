@@ -1,18 +1,18 @@
 import { create } from 'zustand';
-import { AuthenticationResponse } from '../model/User';
+import { AppUser } from '../model/User';
 
 
 interface AuthStore {
-  appUser: AuthenticationResponse | undefined;
+  appUser: AppUser | undefined;
   isSessionActive: boolean;
-  setUserData: (appUser: AuthenticationResponse) => void;
+  setUserData: (appUser: AppUser) => void;
   setLogoutTimer: (mils: number) => void;
   checkAutologin: () => void;
   logout: () => void;
 }
 
-const checkIfTokenIsValid = (appUser: AuthenticationResponse): boolean => {
-  return appUser.jwtExpiresAtTimestamp - new Date().getTime() - 900000 > 0;
+const checkIfTokenIsValid = (appUser: AppUser): boolean => {
+  return appUser.jwtExpiresAt - new Date().getTime() - 900000 > 0;
 };
 
 const useAuthentication = create<AuthStore>(set => {
@@ -34,8 +34,9 @@ const useAuthentication = create<AuthStore>(set => {
     },
     setUserData: appUser =>
       set(store => {
+        appUser.jwtExpiresAt = appUser.jwtExpiresAt * 1000;
         localStorage.setItem('userData', JSON.stringify(appUser));
-        const milliseconds = appUser.jwtExpiresAtTimestamp - new Date().getTime();
+        const milliseconds = appUser.jwtExpiresAt - new Date().getTime();
         store.setLogoutTimer(milliseconds);
         return { ...store, appUser: appUser, isSessionActive: true };
       }),

@@ -1,10 +1,15 @@
-export interface AuthenticationResponse {
+export interface AppUser {
     userId: number;
     userEmail: string;
-    firstName: string;
-    lastName: string;
     userRoles: string[];
     jwtToken: string;
-    jwtExpiresAt: string;
-    jwtExpiresAtTimestamp: number;
+    jwtExpiresAt: number;
+  }
+
+  export interface TokenPayload {
+    exp: number;
+    iat: number;
+    roles: string[];
+    sub: string;
+    userId: number;
   }
