@@ -1,8 +1,7 @@
-import { HStack, Heading, Tooltip, Box, VStack } from '@chakra-ui/react';
-import { BsPersonWorkspace } from 'react-icons/bs';
+import { Box, HStack, Heading, Tooltip } from '@chakra-ui/react';
 import { FaExclamationCircle } from 'react-icons/fa';
-import { Employee } from '../../model/User';
 import { IoArrowBack } from 'react-icons/io5';
+import { Employee } from '../../model/User';
 import useEmployeeState from '../../state/useEmployeesState';
 
 interface Props {
@@ -11,6 +10,8 @@ interface Props {
 
 export const EmployeeDetailsHeading = ({ employee }: Props) => {
   const setSelectedEmployee = useEmployeeState(s => s.setSelectedEmployee);
+  const setIsUpdating = useEmployeeState(s => s.setIsUpdating);
+  
   return (
     <HStack justifyContent={'center'} w={'50vw'} position={'relative'}>
       <Box position={'absolute'} left={0} cursor={'pointer'} onClick={e => setSelectedEmployee(undefined)}>
@@ -18,7 +19,7 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
       </Box>
       {!employee.active && (
         <Tooltip hasArrow placement='right' label={'Konto wymaga dokończenia rejestracji'}>
-          <Box>
+          <Box cursor={'pointer'} onClick={setIsUpdating}>
             <FaExclamationCircle size={'2rem'} color='red' />
           </Box>
         </Tooltip>

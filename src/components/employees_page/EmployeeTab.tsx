@@ -11,7 +11,7 @@ interface Props {
 
 export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
   const determineSeniority = () => {
-    const years = Math.ceil(employee.seniorityInMonths / 12);
+    const years = Math.floor(employee.seniorityInMonths / 12);
     const months = (employee.seniorityInMonths - years * 12) % 12;
 
     if (years > 0) {

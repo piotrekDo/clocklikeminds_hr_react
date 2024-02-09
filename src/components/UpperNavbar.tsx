@@ -8,6 +8,7 @@ import useAuthentication from '../state/useAuthentication';
 export const Uppernavbar = () => {
   const navigate = useNavigate();
   const logoutFromApp = useAuthentication(s => s.logout);
+  const user = useAuthentication(s => s.appUser);
 
   const onLogoutHandler = () => {
     logoutFromApp();
@@ -29,8 +30,8 @@ export const Uppernavbar = () => {
       justifyContent={'end'}
     >
       <HStack cursor={'pointer'} fontSize={'1.3rem'}>
-        <FaRegCircleUser />
-        <Text>Piotr Domagalski</Text>
+        {/* <FaRegCircleUser  size={'2rem'}/> */}
+        <Text>{user?.userEmail}</Text>
       </HStack>
       <FaPowerOff onClick={onLogoutHandler} size={'1.5rem'} cursor={'pointer'} />
     </HStack>

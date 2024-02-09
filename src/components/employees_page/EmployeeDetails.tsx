@@ -1,5 +1,6 @@
 import { Box, Spinner, VStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 import useEmployeeDetails from '../../hooks/useEmployeeDetails';
 import useEmployeeState from '../../state/useEmployeesState';
 import { EmployeeAccountInfo } from './EmployeeAccountInfo';
@@ -7,21 +8,18 @@ import { EmployeeContractinformation } from './EmployeeContractinformation';
 import { EmployeeDetailsHeading } from './EmployeeDetailsHeading';
 import { EmployeeGeneralInformation } from './EmployeeGeneralInformation';
 import { EmployeeHistory } from './EmployeeHistory';
-import { AnimatePresence, motion } from 'framer-motion';
+import { RegistrationFinishModal } from './RegistrationFinishModal';
 
 export type EmployeeDetailsPage = 'profile' | '2' | '3';
 
 export const EmployeeDetails = () => {
-  const { selectedEmloyee } = useEmployeeState();
+  const { selectedEmloyee, isUpdating, setIsUpdating } = useEmployeeState();
   const { data: employee, isError, isFetching } = useEmployeeDetails(selectedEmloyee || -1);
   const [selectedPage, setSelectedPage] = useState<EmployeeDetailsPage>('profile');
-
-useEffect(() => {
-  console.log(employee)
-}, [employee]);
-
+  
   return (
-    <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+<>
+<VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
       {isFetching && <Spinner size={'xl'} />}
       {!isFetching && employee && (
         <>
@@ -51,5 +49,8 @@ useEffect(() => {
         </>
       )}
     </VStack>
+    
+    <RegistrationFinishModal isOpen={isUpdating} onClose={setIsUpdating}/>
+    </>
   );
 };

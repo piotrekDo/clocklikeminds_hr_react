@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Page, PageQuery } from '../model/Page';
-import { EmployeeBasic, Employee } from '../model/User';
+import { EmployeeBasic, Employee, UserRegistrationFinish } from '../model/User';
 import APIclient from './APIclient';
 
 export const fetchEmployeePage = (page: PageQuery) => {
@@ -16,7 +16,16 @@ export const fetchEmployeePage = (page: PageQuery) => {
 
 export const fetchEmployeeDetails = (employeeId: number) => {
   const controller = new AbortController();
-  const httpRequest = APIclient.get<Employee>(`/api/v1/users/${employeeId}`, {
-  }).then((res: AxiosResponse<Employee>) => res.data);
+  const httpRequest = APIclient.get<Employee>(`/api/v1/users/${employeeId}`, {}).then(
+    (res: AxiosResponse<Employee>) => res.data
+  );
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
+export const finishRegister = (request: UserRegistrationFinish) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.post<Employee>('/api/v1/users/finish-register', request).then(
+    (res: AxiosResponse<Employee>) => res.data
+  );
   return { request: httpRequest, cancel: () => controller.abort() };
 };
