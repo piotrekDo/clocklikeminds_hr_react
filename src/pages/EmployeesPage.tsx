@@ -1,26 +1,23 @@
-import { HStack, Text, VStack } from '@chakra-ui/react';
-import React from 'react';
+import { Box, HStack, Heading, SelectField, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { GoPeople } from 'react-icons/go';
+import { EmployeeTable } from '../components/employees_page/EmployeeTable';
+import useEmployees from '../hooks/useEmployees';
+import { Employee } from '../model/User';
+import useEmployeeState from '../state/useEmployeesState';
+import { EmployeesOverview } from '../components/employees_page/EmployeesOverview';
+import { EmployeeDetails } from '../components/employees_page/EmployeeDetails';
 
 export const EmployeesPage = () => {
-  return (
-    <HStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'space-around'}>
-        <HStack w={'500px'} h={'100%'} px={'20px'}>
-            <VStack w={'100%'} h={'100%'} borderRadius={'30px'} p={5} border={'solid'}>
-                <HStack w={'100%'} >
-                    <Text w={'100%'} border={'solid'}>Piotr Domagalski</Text>
-                </HStack>
-            </VStack>
-        </HStack>
-        <VStack w={'100%'} h={'100%'} border={'solid'}>
-                <Text>Piotr Doamgalski</Text>
-                <Text>Naliczone dni urlopu</Text>
-                <Text>Wykorzystane dni urlopu</Text>
-                <Text>pozostałe dni urlopu</Text>
-                <Text>stanowisko</Text>
-                <Text>pracuje od</Text>
-                <Text>pracuje do</Text>
-                <Text>wnioski do rozpatrzenia</Text>
-        </VStack>
-    </HStack>
-  );
+  const { data: employees, error, isFetching, isLoading } = useEmployees();
+  const { selectedEmloyee } = useEmployeeState();
+
+
+return (
+  <VStack w={'100%'} h={'100%'}>
+    {isFetching && <Spinner size={'xl'}/>}
+    {!isFetching && !selectedEmloyee && <EmployeesOverview employees={employees?.content || []}/>}
+    {selectedEmloyee && <EmployeeDetails />}
+  </VStack>
+)
 };

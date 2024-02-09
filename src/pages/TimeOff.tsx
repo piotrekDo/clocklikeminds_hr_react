@@ -12,7 +12,7 @@ export const TimeOff = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <HStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'space-around'}>
+    <HStack w={'100%'} h={'100%'} pt={'20px'} pb={'20px'} px={'30px'} justifyContent={'space-around'}>
       <PtoRequestModal isOpen={isOpen} onClose={onClose}/>
       <VStack h={'100%'} justifyContent={'start'}>
         <PtoSummary onopen={onOpen} />

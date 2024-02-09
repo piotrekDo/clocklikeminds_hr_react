@@ -3,13 +3,11 @@ import { FaPowerOff } from 'react-icons/fa';
 import { FaRegCircleUser } from 'react-icons/fa6';
 
 import { useNavigate } from 'react-router-dom';
-import { adminBackgroundGradient, backgroundGradient } from '../library';
 import useAuthentication from '../state/useAuthentication';
 
-export const LoggedUser = () => {
+export const Uppernavbar = () => {
   const navigate = useNavigate();
   const logoutFromApp = useAuthentication(s => s.logout);
-  const isAdmin = useAuthentication(s => s.isAdmin);
 
   const onLogoutHandler = () => {
     logoutFromApp();
@@ -21,12 +19,14 @@ export const LoggedUser = () => {
       position={'fixed'}
       color={'whiteAlpha.900'}
       right={'0'}
-      top={'20px'}
-      bg={isAdmin ? adminBackgroundGradient : backgroundGradient}
+      top={'0'}
+      w={'100%'}
+      h={'60px'}
       px={5}
       py={2}
       borderRadius={'20px 0 0 20px'}
       spacing={10}
+      justifyContent={'end'}
     >
       <HStack cursor={'pointer'} fontSize={'1.3rem'}>
         <FaRegCircleUser />

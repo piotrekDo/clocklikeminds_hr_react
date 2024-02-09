@@ -1,20 +1,25 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex, calc } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
-import { LoggedUser } from './components/LoggedUser';
-import { Navbar } from './components/Navbar';
+import { Uppernavbar } from './components/UpperNavbar';
+import { SideNavbar } from './components/SideNavbar';
 import useAuthentication from './state/useAuthentication';
+import { adminBackgroundGradient, backgroundGradient } from './library';
 
 function App() {
-  const { appUser } = useAuthentication();
+  const { appUser, isAdmin } = useAuthentication();
   return (
-    <Flex w={'100wv'} minH={'100vh'} h={'100vh'}>
+    <Flex w={'100wv'} minH={'100vh'} h={'100vh'} bg={ backgroundGradient}>
       {appUser && (
         <>
-          <LoggedUser />
-          <Navbar />
+          <Uppernavbar />
+          <SideNavbar />
         </>
       )}
-      <Outlet />
+      <Box w={'100%'} h={'100%'} pt={'60px'}>
+        <Box w={'100%'} h={'100%'} borderRadius={'50px 0 0 0'}  bg={'white'}>
+          <Outlet />
+        </Box>
+      </Box>
     </Flex>
   );
 }
