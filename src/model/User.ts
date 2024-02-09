@@ -25,6 +25,11 @@ export interface EmployeePosition {
   displayName: string;
 }
 
+export interface EmployePositionRequest {
+  positionKey: string;
+  displayName: string;
+}
+
 export interface EmployeePositionHistory {
   positionHistoryId: number;
   position: EmployeePosition;

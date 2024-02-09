@@ -1,33 +1,30 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
-  Select,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  FormErrorMessage,
-  useToast,
+  Select,
+  useToast
 } from '@chakra-ui/react';
-import useJobPostitions from '../../hooks/useJobPositions';
-import { useEffect, useState } from 'react';
-import useEmployeeDetails from '../../hooks/useEmployeeDetails';
-import useEmployeeState from '../../state/useEmployeesState';
+import { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { UserRegistrationFinish } from '../../model/User';
+import useEmployeeDetails from '../../hooks/useEmployeeDetails';
 import useFinishRegistration from '../../hooks/useFinishRegistration';
+import useJobPostitions from '../../hooks/useJobPositions';
+import { UserRegistrationFinish } from '../../model/User';
+import useEmployeeState from '../../state/useEmployeesState';
 
 interface Props {
   isOpen: boolean;
@@ -39,7 +36,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   const { data: positions, refetch } = useJobPostitions();
   const { selectedEmloyee } = useEmployeeState();
   const { data: employee } = useEmployeeDetails(selectedEmloyee || -1);
-  const { mutate: sendRequest, isSuccess, data } = useFinishRegistration();
+  const { mutate: sendRequest, isSuccess, isLoading } = useFinishRegistration();
   const {
     register,
     handleSubmit,
@@ -118,7 +115,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
               </Select>
               <FormErrorMessage>Uzupełnij stanowisko</FormErrorMessage>
             </FormControl>
-            <Button mb={10} type='submit' w={'100%'} colorScheme='green'>
+            <Button isLoading={isLoading} mb={10} type='submit' w={'100%'} colorScheme='green'>
               Wyślij
             </Button>
           </form>
