@@ -24,6 +24,7 @@ const convertTokenToUser = (token: string): AppUser => {
     userRoles: tokenPayload.roles,
     jwtToken: token,
     jwtExpiresAt: tokenPayload.exp * 1000,
+    isActive: tokenPayload.active
   };
 };
 

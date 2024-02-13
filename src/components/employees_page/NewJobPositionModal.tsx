@@ -89,7 +89,7 @@ export const NewJobPositionModal = ({isOpen, onClose}: Props) => {
             <FormErrorMessage>Uzupełnij klucz</FormErrorMessage>
           </FormControl>
           <FormControl mb={5} isInvalid={errors && errors.name ? true : false}>
-            <FormLabel>Unikalny klucz</FormLabel>
+            <FormLabel>Wyświetlana nazwa</FormLabel>
             <Input {...register('name', {required: true})}/>
             <FormErrorMessage>Uzupełnij nazwę</FormErrorMessage>
           </FormControl>

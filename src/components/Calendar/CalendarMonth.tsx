@@ -13,13 +13,13 @@ import {
   Box,
   HStack,
 } from '@chakra-ui/react';
-import { PtoRequestFormatted } from '../../model/Pto';
+import { PtoRequestResponse } from '../../model/Pto';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 
 interface Props {
   month: Date;
   holidays: Map<string, string>;
-  daysOff: PtoRequestFormatted[];
+  daysOff: PtoRequestResponse[];
 }
 
 export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {

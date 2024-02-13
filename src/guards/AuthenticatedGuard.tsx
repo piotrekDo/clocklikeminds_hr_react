@@ -5,7 +5,6 @@ import useAuthentication from '../state/useAuthentication';
 export const AuthenticatedGuard = ({ children }: React.PropsWithChildren) => {
   const { appUser } = useAuthentication();
 
-
   if (!appUser) {
     return <Navigate to={'/'} replace />;
   }

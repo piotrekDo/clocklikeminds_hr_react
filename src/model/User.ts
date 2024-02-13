@@ -4,6 +4,7 @@ export interface AppUser {
   userRoles: string[];
   jwtToken: string;
   jwtExpiresAt: number;
+  isActive: boolean;
 }
 
 export interface TokenPayload {
@@ -12,6 +13,7 @@ export interface TokenPayload {
   roles: string[];
   sub: string;
   userId: number;
+  active: boolean;
 }
 
 export interface EmployeeRole {
@@ -60,8 +62,10 @@ export interface Employee {
   hireStart: string;
   hireEnd: string | null;
   seniorityInMonths: number;
-  ptoDaysFromLastYear: number;
-  ptoDaysTotal: number;
+  ptoDaysAccruedLastYear: number;
+  ptoDaysAccruedCurrentYear: number
+  ptoDaysLeftFromLastYear: number;
+  ptoDaysLeftTotal: number;
   ptoDaysTaken: number;
 }
 

@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { PtoSummary } from '../model/Pto';
+import { NewPtoRequestSummary } from '../model/Pto';
 import { calculateBusinessDays } from './Calendar/holidays';
 import { CalendarPtoForm } from './CalendarPtoForm';
 import { SimplePtoForm } from './SimplePtoForm';
@@ -30,7 +30,7 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
-  const [ptoSummary, setPtoSummary] = useState<PtoSummary | undefined>();
+  const [ptoSummary, setPtoSummary] = useState<NewPtoRequestSummary | undefined>();
   const [formError, setFormError] = useState<string | undefined>();
 
   useEffect(() => {

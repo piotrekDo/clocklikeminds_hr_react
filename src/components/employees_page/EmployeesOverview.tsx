@@ -1,20 +1,18 @@
-import { VStack, HStack, Heading, Box, Text, Tabs, TabList, TabPanel, TabPanels, Tab, Button } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { GoPeople } from 'react-icons/go';
-import { EmployeeTable } from './EmployeeTable';
-import { EmployeeBasic, EmployeePosition } from '../../model/User';
+import { Box, Button, HStack, Heading, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { PositionsTable } from './PositionsTable';
-import { GoPlus } from 'react-icons/go';
+import { useEffect, useState } from 'react';
+import { GoPeople, GoPlus } from 'react-icons/go';
+import useEmployees from '../../hooks/useEmployees';
+import useJobPostitions from '../../hooks/useJobPositions';
+import { EmployeeTable } from './EmployeeTable';
 import { NewJobPositionModal } from './NewJobPositionModal';
+import { PositionsTable } from './PositionsTable';
 
-interface Props {
-  employees: EmployeeBasic[];
-  positions: EmployeePosition[];
-}
 
-export const EmployeesOverview = ({ employees, positions }: Props) => {
-  const pendingRegistration = (employees && employees.filter(e => !e.active).length) || 0;
+export const EmployeesOverview = () => {
+  const {data: employees, isError: employeesIsError, isFetching: isEmployeesFetching} =  useEmployees();
+  const {data: positions, isError: positionsIsError, isFetching: isPositionsFetching} = useJobPostitions();
+  const [pendingRegistration, setPendingRegistration] = useState<number | undefined>();
   const [positionModalOpened, setPositionModalOpened] = useState<boolean>(false);
 
   const handleModalToggle = () => {
@@ -22,7 +20,7 @@ export const EmployeesOverview = ({ employees, positions }: Props) => {
   }
 
   useEffect(() => {
-    console.log(employees);
+    employees && setPendingRegistration(employees.content.filter(e => !e.active).length || 0)
   }, [employees]);
   
   return (
@@ -49,11 +47,14 @@ export const EmployeesOverview = ({ employees, positions }: Props) => {
                     <Heading>Pracownicy</Heading>
                     <Text>Lista pracowników</Text>
                   </VStack>
-                  <Box as='b' w={'40%'}>
-                    {pendingRegistration} oczekujących na dokończenie rejestracji
-                  </Box>
+                  <HStack as='b' w={'40%'}>
+                    {!isEmployeesFetching && employees && <Text>{pendingRegistration}</Text>} 
+                    {isEmployeesFetching && <Spinner />}
+                    <Text>oczekujących na dokończenie rejestracji</Text>
+                  </HStack>
                 </HStack>
-                <EmployeeTable employees={(employees && employees) || []} />
+                {!isEmployeesFetching && employees && <EmployeeTable employees={(employees.content) || []} />}
+                {isEmployeesFetching && <Spinner />}
               </VStack>
             </TabPanel>
 
@@ -78,7 +79,8 @@ export const EmployeesOverview = ({ employees, positions }: Props) => {
                     </Button>
                   </Box>
                 </HStack>
-                <PositionsTable positions={positions} />
+                {!isPositionsFetching && positions && <PositionsTable positions={positions} />}
+                {isPositionsFetching && <Spinner />}
               </VStack>
             </TabPanel>
           </TabPanels>

@@ -1,4 +1,4 @@
-import { PtoSummary } from '../../model/Pto';
+import { NewPtoRequestSummary } from '../../model/Pto';
 
 const calculateEasterDate = (year: number) => {
   const a = year % 19;
@@ -43,7 +43,7 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
   ]);
 };
 
-export const calculateBusinessDays = (from: Date, to: Date): PtoSummary => {
+export const calculateBusinessDays = (from: Date, to: Date): NewPtoRequestSummary => {
   let year = from.getFullYear();
   let holidays = getHolidaysPoland(year);
   let checkedDate = new Date(from);

@@ -6,6 +6,7 @@ const useEmployeeDetails = (employeeId: number) => {
   return useQuery<Employee, Error>({
     queryKey: ['employee', employeeId],
     queryFn: () => fetchEmployeeDetails(employeeId).request,
+    enabled: employeeId > 0,
   });
 };
 
