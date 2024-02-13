@@ -4,6 +4,7 @@ import useUserPtoSummary from '../hooks/useUserPtoSummary';
 import useAuthentication from '../state/useAuthentication';
 import { useEffect } from 'react';
 import useHttpErrorState from '../state/useHttpErrorState';
+import { PtoCard } from './PtoCard';
 
 interface Props {
   onopen: () => void;
@@ -69,6 +70,12 @@ export const PtoSummary = ({ onopen }: Props) => {
       <VStack w={'100%'} pt={'50px'}>
         {isFetching && <Spinner />}
         {!isFetching && summary?.lastRequests.length === 0 && <Heading>Brak historii wniosków</Heading>}
+        {!isFetching && summary && summary.lastRequests.length > 0 && (
+          <VStack w={'100%'}>
+              <Heading>Ostatnie wnioski:</Heading>
+              {summary.lastRequests.map(r => <PtoCard key={r.id} pto={r}/>)}
+          </VStack>
+        )}
       </VStack>
     </VStack>
   );

@@ -13,13 +13,17 @@ import {
   ModalOverlay,
   Switch,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { NewPtoRequestSummary } from '../model/Pto';
+import { NewPtoRequest, NewPtoRequestSummary } from '../model/Pto';
 import { calculateBusinessDays } from './Calendar/holidays';
 import { CalendarPtoForm } from './CalendarPtoForm';
 import { SimplePtoForm } from './SimplePtoForm';
+import useAuthentication from '../state/useAuthentication';
+import useNewPtoRequest from '../hooks/useNewPtoRequest';
+import useHttpErrorState from '../state/useHttpErrorState';
 
 interface Props {
   isOpen: boolean;
@@ -27,11 +31,34 @@ interface Props {
 }
 
 export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
+  const toast = useToast();
+  const { appUser } = useAuthentication();
+  const { mutate: sendRequest, isSuccess, isError, error } = useNewPtoRequest();
+  const setHttpError = useHttpErrorState(s => s.setError);
   const [showCalendar, setShowCalendar] = useState(false);
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [ptoSummary, setPtoSummary] = useState<NewPtoRequestSummary | undefined>();
   const [formError, setFormError] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+      setStartDate(undefined);
+      setEndDate(undefined);
+      toast({
+        title: 'Wniosek wysłany',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-left'
+      });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    isError && setHttpError(error);
+  }, [isError]);
 
   useEffect(() => {
     setPtoSummary(undefined);
@@ -50,6 +77,17 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
   const setEndDateHandler = (date: Date) => {
     const selectedDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0));
     setEndDate(selectedDate);
+  };
+
+  const onSubmitHandler = () => {
+    if (!appUser || !startDate || !endDate) return;
+    const request: NewPtoRequest = {
+      ptoStart: startDate.toISOString().split('T')[0],
+      ptoEnd: endDate.toISOString().split('T')[0],
+      applierId: appUser.userId,
+      acceptorId: 2,
+    };
+    sendRequest(request);
   };
 
   return (
@@ -119,7 +157,12 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
           </Flex>
         </ModalBody>
         <ModalFooter display={'flex'} w={'100%'} gap={'20px'} px={'50px'}>
-          <Button isDisabled={!!formError || !startDate || !endDate} colorScheme='green' w={'100%'} onClick={onClose}>
+          <Button
+            isDisabled={!!formError || !startDate || !endDate}
+            colorScheme='green'
+            w={'100%'}
+            onClick={onSubmitHandler}
+          >
             Wyślij
           </Button>
         </ModalFooter>

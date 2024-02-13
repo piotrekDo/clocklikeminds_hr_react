@@ -1,8 +1,9 @@
 import {
+  Box,
   Flex,
   Grid,
   GridItem,
-  Text,
+  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -10,26 +11,27 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Box,
-  HStack,
+  Text,
 } from '@chakra-ui/react';
-import { PtoRequestResponse } from '../../model/Pto';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
+import { PtoRequestFormatted } from '../../model/Pto';
 
 interface Props {
   month: Date;
   holidays: Map<string, string>;
-  daysOff: PtoRequestResponse[];
+  daysOff: PtoRequestFormatted[];
 }
 
 export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
   const startingDayOfWeek = month.getDay();
   const leftPadding = startingDayOfWeek === 0 ? 6 : startingDayOfWeek === 1 ? 0 : startingDayOfWeek - 1;
   const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
-  const currentMonthDays: Date[] = Array.from(
-    { length: days },
-    (_, index) => new Date(month.getFullYear(), month.getMonth(), index + 1)
-  );
+  const currentMonthDays: Date[] = Array.from({ length: days }, (_, index) => {
+    const date = new Date(month.getFullYear(), month.getMonth(), index + 1);
+    const offset = new Date().getTimezoneOffset();
+    date.setMinutes(date.getMinutes() - offset);
+    return date;
+  });
 
   return (
     <GridItem w={'100%'} display={'flex'} flexDirection={'column'}>
@@ -54,7 +56,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                   justifyContent={'center'}
                   alignItems={'center'}
                   cursor={isDayOff ? 'pointer' : 'default'}
-                  bgColor={isDayOff ? 'green.300' : ''}
+                  bgColor={isDayOff ? isDayOff.pending ? 'yellow.400' : 'green.300' : ''}
                 >
                   <Flex
                     p={2}
@@ -83,7 +85,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                   </PopoverHeader>
                   <PopoverBody>
                     <Text>
-                      Wniosek urlopowy z dnia{' '}
+                      Wniosek urlopowy z dnia
                       {isDayOff.requestDateTime.toLocaleString('pl-PL', {
                         day: 'numeric',
                         month: 'short',
@@ -117,7 +119,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                       {isDayOff.totalDays} dni łącznie{' '}
                       {isDayOff.totalDays > 1 && `,w tym ${isDayOff.businessDays} roboczych`}
                     </Text>
-                    {isDayOff.isPending && <Text>Oczekujący</Text>}
+                    {isDayOff.pending && <Text>Oczekujący</Text>}
                   </PopoverBody>
                 </PopoverContent>
               )}
