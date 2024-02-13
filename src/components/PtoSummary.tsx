@@ -2,6 +2,8 @@ import { HStack, Heading, Spinner, Text, Tooltip, VStack } from '@chakra-ui/reac
 import { FaPlus } from 'react-icons/fa6';
 import useUserPtoSummary from '../hooks/useUserPtoSummary';
 import useAuthentication from '../state/useAuthentication';
+import { useEffect } from 'react';
+import useHttpErrorState from '../state/useHttpErrorState';
 
 interface Props {
   onopen: () => void;
@@ -9,7 +11,12 @@ interface Props {
 
 export const PtoSummary = ({ onopen }: Props) => {
   const appuser = useAuthentication(s => s.appUser);
-  const { data: summary, isError, isFetching } = useUserPtoSummary(appuser?.userId || -1);
+  const { data: summary, isError, error, isFetching } = useUserPtoSummary(appuser?.userId || -1);
+  const setError = useHttpErrorState(s => s.setError);
+
+  useEffect(() => {
+    isError && setError(error)
+  }, [isError])
 
   return (
     <VStack w={'100%'} h={'100%'}>

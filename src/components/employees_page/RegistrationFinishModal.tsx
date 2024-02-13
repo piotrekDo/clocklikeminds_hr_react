@@ -16,7 +16,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
-  useToast
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -25,6 +25,7 @@ import useFinishRegistration from '../../hooks/useFinishRegistration';
 import useJobPostitions from '../../hooks/useJobPositions';
 import { UserRegistrationFinish } from '../../model/User';
 import useEmployeeState from '../../state/useEmployeesState';
+import useHttpErrorState from '../../state/useHttpErrorState';
 
 interface Props {
   isOpen: boolean;
@@ -33,16 +34,28 @@ interface Props {
 
 export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   const toast = useToast();
+  const setError = useHttpErrorState(s => s.setError);
   const { data: positions, refetch } = useJobPostitions();
   const { selectedEmloyee } = useEmployeeState();
-  const { data: employee } = useEmployeeDetails(selectedEmloyee || -1);
-  const { mutate: sendRequest, isSuccess, isLoading } = useFinishRegistration();
+  const { data: employee, isError: isUseEmplError, error: useEmpError } = useEmployeeDetails(selectedEmloyee || -1);
+  const {
+    mutate: sendRequest,
+    isSuccess,
+    isLoading,
+    isError: isRegistrationError,
+    error: registrationError,
+  } = useFinishRegistration();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid },
   } = useForm();
+
+  useEffect(() => {
+    isUseEmplError && setError(useEmpError);
+    isRegistrationError && setError(registrationError);
+  }, [isUseEmplError, isRegistrationError]);
 
   useEffect(() => {
     if (isOpen) refetch();
@@ -58,7 +71,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
       duration: 10000,
     });
     onClose();
-    reset()
+    reset();
   }, [isSuccess]);
 
   const onSubmitHandler = (data: FieldValues) => {

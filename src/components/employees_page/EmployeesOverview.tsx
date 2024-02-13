@@ -1,4 +1,17 @@
-import { Box, Button, HStack, Heading, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  Heading,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { GoPeople, GoPlus } from 'react-icons/go';
@@ -7,22 +20,38 @@ import useJobPostitions from '../../hooks/useJobPositions';
 import { EmployeeTable } from './EmployeeTable';
 import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsTable } from './PositionsTable';
-
+import useHttpErrorState from '../../state/useHttpErrorState';
 
 export const EmployeesOverview = () => {
-  const {data: employees, isError: employeesIsError, isFetching: isEmployeesFetching} =  useEmployees();
-  const {data: positions, isError: positionsIsError, isFetching: isPositionsFetching} = useJobPostitions();
+  const setError = useHttpErrorState(s => s.setError);
+  const {
+    data: employees,
+    isError: employeesIsError,
+    error: employeesError,
+    isFetching: isEmployeesFetching,
+  } = useEmployees();
+  const {
+    data: positions,
+    isError: positionsIsError,
+    error: positionsError,
+    isFetching: isPositionsFetching,
+  } = useJobPostitions();
   const [pendingRegistration, setPendingRegistration] = useState<number | undefined>();
   const [positionModalOpened, setPositionModalOpened] = useState<boolean>(false);
 
   const handleModalToggle = () => {
-    setPositionModalOpened(s => !s)
-  }
+    setPositionModalOpened(s => !s);
+  };
 
   useEffect(() => {
-    employees && setPendingRegistration(employees.content.filter(e => !e.active).length || 0)
+    employees && setPendingRegistration(employees.content.filter(e => !e.active).length || 0);
   }, [employees]);
-  
+
+  useEffect(() => {
+    employeesIsError && setError(employeesError);
+    positionsIsError && setError(positionsError);
+  }, [employeesIsError, positionsIsError]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -48,12 +77,12 @@ export const EmployeesOverview = () => {
                     <Text>Lista pracowników</Text>
                   </VStack>
                   <HStack as='b' w={'40%'}>
-                    {!isEmployeesFetching && employees && <Text>{pendingRegistration}</Text>} 
+                    {!isEmployeesFetching && employees && <Text>{pendingRegistration}</Text>}
                     {isEmployeesFetching && <Spinner />}
                     <Text>oczekujących na dokończenie rejestracji</Text>
                   </HStack>
                 </HStack>
-                {!isEmployeesFetching && employees && <EmployeeTable employees={(employees.content) || []} />}
+                {!isEmployeesFetching && employees && <EmployeeTable employees={employees.content || []} />}
                 {isEmployeesFetching && <Spinner />}
               </VStack>
             </TabPanel>
@@ -67,11 +96,7 @@ export const EmployeesOverview = () => {
                     <Text>Lista stanowisk</Text>
                   </VStack>
                   <Box w={'40%'} onClick={handleModalToggle}>
-                    <Button
-                      w={'100%'}
-                      maxW={'200px'}
-                      h={'80px'}
-                    >
+                    <Button w={'100%'} maxW={'200px'} h={'80px'}>
                       <GoPlus size={'40px'} />
                       <Text fontSize={'1.5rem'} as={'b'}>
                         Dodaj nowe
@@ -85,7 +110,7 @@ export const EmployeesOverview = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <NewJobPositionModal isOpen={positionModalOpened} onClose={handleModalToggle}/>
+        <NewJobPositionModal isOpen={positionModalOpened} onClose={handleModalToggle} />
       </motion.div>
     </AnimatePresence>
   );

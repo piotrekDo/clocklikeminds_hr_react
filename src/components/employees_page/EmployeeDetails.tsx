@@ -1,6 +1,6 @@
 import { Box, Spinner, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useEmployeeDetails from '../../hooks/useEmployeeDetails';
 import useEmployeeState from '../../state/useEmployeesState';
 import { EmployeeAccountInfo } from './EmployeeAccountInfo';
@@ -9,14 +9,20 @@ import { EmployeeDetailsHeading } from './EmployeeDetailsHeading';
 import { EmployeeGeneralInformation } from './EmployeeGeneralInformation';
 import { EmployeeHistory } from './EmployeeHistory';
 import { RegistrationFinishModal } from './RegistrationFinishModal';
+import useHttpErrorState from '../../state/useHttpErrorState';
 
 export type EmployeeDetailsPage = 'profile' | '2' | '3';
 
 export const EmployeeDetails = () => {
   const { selectedEmloyee, isUpdating, setIsUpdating } = useEmployeeState();
-  const { data: employee, isError, isFetching } = useEmployeeDetails(selectedEmloyee || -1);
+  const setError = useHttpErrorState(s => s.setError);
+  const { data: employee, isError, error, isFetching } = useEmployeeDetails(selectedEmloyee || -1);
   const [selectedPage, setSelectedPage] = useState<EmployeeDetailsPage>('profile');
   
+  useEffect(() => {
+    isError && setError(error)
+  }, [isError]);
+
   return (
 <>
 <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
