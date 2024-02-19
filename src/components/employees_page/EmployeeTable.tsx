@@ -11,11 +11,11 @@ interface Props {
 export const EmployeeTable = ({ employees }: Props) => {
   const setEmployee = useEmployeeState(s => s.setSelectedEmployee);
   return (
-    <VStack w={'80%'} maxW={'1200px'} overflowY={'scroll'} h={'100%'}>
+    <VStack w={'80%'} maxW={'1200px'} h={'100%'}>
       <EmployeeTableHeader />
-      {employees && employees.map(e => (
-        <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />
-      ))}
+      <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+        {employees && employees.map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
+      </VStack>
     </VStack>
   );
 };
