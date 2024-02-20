@@ -19,7 +19,7 @@ export const TimeOff = () => {
       >
         <HStack w={'100%'} h={'100%'} pt={'20px'} pb={'20px'} px={'30px'} justifyContent={'space-around'}>
           <PtoRequestModal isOpen={isOpen} onClose={onClose} />
-          <VStack h={'100%'} justifyContent={'start'}>
+          <VStack h={'80vh'} justifyContent={'start'}>
             <PtoSummary onopen={onOpen} />
           </VStack>
           <Flex h={'100%'}>

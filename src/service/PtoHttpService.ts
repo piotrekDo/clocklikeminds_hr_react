@@ -12,6 +12,16 @@ export const fetchUserPtoSummary = (userId: number) => {
   return { request: httpRequest, cancel: () => controller.abort() };
 };
 
+export const fetchPtoToAccept = (acceptorId: number) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-to-accept', {
+    params: {
+      acceptorId: acceptorId,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
 export const sendNewPtoRequest = (request: NewPtoRequest) => {
   const controller = new AbortController();
   const httpRequest = APIclient.post<PtoRequestResponse>('/api/v1/pto/request-new', request).then(

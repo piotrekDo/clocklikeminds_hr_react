@@ -22,7 +22,7 @@ export const SideNavbar = () => {
       minH={'100vh'}
       h={'100%'}
       py={5}
-      justifyContent={'space-between'}
+      justifyContent={'start'}
       transition={'width .25s'}
       overflow={'hidden'}
       zIndex={10}

@@ -1,28 +1,18 @@
-import {
-  Box,
-  Button,
-  HStack,
-  Heading,
-  Spinner,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Heading, Tabs, Text, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { GoPeople, GoPlus } from 'react-icons/go';
+import { FaSuitcase } from 'react-icons/fa';
 import useEmployees from '../../hooks/useEmployees';
 import useJobPostitions from '../../hooks/useJobPositions';
-import { EmployeeTable } from './EmployeeTable';
-import { NewJobPositionModal } from './NewJobPositionModal';
-import { PositionsTable } from './PositionsTable';
 import useHttpErrorState from '../../state/useHttpErrorState';
+import { EmployeeListTab } from './EmployeeListTab';
+import { NewJobPositionModal } from './NewJobPositionModal';
+import { PositionsListTab } from './PositionsListTab';
+
+type Tabs = 'timeoff' | 'employees' | 'positions';
 
 export const EmployeesOverview = () => {
+  const [selectedTab, setSelectedTab] = useState<Tabs>('employees');
   const setError = useHttpErrorState(s => s.setError);
   const {
     data: employees,
@@ -62,54 +52,64 @@ export const EmployeesOverview = () => {
           height: '90%',
         }}
       >
-        <Tabs w={'100%'} h={'100%'}>
-          <TabList justifyContent={'center'}>
-            <Tab>Pracownicy</Tab>
-            <Tab>Stanowiska</Tab>
-          </TabList>
-          <TabPanels w={'100%'} h={'100%'}>
-            <TabPanel w={'100%'} h={'100%'}>
-              <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
-                <HStack w={'80%'} justifyContent={'space-around'}>
-                  <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>
-                    <GoPeople size={'3rem'} color='#F27CA2' />
-                    <Heading>Pracownicy</Heading>
-                    <Text>Lista pracowników</Text>
-                  </VStack>
-                  <HStack as='b' w={'40%'}>
-                    {!isEmployeesFetching && employees && <Text>{pendingRegistration}</Text>}
-                    {isEmployeesFetching && <Spinner />}
-                    <Text>oczekujących na dokończenie rejestracji</Text>
+        <VStack w={'100%'} h={'100%'}>
+          <HStack
+            justifyContent={'center'}
+            w={'100%'}
+            fontSize={'1.1rem'}
+            spacing={5}
+            mt={2}
+            borderBottom={'2px solid lightgrey'}
+          >
+            <Box cursor={'pointer'} onClick={() => setSelectedTab('timeoff')}>
+              Urlopy
+            </Box>
+            <Box cursor={'pointer'} onClick={() => setSelectedTab('employees')}>
+              Pracownicy
+            </Box>
+            <Box cursor={'pointer'} onClick={() => setSelectedTab('positions')}>
+              Stanowiska
+            </Box>
+          </HStack>
+          <Box w={'100%'} h={'100%'}>
+            {selectedTab === 'timeoff' && (
+              <VStack w={'100%'} h={'100%'}>
+                <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
+                  <HStack w={'80%'} justifyContent={'space-around'}>
+                    <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>
+                      <FaSuitcase size={'3rem'} color='#F27CA2' />
+                      <Heading>Urlopy</Heading>
+                      <Text>Urlopy pracowników</Text>
+                    </VStack>
+                    <Box w={'40%'}></Box>
                   </HStack>
-                </HStack>
-                {!isEmployeesFetching && employees && <EmployeeTable employees={employees.content || []} />}
-                {isEmployeesFetching && <Spinner />}
-              </VStack>
-            </TabPanel>
 
-            <TabPanel w={'100%'} h={'100%'}>
-              <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
-                <HStack w={'80%'} justifyContent={'space-around'}>
-                  <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>
-                    <GoPeople size={'3rem'} color='#F27CA2' />
-                    <Heading>Stanowiska</Heading>
-                    <Text>Lista stanowisk</Text>
+                  <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+                    <Heading w={'100%'} textAlign={'start'}>
+                      Oczekujące na akceptację
+                    </Heading>
                   </VStack>
-                  <Box w={'40%'} onClick={handleModalToggle}>
-                    <Button w={'100%'} maxW={'200px'} h={'80px'}>
-                      <GoPlus size={'40px'} />
-                      <Text fontSize={'1.5rem'} as={'b'}>
-                        Dodaj nowe
-                      </Text>
-                    </Button>
-                  </Box>
-                </HStack>
-                {!isPositionsFetching && positions && <PositionsTable positions={positions} />}
-                {isPositionsFetching && <Spinner />}
+                </VStack>
               </VStack>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+            )}
+
+            {selectedTab === 'employees' && (
+              <EmployeeListTab
+                employees={employees}
+                isEmployeesFetching={isEmployeesFetching}
+                pendingRegistration={pendingRegistration}
+              />
+            )}
+
+            {selectedTab === 'positions' && (
+              <PositionsListTab
+                positions={positions}
+                isPositionsFetching={isPositionsFetching}
+                handleModalToggle={handleModalToggle}
+              />
+            )}
+          </Box>
+        </VStack>
         <NewJobPositionModal isOpen={positionModalOpened} onClose={handleModalToggle} />
       </motion.div>
     </AnimatePresence>
