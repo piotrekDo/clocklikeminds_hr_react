@@ -1,12 +1,12 @@
 import { Grid } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { PtoRequestFormatted, PtoRequestResponse } from '../../model/Pto';
+import { PtoRequestFormatted } from '../../model/Pto';
 import { CalendarMonth } from './CalendarMonth';
 import { getHolidaysPoland } from './holidays';
 
 interface Props {
   selectedYear: Date;
-  daysOff: PtoRequestFormatted[]
+  daysOff: PtoRequestFormatted[];
 }
 
 export const CalendarGrid = ({ selectedYear, daysOff }: Props) => {

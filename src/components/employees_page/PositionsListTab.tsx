@@ -11,7 +11,7 @@ interface Props {
 
 export const PositionsListTab = ({ positions, isPositionsFetching, handleModalToggle }: Props) => {
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} maxH={'100%'} >
       <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
         <HStack w={'80%'} justifyContent={'space-around'}>
           <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>

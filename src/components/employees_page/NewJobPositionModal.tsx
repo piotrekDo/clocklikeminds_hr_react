@@ -45,8 +45,8 @@ export const NewJobPositionModal = ({ isOpen, onClose }: Props) => {
         status: 'success',
         duration: 10000,
       });
-      // onClose();
-      // reset();
+      onClose();
+      reset();
     }
   }, [isSuccess, isError]);
 

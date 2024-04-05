@@ -25,7 +25,7 @@ function App() {
   }, [error]);
 
   return (
-    <Flex w={'100wv'} minH={'100vh'} h={'100vh'} bg={backgroundGradient}>
+    <Flex w={'100wv'} minH={'100vh'} maxH={'100vh'} h={'100vh'} bg={backgroundGradient}>
       {appUser && (
         <>
           <Uppernavbar />
