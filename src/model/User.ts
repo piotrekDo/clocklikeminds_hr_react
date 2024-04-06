@@ -69,10 +69,19 @@ export interface Employee {
   ptoDaysTaken: number;
 }
 
-export interface UserRegistrationFinish {
+export interface FinishRegistrationRequest {
   appUserId: number;
   positionKey: string;
   hireStart: string;
   hireEnd: string | undefined;
   ptoDaysTotal: number;
+  stillHired: boolean;
+}
+
+export interface UpdateHireDataRequest {
+  appUserId: number;
+  positionKey: string | undefined;
+  positionChangeDate: string | undefined;
+  workStartDate: string | undefined;
+  workEndDate: string | undefined;
 }

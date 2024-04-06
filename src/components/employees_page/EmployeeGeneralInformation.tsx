@@ -1,6 +1,6 @@
-import { FormControl, FormLabel, HStack, Input, Text, VStack } from '@chakra-ui/react';
-import { Employee } from '../../model/User';
+import { FormControl, FormLabel, HStack, Text, VStack } from '@chakra-ui/react';
 import { MdOutlinePersonOutline } from 'react-icons/md';
+import { Employee } from '../../model/User';
 
 interface Props {
   employee: Employee;
@@ -11,7 +11,9 @@ export const EmployeeGeneralInformation = ({ employee }: Props) => {
     <HStack w={'100%'} maxW={'1000px'} margin={'0 auto'} justifyContent={'center'} alignItems={'start'}>
       <VStack flexBasis={'100%'} alignItems={'start'}>
         <VStack alignItems={'start'}>
-          <MdOutlinePersonOutline size={'50px'} color='#F27CA2' />
+          <HStack w={'50px'} pos={'relative'} bg={'white'}>
+            <MdOutlinePersonOutline size={'50px'} color='#F27CA2' />
+          </HStack>
           <Text as={'b'} fontSize={'1.3rem'}>
             Podstawowe informacje
           </Text>

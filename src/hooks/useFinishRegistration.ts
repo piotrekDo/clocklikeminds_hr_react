@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Employee, UserRegistrationFinish } from '../model/User';
+import { Employee, FinishRegistrationRequest } from '../model/User';
 import { finishRegister } from '../service/UsersHttpService';
 
 const useFinishRegistration = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Employee, Error, UserRegistrationFinish>({
-    mutationFn: (request: UserRegistrationFinish) => finishRegister(request).request,
+  return useMutation<Employee, Error, FinishRegistrationRequest>({
+    mutationFn: (request: FinishRegistrationRequest) => finishRegister(request).request,
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['employees']

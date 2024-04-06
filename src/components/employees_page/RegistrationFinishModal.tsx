@@ -23,7 +23,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useEmployeeDetails from '../../hooks/useEmployeeDetails';
 import useFinishRegistration from '../../hooks/useFinishRegistration';
 import useJobPostitions from '../../hooks/useJobPositions';
-import { UserRegistrationFinish } from '../../model/User';
+import { FinishRegistrationRequest } from '../../model/User';
 import useEmployeeState from '../../state/useEmployeesState';
 import useHttpErrorState from '../../state/useHttpErrorState';
 
@@ -62,6 +62,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   }, [isOpen]);
 
   useEffect(() => {
+    console.log(isSuccess)
     if (!isSuccess) return;
     toast({
       title: 'Rejestracja zakończona',
@@ -76,12 +77,13 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
 
   const onSubmitHandler = (data: FieldValues) => {
     if (!employee) return;
-    const request: UserRegistrationFinish = {
+    const request: FinishRegistrationRequest = {
       appUserId: employee?.appUserId,
       positionKey: data.positionKey,
       hireStart: data.hireStart,
       hireEnd: (data.hireEnd && data.hireEnd) || undefined,
       ptoDaysTotal: data.ptoDaysTotal,
+      stillHired: true
     };
 
     sendRequest(request);

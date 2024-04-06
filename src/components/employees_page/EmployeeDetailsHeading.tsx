@@ -10,16 +10,22 @@ interface Props {
 
 export const EmployeeDetailsHeading = ({ employee }: Props) => {
   const setSelectedEmployee = useEmployeeState(s => s.setSelectedEmployee);
-  const setIsUpdating = useEmployeeState(s => s.setIsUpdating);
+  const setisFinishingRegistration = useEmployeeState(s => s.setIsFinisshingRegistration);
+  const setIsUpdatingEmployee = useEmployeeState(s => s.setUpdatingEmployee);
+
+  const handleBackArrowClick = () => {
+    setSelectedEmployee(undefined);
+    setIsUpdatingEmployee(false);
+  }
   
   return (
     <HStack justifyContent={'center'} w={'50vw'} position={'relative'}>
-      <Box position={'absolute'} left={0} cursor={'pointer'} onClick={e => setSelectedEmployee(undefined)}>
+      <Box position={'absolute'} left={0} cursor={'pointer'} onClick={e => handleBackArrowClick()}>
         <IoArrowBack size={'40px'} color='#F27CA2' />
       </Box>
       {!employee.active && (
         <Tooltip hasArrow placement='right' label={'Konto wymaga dokończenia rejestracji'}>
-          <Box cursor={'pointer'} onClick={setIsUpdating}>
+          <Box cursor={'pointer'} onClick={setisFinishingRegistration}>
             <FaExclamationCircle size={'2rem'} color='red' />
           </Box>
         </Tooltip>

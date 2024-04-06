@@ -41,10 +41,13 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
           <GridItem key={index} w={'100%'} />
         ))}
         {currentMonthDays.map((day, index) => {
+          const today = new Date();
           const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
           const isDayOff = daysOff.filter(testedPto => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];
+          const isToday =
+            day.getFullYear() === today.getFullYear() && day.getMonth() === today.getMonth() && day.getDate() === today.getDate();
 
           return (
             <Popover key={index}>
@@ -56,7 +59,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                   justifyContent={'center'}
                   alignItems={'center'}
                   cursor={isDayOff ? 'pointer' : 'default'}
-                  bgColor={isDayOff ? isDayOff.pending ? 'yellow.400' : 'green.300' : ''}
+                  bgColor={isDayOff ? (isDayOff.pending ? 'yellow.400' : 'green.300') : ''}
                 >
                   <Flex
                     p={2}
@@ -66,8 +69,10 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     h={'10px'}
                     borderRadius={'50%'}
                     bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
+                    color={isToday ? 'blue' : ''}
                     fontSize={'.5rem'}
                     title={isHoliday}
+                    textDecoration={isToday ? 'underline' : ''}
                   >
                     {day.getDate()}
                   </Flex>
