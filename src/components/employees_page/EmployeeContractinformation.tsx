@@ -41,21 +41,33 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
   const { data: positions } = useJobPostitions();
-  const {
-    mutate: sendRequest,
-    isSuccess,
-    isLoading,
-    isError: isUpdatingError,
-    error: updatingError,
-  } = useUpdateHireData();
 
-  const cancelUpdating = () => {
+  const cancelUpdating = (): void => {
     setPositionKey(undefined);
     setPositionChangeDate(undefined);
     setWorkStartDate(undefined);
     setWorkEndDate(undefined);
     setIsUpdatingEmployee();
   };
+
+  const submitCallback = () => {
+    cancelUpdating();
+    toast({
+      title: 'Dane zmienione',
+      position: 'top-left',
+      isClosable: true,
+      status: 'success',
+      duration: 10000,
+    });
+  }
+
+  const {
+    mutate: sendRequest,
+    isSuccess,
+    isLoading,
+    isError: isUpdatingError,
+    error: updatingError,
+  } = useUpdateHireData(submitCallback);
 
   const handleSubmit = () => {
     const request: UpdateHireDataRequest = {
@@ -67,18 +79,6 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
     };
     sendRequest(request);
   };
-
-  useEffect(() => {
-    if (!isSuccess) return;
-    toast({
-      title: 'Dane zmienione',
-      position: 'top-left',
-      isClosable: true,
-      status: 'success',
-      duration: 10000,
-    });
-    cancelUpdating()
-  }, [isSuccess]);
 
   useEffect(() => {
     isUpdatingError && setError(updatingError);
@@ -120,7 +120,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               <BsSuitcaseLg size={'50px'} color='#F27CA2' />
               {employee.active && isUpdatingEmployee && (
                 <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
-                  <FcApprove size={'2rem'} onClick={() => handleSubmit()}/>
+                  <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
                   <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
                 </HStack>
               )}
