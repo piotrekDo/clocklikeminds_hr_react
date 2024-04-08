@@ -104,7 +104,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   };
 
   return (
-    <VStack position={'relative'} opacity={2}>
+    <VStack>
       <HStack
         w={'100%'}
         maxW={'1000px'}

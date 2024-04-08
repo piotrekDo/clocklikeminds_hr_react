@@ -10,6 +10,7 @@ import { EmployeeDetailsHeading } from './EmployeeDetailsHeading';
 import { EmployeeGeneralInformation } from './EmployeeGeneralInformation';
 import { EmployeeHistory } from './EmployeeHistory';
 import { RegistrationFinishModal } from './RegistrationFinishModal';
+import { EmployeeTimeOffDetails } from './EmployeeTimeOffDetails';
 
 export type EmployeeDetailsPage = 'profile' | '2' | '3';
 
@@ -37,18 +38,24 @@ export const EmployeeDetails = () => {
                 <Box mt={'20px'}>
                   <EmployeeDetailsHeading employee={employee} />
                 </Box>
-                <Box w={'90%'} mt={'70px'}>
-                  <EmployeeGeneralInformation employee={employee} />
-                </Box>
-                <Box w={'90%'} mt={'100px'}>
-                  <EmployeeContractinformation employee={employee} />
-                </Box>
-                <Box w={'90%'} mt={'100px'}>
-                  <EmployeeHistory employee={employee} />
-                </Box>
-                <Box w={'90%'} my={'100px'}>
-                  <EmployeeAccountInfo employee={employee} />
-                </Box>
+                <VStack opacity={employee.active ? 1 : .4} position={'relative'}>
+                  {!employee.active && <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>}
+                  <Box w={'90%'} mt={'70px'}>
+                    <EmployeeGeneralInformation employee={employee} />
+                  </Box>
+                  <Box w={'90%'} mt={'100px'}>
+                    <EmployeeContractinformation employee={employee} />
+                  </Box>
+                  <Box w={'90%'} mt={'100px'}>
+                    <EmployeeTimeOffDetails employee={employee} />
+                  </Box>
+                  <Box w={'90%'} mt={'100px'}>
+                    <EmployeeHistory employee={employee} />
+                  </Box>
+                  <Box w={'90%'} my={'100px'}>
+                    <EmployeeAccountInfo employee={employee} />
+                  </Box>
+                </VStack>
               </motion.div>
             </AnimatePresence>
           </>
