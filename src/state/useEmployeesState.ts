@@ -1,34 +1,30 @@
 import { create } from 'zustand';
 
+export type UpdatingEmployeeSection = 'hireDetails' | 'holidayDetails' | undefined
+
 interface EmployeesState {
   selectedEmloyee: number | undefined;
   isFinishingRegistration: boolean;
-  isUpdatingEmployee: boolean;
+  isUpdatingEmployee: UpdatingEmployeeSection;
   setSelectedEmployee: (employee: number | undefined) => void;
   setIsFinisshingRegistration: () => void;
-  setIsUpdatingEmployee: () => void;
-  setUpdatingEmployee: (bol: boolean) => void;
+  setIsUpdatingEmployee: (section: UpdatingEmployeeSection) => void;
 }
 
 const useEmployeeState = create<EmployeesState>(set => ({
   selectedEmloyee: undefined,
   isFinishingRegistration: false,
-  isUpdatingEmployee: false,
+  isUpdatingEmployee: undefined,
   setSelectedEmployee: emp => set(store => ({ ...store, selectedEmloyee: emp })),
   setIsFinisshingRegistration: () =>
     set(store => ({
       ...store,
       isFinishingRegistration: !store.isFinishingRegistration,
     })),
-  setIsUpdatingEmployee: () =>
+  setIsUpdatingEmployee: (section) =>
     set(store => ({
       ...store,
-      isUpdatingEmployee: !store.isUpdatingEmployee,
-    })),
-  setUpdatingEmployee: bol =>
-    set(store => ({
-      ...store,
-      isUpdatingEmployee: bol,
+      isUpdatingEmployee: section,
     })),
 }));
 

@@ -63,7 +63,7 @@ export interface Employee {
   hireEnd: string | null;
   seniorityInMonths: number;
   ptoDaysAccruedLastYear: number;
-  ptoDaysAccruedCurrentYear: number
+  ptoDaysAccruedCurrentYear: number;
   ptoDaysLeftFromLastYear: number;
   ptoDaysLeftTotal: number;
   ptoDaysTaken: number;
@@ -84,4 +84,10 @@ export interface UpdateHireDataRequest {
   positionChangeDate: string | undefined;
   workStartDate: string | undefined;
   workEndDate: string | undefined;
+}
+
+export interface UpdateHolidayDataRequest {
+  appUserId: number;
+  ptoTotalDaysNewValue: number | undefined;
+  ptoDaysAcquiredLastYearNewValue: number | undefined;
 }

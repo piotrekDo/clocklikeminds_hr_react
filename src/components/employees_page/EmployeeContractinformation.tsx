@@ -1,3 +1,4 @@
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import {
   Box,
   Checkbox,
@@ -7,7 +8,6 @@ import {
   HStack,
   Input,
   Select,
-  Switch,
   Text,
   VStack,
   useToast,
@@ -17,11 +17,10 @@ import { BsSuitcaseLg } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import useJobPostitions from '../../hooks/useJobPositions';
+import useUpdateHireData from '../../hooks/useUpdateHireData';
 import { Employee, UpdateHireDataRequest } from '../../model/User';
 import useEmployeeState from '../../state/useEmployeesState';
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import useHttpErrorState from '../../state/useHttpErrorState';
-import useUpdateHireData from '../../hooks/useUpdateHireData';
 
 interface Props {
   employee: Employee;
@@ -47,7 +46,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
     setPositionChangeDate(undefined);
     setWorkStartDate(undefined);
     setWorkEndDate(undefined);
-    setIsUpdatingEmployee();
+    setIsUpdatingEmployee(undefined);
   };
 
   const submitCallback = () => {
@@ -59,7 +58,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       status: 'success',
       duration: 10000,
     });
-  }
+  };
 
   const {
     mutate: sendRequest,
@@ -104,27 +103,19 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   };
 
   return (
-    <VStack>
-      <HStack
-        w={'100%'}
-        maxW={'1000px'}
-        margin={'0 auto'}
-        justifyContent={'center'}
-        alignItems={'start'}
-        onMouseEnter={() => setIsHireDetailsHovering(true)}
-        onMouseLeave={() => setIsHireDetailsHovering(false)}
-      >
+    <VStack onMouseEnter={() => setIsHireDetailsHovering(true)} onMouseLeave={() => setIsHireDetailsHovering(false)}>
+      <HStack w={'100%'} maxW={'1000px'} margin={'0 auto'} justifyContent={'center'} alignItems={'start'}>
         <VStack flexBasis={'100%'} alignItems={'start'}>
           <VStack alignItems={'start'}>
             <HStack w={'50px'} pos={'relative'} bg={'white'}>
               <BsSuitcaseLg size={'50px'} color='#F27CA2' />
-              {employee.active && isUpdatingEmployee && (
+              {employee.active && isUpdatingEmployee === 'hireDetails' && (
                 <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                   <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
                   <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
                 </HStack>
               )}
-              {employee.active && !isUpdatingEmployee && (
+              {employee.active && isUpdatingEmployee !== 'hireDetails' && (
                 <HStack
                   cursor={'pointer'}
                   position={'absolute'}
@@ -133,7 +124,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                   transitionProperty={'right, opacity'}
                   transitionDuration={'250ms'}
                   transitionTimingFunction={'ease'}
-                  onClick={() => setIsUpdatingEmployee()}
+                  onClick={() => setIsUpdatingEmployee('hireDetails')}
                 >
                   <CiEdit size={'2rem'} />
                 </HStack>
@@ -148,12 +139,12 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           <VStack w={'100%'} p={5} bg={'#F4F4F4'} maxW={'400px'}>
             <FormControl>
               <FormLabel>Stanowisko</FormLabel>
-              {!isUpdatingEmployee && (
+              {isUpdatingEmployee !== 'hireDetails' && (
                 <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
                   {(employee.position && employee.position.displayName) || 'Uzupełnij dane'}
                 </Text>
               )}
-              {isUpdatingEmployee && (
+              {isUpdatingEmployee === 'hireDetails' && (
                 <Select
                   bg={'white'}
                   placeholder={employee.position ? '' : 'Uzupełnij dane'}
@@ -176,7 +167,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                   </optgroup>
                 </Select>
               )}
-              {isUpdatingEmployee &&
+              {isUpdatingEmployee === 'hireDetails' &&
                 positionKey &&
                 (!employee.position || positionKey != employee.position.positionKey) && (
                   <>
@@ -205,7 +196,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       <HStack w={'100%'} border={'2px solid lightgray'} borderRadius={'10px'} p={5} mt={'20px'}>
         <VStack flexBasis={'100%'}>
           <Box as='b'>Data rozpoczęcia pracy</Box>
-          {!isUpdatingEmployee && (
+          {isUpdatingEmployee !== 'hireDetails' && (
             <Box flexBasis={'100%'}>
               {(employee.hireStart &&
                 new Date(employee.hireStart).toLocaleString('pl-PL', {
@@ -216,7 +207,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                 'Uzupełnij dane'}
             </Box>
           )}
-          {isUpdatingEmployee && (
+          {isUpdatingEmployee === 'hireDetails' && (
             <Input type='date' defaultValue={employee.hireStart} onChange={e => setWorkStartDate(e.target.value)} />
           )}
         </VStack>
@@ -224,7 +215,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           <Box flexBasis={'100%'} as='b'>
             Data wygaśnięcia umowy:{' '}
           </Box>
-          {!isUpdatingEmployee && (
+          {isUpdatingEmployee !== 'hireDetails' && (
             <Box flexBasis={'100%'}>
               {employee.hireStart &&
                 employee.hireEnd &&
@@ -237,7 +228,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               {!employee.hireStart && !employee.hireEnd && 'Uzupełnij dane'}
             </Box>
           )}
-          {isUpdatingEmployee && (
+          {isUpdatingEmployee === 'hireDetails' && (
             <Flex w={'100%'} h={'100%'} justifyContent={'space-between'} alignItems={'center'}>
               {showDateEndInput && <Text>Umowa na czas nieokreślony</Text>}
               {!showDateEndInput && <Input type='date' onChange={e => setWorkEndDate(e.target.value)} />}
