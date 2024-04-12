@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type UpdatingEmployeeSection = 'hireDetails' | 'holidayDetails' | undefined
+export type UpdatingEmployeeSection = 'hireDetails' | 'holidayDetails' | 'posHistoryDetails' | undefined
 
 interface EmployeesState {
   selectedEmloyee: number | undefined;

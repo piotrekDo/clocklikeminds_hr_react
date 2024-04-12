@@ -1,6 +1,13 @@
 import { AxiosResponse } from 'axios';
 import { Page, PageQuery } from '../model/Page';
-import { EmployeeBasic, Employee, FinishRegistrationRequest, UpdateHireDataRequest, UpdateHolidayDataRequest } from '../model/User';
+import {
+  Employee,
+  EmployeeBasic,
+  FinishRegistrationRequest,
+  UpdateHireDataRequest,
+  UpdateHolidayDataRequest,
+  UpdatePositionHistoryRequest,
+} from '../model/User';
 import APIclient from './APIclient';
 
 export const fetchEmployeePage = (page: PageQuery) => {
@@ -36,7 +43,7 @@ export const updateHireData = (request: UpdateHireDataRequest) => {
     (res: AxiosResponse<Employee>) => res.data
   );
   return { request: httpRequest, cancel: () => controller.abort() };
-}
+};
 
 export const updateHolidayData = (request: UpdateHolidayDataRequest) => {
   const controller = new AbortController();
@@ -44,4 +51,12 @@ export const updateHolidayData = (request: UpdateHolidayDataRequest) => {
     (res: AxiosResponse<Employee>) => res.data
   );
   return { request: httpRequest, cancel: () => controller.abort() };
-}
+};
+
+export const updatePositionHistory = (request: UpdatePositionHistoryRequest[], employeeId: number) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.post<Employee>(`/api/v1/users/${employeeId}/update-position-history`, request).then(
+    (res: AxiosResponse<Employee>) => res.data
+  );
+  return { request: httpRequest, cancel: () => controller.abort() };
+};

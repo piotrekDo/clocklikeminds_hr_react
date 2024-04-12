@@ -35,7 +35,7 @@ export interface EmployePositionRequest {
 export interface EmployeePositionHistory {
   positionHistoryId: number;
   position: EmployeePosition;
-  startDate: string;
+  startDate: string | undefined;
 }
 
 export interface EmployeeBasic {
@@ -90,4 +90,9 @@ export interface UpdateHolidayDataRequest {
   appUserId: number;
   ptoTotalDaysNewValue: number | undefined;
   ptoDaysAcquiredLastYearNewValue: number | undefined;
+}
+
+export interface UpdatePositionHistoryRequest {
+  positionHistoryId: number;
+  startDate: string | undefined;
 }

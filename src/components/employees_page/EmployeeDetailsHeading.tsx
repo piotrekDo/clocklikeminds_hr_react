@@ -11,11 +11,11 @@ interface Props {
 export const EmployeeDetailsHeading = ({ employee }: Props) => {
   const setSelectedEmployee = useEmployeeState(s => s.setSelectedEmployee);
   const setisFinishingRegistration = useEmployeeState(s => s.setIsFinisshingRegistration);
-  const setIsUpdatingEmployee = useEmployeeState(s => s.setUpdatingEmployee);
+  const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
 
   const handleBackArrowClick = () => {
     setSelectedEmployee(undefined);
-    setIsUpdatingEmployee(false);
+    setIsUpdatingEmployee(undefined);
   }
   
   return (
