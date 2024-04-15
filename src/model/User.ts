@@ -43,6 +43,7 @@ export interface EmployeeBasic {
   firstName: string;
   lastName: string;
   userEmail: string;
+  registrationFinished: boolean;
   active: boolean;
   stillHired: boolean;
   position: EmployeePosition;
@@ -55,6 +56,7 @@ export interface Employee {
   lastName: string;
   userEmail: string;
   userRoles: EmployeeRole[];
+  registrationFinished: boolean;
   active: boolean;
   stillHired: boolean;
   position: EmployeePosition;

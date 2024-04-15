@@ -43,7 +43,7 @@ export const EmployeesOverview = () => {
   };
 
   useEffect(() => {
-    employees && setPendingRegistration(employees.content.filter(e => !e.active).length || 0);
+    employees && setPendingRegistration(employees.content.filter(e => !e.registrationFinished).length || 0);
   }, [employees]);
 
   useEffect(() => {

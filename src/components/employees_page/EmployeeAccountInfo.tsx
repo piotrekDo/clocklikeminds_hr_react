@@ -3,13 +3,12 @@ import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { MdOutlineManageAccounts } from 'react-icons/md';
+import useUpdateUserPermission from '../../hooks/useUpdateUserPermission';
 import { Employee, UpdateUserPermissionRequest } from '../../model/User';
-import useAuthentication from '../../state/useAuthentication';
 import useEmployeeState from '../../state/useEmployeesState';
 import { AdminBadge } from '../AdminBadge';
 import { UserBadge } from '../UserBadge';
 import { Activebadge } from './Activebadge';
-import useUpdateUserPermission from '../../hooks/useUpdateUserPermission';
 
 interface Props {
   employee: Employee;
@@ -21,7 +20,9 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
   const toast = useToast();
 
-  const [userHasAdminPermission, setUserHasAdminPermission] = useState(employee.userRoles.filter(r => r.roleName === 'admin').length > 0);
+  const [userHasAdminPermission, setUserHasAdminPermission] = useState(
+    employee.userRoles.filter(r => r.roleName === 'admin').length > 0
+  );
   const [userIsActive, setUserIsActive] = useState(employee.active);
 
   const cancelUpdating = (): void => {
@@ -67,13 +68,13 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
       <VStack alignItems={'start'} w={'100%'} bg={'white'}>
         <HStack position={'relative'}>
           <MdOutlineManageAccounts size={'50px'} color='#F27CA2' />
-          {employee.active && isUpdatingEmployee === 'permissionDetails' && (
+          {employee.registrationFinished && isUpdatingEmployee === 'permissionDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
               <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
             </HStack>
           )}
-          {employee.active &&
+          {employee.registrationFinished &&
             employee.positionHistory &&
             employee.positionHistory.length > 0 &&
             isUpdatingEmployee !== 'permissionDetails' && (

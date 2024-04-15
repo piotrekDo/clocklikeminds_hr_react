@@ -1,12 +1,12 @@
-import { Box, Tooltip } from '@chakra-ui/react';
+import { Flex, Tooltip } from '@chakra-ui/react';
 import { FaExclamationCircle } from 'react-icons/fa';
 
 export const InactiveBadge = () => {
   return (
-    <Tooltip placement='top' hasArrow label={'Konto wymaga dokończenia rejestracji'}>
-      <Box>
-        <FaExclamationCircle color='orange' size={'1.3rem'} />
-      </Box>
+    <Tooltip placement='top' hasArrow label={'Konto nieaktywne'}>
+      <Flex justifyContent={'center'}>
+        <FaExclamationCircle color='red' size={'1.3rem'} />
+      </Flex>
     </Tooltip>
   );
 };

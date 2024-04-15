@@ -1,10 +1,11 @@
-import { Badge } from '@chakra-ui/react'
-import React from 'react'
+import { Badge, Flex } from '@chakra-ui/react';
 
 export const Activebadge = () => {
   return (
-    <Badge variant={'solid'} colorScheme='green'>
+    <Flex justifyContent={'center'}>
+      <Badge variant={'solid'} colorScheme='green'>
         Aktywny
-    </Badge>
-  )
-}
+      </Badge>
+    </Flex>
+  );
+};

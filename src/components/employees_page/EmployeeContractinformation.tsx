@@ -109,13 +109,13 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           <VStack alignItems={'start'}>
             <HStack w={'50px'} pos={'relative'} bg={'white'}>
               <BsSuitcaseLg size={'50px'} color='#F27CA2' />
-              {employee.active && isUpdatingEmployee === 'hireDetails' && (
+              {employee.registrationFinished && isUpdatingEmployee === 'hireDetails' && (
                 <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                   <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
                   <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
                 </HStack>
               )}
-              {employee.active && isUpdatingEmployee !== 'hireDetails' && (
+              {employee.registrationFinished && isUpdatingEmployee !== 'hireDetails' && (
                 <HStack
                   cursor={'pointer'}
                   position={'absolute'}

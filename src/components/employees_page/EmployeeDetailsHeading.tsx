@@ -23,7 +23,7 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
       <Box position={'absolute'} left={0} cursor={'pointer'} onClick={e => handleBackArrowClick()}>
         <IoArrowBack size={'40px'} color='#F27CA2' />
       </Box>
-      {!employee.active && (
+      {!employee.registrationFinished && (
         <Tooltip hasArrow placement='right' label={'Konto wymaga dokończenia rejestracji'}>
           <Box cursor={'pointer'} onClick={setisFinishingRegistration}>
             <FaExclamationCircle size={'2rem'} color='red' />

@@ -3,6 +3,7 @@ import { FaRegCircleUser } from 'react-icons/fa6';
 import { EmployeeBasic } from '../../model/User';
 import { Activebadge } from './Activebadge';
 import { InactiveBadge } from './InactiveBadge';
+import { UnfinishedRegistrationBadge } from '../UnfinishedRegistrationBadge';
 
 interface Props {
   employee: EmployeeBasic;
@@ -29,7 +30,7 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       px={3}
       cursor={'pointer'}
       onClick={() => onEmployeeChange(employee.appUserId)}
-      _hover={{bg: '#E3EDF2'}}
+      _hover={{ bg: '#E3EDF2' }}
     >
       <Box flexBasis={'50%'}>
         <FaRegCircleUser />
@@ -39,8 +40,9 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       <Text flexBasis={'100%'}>{employee.position ? employee.position.displayName : ''}</Text>
       <Text flexBasis={'100%'}>{determineSeniority()}</Text>
       <Box flexBasis={'50%'}>
+        {!employee.registrationFinished && <UnfinishedRegistrationBadge />}
         {employee.active && <Activebadge />}
-        {!employee.active && <InactiveBadge />}
+        {employee.registrationFinished && !employee.active && <InactiveBadge />}
       </Box>
     </HStack>
   );

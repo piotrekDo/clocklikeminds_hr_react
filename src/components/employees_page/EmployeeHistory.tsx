@@ -58,13 +58,13 @@ export const EmployeeHistory = ({ employee }: Props) => {
       <VStack alignItems={'start'} bg={'white'} w={'100%'}>
         <HStack pos={'relative'}>
           <MdOutlineWorkHistory size={'50px'} color='#F27CA2' />
-          {employee.active && isUpdatingEmployee === 'posHistoryDetails' && (
+          {employee.registrationFinished && isUpdatingEmployee === 'posHistoryDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
               <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
             </HStack>
           )}
-          {employee.active &&
+          {employee.registrationFinished &&
             employee.positionHistory &&
             employee.positionHistory.length > 0 &&
             isUpdatingEmployee !== 'posHistoryDetails' && (

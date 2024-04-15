@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Employee, UpdateHolidayDataRequest } from '../../model/User';
 import {
   HStack,
-  VStack,
-  Text,
-  FormControl,
-  FormLabel,
-  Checkbox,
-  Box,
-  Tooltip,
-  useToast,
   Input,
+  Text,
+  Tooltip,
+  VStack,
+  useToast
 } from '@chakra-ui/react';
-import { LuPalmtree } from 'react-icons/lu';
-import useEmployeeState from '../../state/useEmployeesState';
+import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
+import { LuPalmtree } from 'react-icons/lu';
 import useUpdateHolidayData from '../../hooks/useUpdateHolidayData';
+import { Employee, UpdateHolidayDataRequest } from '../../model/User';
+import useEmployeeState from '../../state/useEmployeesState';
 import useHttpErrorState from '../../state/useHttpErrorState';
 
 interface Props {
@@ -28,8 +24,12 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
   const [isHolidayDetailsHovering, setIsHolidayDetailsHovering] = useState(false);
 
-  const [ptoDaysCurrentYearNewValue, setPtoDaysCurrentYearNewValue] = useState<number | undefined>(employee.ptoDaysAccruedCurrentYear + employee.ptoDaysAccruedLastYear);
-  const [ptoDaysAcquiredLastYearNewValue, setPtoDaysAcquiredLastYearNewValue] = useState<number | undefined>(employee.ptoDaysAccruedLastYear);
+  const [ptoDaysCurrentYearNewValue, setPtoDaysCurrentYearNewValue] = useState<number | undefined>(
+    employee.ptoDaysAccruedCurrentYear + employee.ptoDaysAccruedLastYear
+  );
+  const [ptoDaysAcquiredLastYearNewValue, setPtoDaysAcquiredLastYearNewValue] = useState<number | undefined>(
+    employee.ptoDaysAccruedLastYear
+  );
 
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
@@ -88,13 +88,13 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
           <VStack alignItems={'start'}>
             <HStack w={'50px'} pos={'relative'} bg={'white'}>
               <LuPalmtree size={'50px'} color='#F27CA2' />
-              {employee.active && isUpdatingEmployee === 'holidayDetails' && (
+              {employee.registrationFinished && isUpdatingEmployee === 'holidayDetails' && (
                 <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                   <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
                   <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
                 </HStack>
               )}
-              {employee.active && isUpdatingEmployee !== 'holidayDetails' && (
+              {employee.registrationFinished && isUpdatingEmployee !== 'holidayDetails' && (
                 <HStack
                   cursor={'pointer'}
                   position={'absolute'}

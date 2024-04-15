@@ -38,8 +38,8 @@ export const EmployeeDetails = () => {
                 <Box mt={'20px'}>
                   <EmployeeDetailsHeading employee={employee} />
                 </Box>
-                <VStack opacity={employee.active ? 1 : .4} position={'relative'}>
-                  {!employee.active && <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>}
+                <VStack opacity={employee.registrationFinished ? 1 : .4} position={'relative'}>
+                  {!employee.registrationFinished && <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>}
                   <Box w={'90%'} mt={'70px'}>
                     <EmployeeGeneralInformation employee={employee} />
                   </Box>
