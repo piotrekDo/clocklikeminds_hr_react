@@ -9,12 +9,14 @@ import useEmployeeState from '../../state/useEmployeesState';
 import { AdminBadge } from '../AdminBadge';
 import { UserBadge } from '../UserBadge';
 import { Activebadge } from './Activebadge';
+import useAuthentication from '../../state/useAuthentication';
 
 interface Props {
   employee: Employee;
 }
 
 export const EmployeeAccountInfo = ({ employee }: Props) => {
+  const currentUserId = useAuthentication(s => s.appUser?.userId);
   const [isPermissionDetailsHovering, setIsPermissionDetailsHovering] = useState(false);
   const isUpdatingEmployee = useEmployeeState(s => s.isUpdatingEmployee);
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
@@ -74,9 +76,9 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
               <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
             </HStack>
           )}
-          {employee.registrationFinished &&
-            employee.positionHistory &&
-            employee.positionHistory.length > 0 &&
+
+          {employee.appUserId !== currentUserId &&
+            employee.registrationFinished &&
             isUpdatingEmployee !== 'permissionDetails' && (
               <HStack
                 cursor={'pointer'}

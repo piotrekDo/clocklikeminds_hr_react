@@ -17,13 +17,13 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import useNewPtoRequest from '../hooks/useNewPtoRequest';
 import { NewPtoRequest, NewPtoRequestSummary } from '../model/Pto';
+import useAuthentication from '../state/useAuthentication';
+import useHttpErrorState from '../state/useHttpErrorState';
 import { calculateBusinessDays } from './Calendar/holidays';
 import { CalendarPtoForm } from './CalendarPtoForm';
 import { SimplePtoForm } from './SimplePtoForm';
-import useAuthentication from '../state/useAuthentication';
-import useNewPtoRequest from '../hooks/useNewPtoRequest';
-import useHttpErrorState from '../state/useHttpErrorState';
 
 interface Props {
   isOpen: boolean;
@@ -51,7 +51,7 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
         status: 'success',
         duration: 5000,
         isClosable: true,
-        position: 'top-left'
+        position: 'top-left',
       });
     }
   }, [isSuccess]);
@@ -91,7 +91,7 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
   };
 
   return (
-    <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
+    <Modal size={'lg'} isOpen={isOpen} onClose={onClose} >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
