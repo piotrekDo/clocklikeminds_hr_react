@@ -11,7 +11,7 @@ interface Props {
 export const SimplePtoForm = ({ startDate, endDate, setStartDate, setEndDate }: Props) => {
   const defaultStartDate = startDate ? startDate.toISOString().slice(0, 10) : '';
   const defaultEndDate = endDate ? endDate.toISOString().slice(0, 10) : '';
-  console.log(defaultStartDate)
+
   return (
     <Box>
       <HStack>

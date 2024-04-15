@@ -62,7 +62,6 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   }, [isOpen]);
 
   useEffect(() => {
-    console.log(isSuccess)
     if (!isSuccess) return;
     toast({
       title: 'Rejestracja zakończona',

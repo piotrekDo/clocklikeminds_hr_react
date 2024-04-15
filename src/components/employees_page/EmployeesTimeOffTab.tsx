@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const EmployeesTimeOffTab = ({ptosToAccept, isPtoFetching}: Props) => {
-    console.log(ptosToAccept)
+
   return (
     <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
       <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>

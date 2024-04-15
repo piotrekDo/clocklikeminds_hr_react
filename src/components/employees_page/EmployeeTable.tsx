@@ -1,9 +1,10 @@
-import { VStack } from '@chakra-ui/react';
+import { VStack, Text } from '@chakra-ui/react';
 import { EmployeeBasic } from '../../model/User';
 import useEmployeeState from '../../state/useEmployeesState';
 import useSortState from '../../state/useSortState';
 import { EmployeeTab } from './EmployeeTab';
 import { EmployeeTableHeader } from './EmployeeTableHeader';
+import { useEffect, useState } from 'react';
 
 interface Props {
   employees: EmployeeBasic[];
@@ -11,27 +12,44 @@ interface Props {
 
 export const EmployeeTable = ({ employees }: Props) => {
   const setEmployee = useEmployeeState(s => s.setSelectedEmployee);
-  const sortOrder = useSortState(s => s.employeeTableSortType);
+  const { employeeTableSortType: sortOrder, firstNameFilter, lastNameFilter, positionFilter } = useSortState();
 
-  console.log(employees);
+  const sortEmployees = () :EmployeeBasic[] => {
+    let result = employees;
+    if (positionFilter) {
+      result = result.filter(
+        e => e.position && e.position.displayName.toLocaleLowerCase().includes(positionFilter.toLocaleLowerCase())
+      );
+    }
 
-  const sortEmployees = (): EmployeeBasic[] => {
+    if (lastNameFilter) {
+      result = result.filter(
+        e => e.lastName && e.lastName.toLocaleLowerCase().includes(lastNameFilter.toLocaleLowerCase())
+      );
+    }
+
+    if (firstNameFilter) {
+      result = result.filter(
+        e => e.firstName && e.firstName.toLocaleLowerCase().includes(firstNameFilter.toLocaleLowerCase())
+      );
+    }
+
     if (sortOrder === 'firstNameAsc') {
-      return employees.sort((a, b) => a.firstName.localeCompare(b.firstName, 'pl'));
+      result = result.sort((a, b) => a.firstName.localeCompare(b.firstName, 'pl'));
     } else if (sortOrder === 'firstNameDesc') {
-      return employees.sort((a, b) => a.firstName.localeCompare(b.firstName, 'pl')).reverse();
+      result = result.sort((a, b) => a.firstName.localeCompare(b.firstName, 'pl')).reverse();
     } else if (sortOrder === 'lastNameAsc') {
-      return employees.sort((a, b) => a.lastName.localeCompare(b.lastName, 'pl'));
+      result = result.sort((a, b) => a.lastName.localeCompare(b.lastName, 'pl'));
     } else if (sortOrder === 'lastNameDesc') {
-      return employees.sort((a, b) => a.lastName.localeCompare(b.lastName, 'pl')).reverse();
+      result = result.sort((a, b) => a.lastName.localeCompare(b.lastName, 'pl')).reverse();
     } else if (sortOrder === 'positionAsc') {
-      return employees.sort((a, b) => {
+      result = result.sort((a, b) => {
         const positionA = a.position ? a.position.displayName : '';
         const positionB = b.position ? b.position.displayName : '';
         return positionA.localeCompare(positionB, 'pl');
       });
     } else if (sortOrder === 'positionDesc') {
-      return employees
+      result = result
         .sort((a, b) => {
           const positionA = a.position ? a.position.displayName : '';
           const positionB = b.position ? b.position.displayName : '';
@@ -39,23 +57,28 @@ export const EmployeeTable = ({ employees }: Props) => {
         })
         .reverse();
     } else if (sortOrder === 'seniorityAsc') {
-      return employees.sort((a, b) => a.seniorityInMonths - b.seniorityInMonths);
+      result = result.sort((a, b) => a.seniorityInMonths - b.seniorityInMonths);
     } else if (sortOrder === 'seniorityDesc') {
-      return employees.sort((a, b) => b.seniorityInMonths - a.seniorityInMonths);
+      result = result.sort((a, b) => b.seniorityInMonths - a.seniorityInMonths);
     } else if (sortOrder === 'statusAsc') {
-      return employees.sort((a, b) => a.status - b.status);
+      result = result.sort((a, b) => a.status - b.status);
     } else if (sortOrder === 'statusDesc') {
-      return employees.sort((a, b) => b.status - a.status);
+      result = result.sort((a, b) => b.status - a.status);
     }
-    return [];
+    return result
   };
+
+  const filterResult = sortEmployees();
 
   return (
     <VStack w={'80%'} maxW={'1200px'} h={'100%'}>
+      <Text w={'100%'} as={'b'}>
+        {`Wyświetlam ${filterResult.length} wyników z ${employees.length}`}
+      </Text>
       <EmployeeTableHeader />
       <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
         {employees &&
-          sortEmployees().map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
+          filterResult.map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
       </VStack>
     </VStack>
   );
