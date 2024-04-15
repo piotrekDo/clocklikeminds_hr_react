@@ -1,5 +1,5 @@
 import { Box, HStack, Text, VStack, useToast } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { MdOutlineWorkHistory } from 'react-icons/md';
@@ -16,15 +16,13 @@ export const EmployeeHistory = ({ employee }: Props) => {
   const [isPosHistoryDetailsHovering, setIsPosHistoryDetailsHovering] = useState(false);
   const isUpdatingEmployee = useEmployeeState(s => s.isUpdatingEmployee);
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
-  const [editedPosHistory, setEditedPosHistory] = useState<EmployeePositionHistory[]>(employee.positionHistory.map((historyItem) => ({ ...historyItem })));
+  const [editedPosHistory, setEditedPosHistory] = useState<EmployeePositionHistory[]>(
+    employee.positionHistory.map(historyItem => ({ ...historyItem }))
+  );
   const toast = useToast();
 
-  useEffect(() => {
-    console.log(employee.positionHistory)
-  }, [isUpdatingEmployee])
-
   const cancelUpdating = (): void => {
-    setEditedPosHistory(employee.positionHistory.map((historyItem) => ({ ...historyItem })));
+    setEditedPosHistory(employee.positionHistory.map(historyItem => ({ ...historyItem })));
     setIsUpdatingEmployee(undefined);
   };
 
@@ -94,7 +92,6 @@ export const EmployeeHistory = ({ employee }: Props) => {
             {employee.positionHistory.length === 0 && <Box>Brak historii</Box>}
             {employee.positionHistory.length > 0 &&
               employee.positionHistory.map((position, index) => {
-              //  console.log(position)
                 return (
                   <HStack key={index} w={'100%'} justifyContent={'start'} alignItems={'start'}>
                     <Box>
@@ -106,7 +103,7 @@ export const EmployeeHistory = ({ employee }: Props) => {
                     </Box>
                     <Box>{position.position.displayName}</Box>
                   </HStack>
-                )
+                );
               })}
           </>
         )}

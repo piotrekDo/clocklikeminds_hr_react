@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 
-export type UpdatingEmployeeSection = 'hireDetails' | 'holidayDetails' | 'posHistoryDetails' | undefined
+export type UpdatingEmployeeSection =
+  | 'hireDetails'
+  | 'holidayDetails'
+  | 'posHistoryDetails'
+  | 'permissionDetails'
+  | undefined;
 
 interface EmployeesState {
   selectedEmloyee: number | undefined;
@@ -21,7 +26,7 @@ const useEmployeeState = create<EmployeesState>(set => ({
       ...store,
       isFinishingRegistration: !store.isFinishingRegistration,
     })),
-  setIsUpdatingEmployee: (section) =>
+  setIsUpdatingEmployee: section =>
     set(store => ({
       ...store,
       isUpdatingEmployee: section,

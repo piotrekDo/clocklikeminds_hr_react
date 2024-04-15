@@ -96,3 +96,9 @@ export interface UpdatePositionHistoryRequest {
   positionHistoryId: number;
   startDate: string | undefined;
 }
+
+export interface UpdateUserPermissionRequest {
+  appUserId: number;
+  hasAdminPermission: boolean;
+  isActive: boolean;
+}

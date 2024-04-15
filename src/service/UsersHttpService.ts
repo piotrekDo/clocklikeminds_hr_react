@@ -7,6 +7,7 @@ import {
   UpdateHireDataRequest,
   UpdateHolidayDataRequest,
   UpdatePositionHistoryRequest,
+  UpdateUserPermissionRequest,
 } from '../model/User';
 import APIclient from './APIclient';
 
@@ -56,6 +57,14 @@ export const updateHolidayData = (request: UpdateHolidayDataRequest) => {
 export const updatePositionHistory = (request: UpdatePositionHistoryRequest[], employeeId: number) => {
   const controller = new AbortController();
   const httpRequest = APIclient.post<Employee>(`/api/v1/users/${employeeId}/update-position-history`, request).then(
+    (res: AxiosResponse<Employee>) => res.data
+  );
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
+export const updateUserPermission = (request: UpdateUserPermissionRequest) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.post<Employee>('/api/v1/users/update-permission', request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
   return { request: httpRequest, cancel: () => controller.abort() };
