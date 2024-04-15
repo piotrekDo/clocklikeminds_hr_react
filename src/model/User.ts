@@ -48,6 +48,7 @@ export interface EmployeeBasic {
   stillHired: boolean;
   position: EmployeePosition;
   seniorityInMonths: number;
+  status: number;
 }
 
 export interface Employee {
