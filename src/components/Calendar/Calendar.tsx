@@ -1,9 +1,9 @@
 import { Box, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/md';
-import { CalendarGrid } from './CalendarGrid';
 import usePtoRequestsForSelectedYear from '../../hooks/usePtoRequestsForSelectedyear';
 import useAuthentication from '../../state/useAuthentication';
+import { CalendarGrid } from './CalendarGrid';
 
 export const Calendar = () => {
   const { appUser } = useAuthentication();
@@ -19,7 +19,7 @@ export const Calendar = () => {
   };
 
   return (
-    <VStack bg={'#F5F4F6'} w={'600px'} h={'800px'} borderRadius={'20px'} p={5} position={'relative'}>
+    <VStack bg={'#F5F4F6'} w={'100%'} h={'100%'} borderRadius={'20px'} p={{base: 2, monitorM: 5}} position={'relative'}>
       <HStack justifyContent={'center'} alignItems={'center'} spacing={3}>
         <MdOutlineArrowBackIosNew cursor={'pointer'} onClick={onArrowLeftClickHandler} />
         <Text>{selectedYear.getFullYear()}</Text>
@@ -33,7 +33,7 @@ export const Calendar = () => {
           </HStack>
         )}
       </HStack>
-      <CalendarGrid selectedYear={selectedYear} daysOff={ptos || []}/>
+      <CalendarGrid selectedYear={selectedYear} daysOff={ptos || []} />
     </VStack>
   );
 };

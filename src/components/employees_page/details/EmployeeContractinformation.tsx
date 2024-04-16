@@ -103,39 +103,45 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   };
 
   return (
-    <VStack onMouseEnter={() => setIsHireDetailsHovering(true)} onMouseLeave={() => setIsHireDetailsHovering(false)}>
-      <HStack w={'100%'} maxW={'1000px'} margin={'0 auto'} justifyContent={'center'} alignItems={'start'}>
+    <VStack
+      w={'100%'}
+      alignItems={'start'}
+      onMouseEnter={() => setIsHireDetailsHovering(true)}
+      onMouseLeave={() => setIsHireDetailsHovering(false)}
+    >
+      <HStack
+        w={'100%'}
+        alignItems={'start'}
+      >
         <VStack flexBasis={'100%'} alignItems={'start'}>
-          <VStack alignItems={'start'}>
-            <HStack w={'50px'} pos={'relative'} bg={'white'}>
-              <BsSuitcaseLg size={'50px'} color='#F27CA2' />
-              {employee.registrationFinished && isUpdatingEmployee === 'hireDetails' && (
-                <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
-                  <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
-                  <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
-                </HStack>
-              )}
-              {employee.registrationFinished && isUpdatingEmployee !== 'hireDetails' && (
-                <HStack
-                  cursor={'pointer'}
-                  position={'absolute'}
-                  opacity={isHireDetailsHovering ? 1 : 0}
-                  right={isHireDetailsHovering ? '-10' : 0}
-                  transitionProperty={'right, opacity'}
-                  transitionDuration={'250ms'}
-                  transitionTimingFunction={'ease'}
-                  onClick={() => setIsUpdatingEmployee('hireDetails')}
-                >
-                  <CiEdit size={'2rem'} />
-                </HStack>
-              )}
-            </HStack>
-            <Text as={'b'} fontSize={'1.3rem'}>
-              Informacje o zatrudnieniu
-            </Text>
-          </VStack>
+          <HStack w={'50px'} pos={'relative'} bg={'white'}>
+            <BsSuitcaseLg size={'50px'} color='#F27CA2' />
+            {employee.registrationFinished && isUpdatingEmployee === 'hireDetails' && (
+              <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
+                <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
+                <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
+              </HStack>
+            )}
+            {employee.registrationFinished && isUpdatingEmployee !== 'hireDetails' && (
+              <HStack
+                cursor={'pointer'}
+                position={'absolute'}
+                opacity={isHireDetailsHovering ? 1 : 0}
+                right={isHireDetailsHovering ? '-10' : 0}
+                transitionProperty={'right, opacity'}
+                transitionDuration={'250ms'}
+                transitionTimingFunction={'ease'}
+                onClick={() => setIsUpdatingEmployee('hireDetails')}
+              >
+                <CiEdit size={'2rem'} />
+              </HStack>
+            )}
+          </HStack>
+          <Text as={'b'} fontSize={'1.3rem'}>
+            Informacje o zatrudnieniu
+          </Text>
         </VStack>
-        <VStack flexBasis={'100%'}>
+        <VStack flexBasis={'100%'} alignItems={'end'}>
           <VStack w={'100%'} p={5} bg={'#F4F4F4'} maxW={'400px'}>
             <FormControl>
               <FormLabel>Stanowisko</FormLabel>

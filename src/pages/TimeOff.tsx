@@ -21,55 +21,54 @@ export const TimeOff = () => {
           height: '99%',
         }}
       >
-        <HStack w={'100%'} h={'100%'} pt={'20px'} pb={'20px'} px={'30px'} justifyContent={'space-around'}>
-          <VStack>
-            {isUserAdmin && (
+        <VStack w={'100%'} h={'100%'} pt={'20px'} pb={'20px'} px={'30px'} justifyContent={'space-evenly'}>
+          {isUserAdmin && (
+            <Flex
+              onClick={() => setAdminMode(s => !s)}
+              bg={'blue.100'}
+              borderRadius={'20px'}
+              cursor={'pointer'}
+              w={'500px'}
+              h={'40px'}
+              overflow={'hidden'}
+              mb={{base: 0, monitorM: 5}}
+            >
               <Flex
-                onClick={() => setAdminMode(s => !s)}
-                bg={'blue.100'}
-                borderRadius={'20px'}
-                cursor={'pointer'}
                 w={'500px'}
-                h={'40px'}
-                overflow={'hidden'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                flexShrink={0}
+                transform={adminMode ? 'translateX(-100%)' : 'translateX(0)'}
+                transitionProperty={'transform'}
+                transitionDuration={'200ms'}
+                transitionTimingFunction={'ease-in'}
               >
-                <Flex
-                  w={'500px'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  flexShrink={0}
-                  transform={adminMode ? 'translateX(-100%)' : 'translateX(0)'}
-                  transitionProperty={'transform'}
-                  transitionDuration={'200ms'}
-                  transitionTimingFunction={'ease-in'}
-                >
-                  Moje urlopy
-                </Flex>
-                <Flex
-                  w={'500px'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  flexShrink={0}
-                  transform={adminMode ? 'translateX(-100%)' : 'translateX(0)'}
-                  transitionProperty={'transform'}
-                  transitionDuration={'200ms'}
-                  transitionTimingFunction={'ease-in'}
-                >
-                  Wnioski pracowników
-                </Flex>
+                Moje urlopy
               </Flex>
-            )}
-            <HStack>
-              <PtoRequestModal isOpen={isOpen} onClose={onClose} />
-              <VStack h={'80vh'} justifyContent={'start'}>
-                <PtoSummary onopen={onOpen} />
-              </VStack>
-              <Flex h={'100%'}>
-                <Calendar />
+              <Flex
+                w={'500px'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                flexShrink={0}
+                transform={adminMode ? 'translateX(-100%)' : 'translateX(0)'}
+                transitionProperty={'transform'}
+                transitionDuration={'200ms'}
+                transitionTimingFunction={'ease-in'}
+              >
+                Wnioski pracowników
               </Flex>
-            </HStack>
-          </VStack>
-        </HStack>
+            </Flex>
+          )}
+          <HStack w={'100%'} h={'100%'} gap={10} alignItems={'center'} justifyContent={'center'} >
+            <PtoRequestModal isOpen={isOpen} onClose={onClose} />
+            <VStack h={'100%'} w={'100%'} alignItems={'center'} justifyContent={'start'} >
+              <PtoSummary onopen={onOpen} />
+            </VStack>
+            <Flex h={'100%'} w={'100%'}>
+              <Calendar />
+            </Flex>
+          </HStack>
+        </VStack>
       </motion.div>
     </AnimatePresence>
   );

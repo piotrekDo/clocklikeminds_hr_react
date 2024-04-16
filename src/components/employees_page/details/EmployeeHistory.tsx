@@ -51,11 +51,12 @@ export const EmployeeHistory = ({ employee }: Props) => {
 
   return (
     <VStack
+      alignItems={'start'}
       w={'100%'}
       onMouseEnter={() => setIsPosHistoryDetailsHovering(true)}
       onMouseLeave={() => setIsPosHistoryDetailsHovering(false)}
     >
-      <VStack alignItems={'start'} bg={'white'} w={'100%'}>
+      <VStack alignItems={'start'} bg={'white'}>
         <HStack pos={'relative'}>
           <MdOutlineWorkHistory size={'50px'} color='#F27CA2' />
           {employee.registrationFinished && isUpdatingEmployee === 'posHistoryDetails' && (

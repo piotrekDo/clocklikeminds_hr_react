@@ -71,7 +71,7 @@ export const EmployeeTable = ({ employees }: Props) => {
   const filterResult = sortEmployees();
 
   return (
-    <VStack w={'80%'} maxW={'1200px'} h={'100%'}>
+    <VStack w={'100%'} maxW={'1300px'} h={'100%'}>
       <Text w={'100%'} as={'b'}>
         {`Wyświetlam ${filterResult.length} wyników z ${employees.length}`}
       </Text>

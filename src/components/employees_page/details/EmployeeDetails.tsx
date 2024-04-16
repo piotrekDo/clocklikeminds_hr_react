@@ -25,7 +25,7 @@ export const EmployeeDetails = () => {
 
   return (
     <>
-      <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+      <VStack w={'100%'} h={'100%'} overflowY={'scroll'} >
         {isFetching && <Spinner size={'xl'} />}
         {!isFetching && employee && (
           <>
@@ -38,7 +38,7 @@ export const EmployeeDetails = () => {
                 <Box mt={'20px'}>
                   <EmployeeDetailsHeading employee={employee} />
                 </Box>
-                <VStack opacity={employee.registrationFinished ? 1 : .4} position={'relative'}>
+                <VStack  maxW={'1000px'} margin={'0 auto'} opacity={employee.registrationFinished ? 1 : .4} position={'relative'}>
                   {!employee.registrationFinished && <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>}
                   <Box w={'90%'} mt={'70px'}>
                     <EmployeeGeneralInformation employee={employee} />

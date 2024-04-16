@@ -8,9 +8,9 @@ interface Props {
 
 export const EmployeeGeneralInformation = ({ employee }: Props) => {
   return (
-    <HStack w={'100%'} maxW={'1000px'} margin={'0 auto'} justifyContent={'center'} alignItems={'start'}>
+    <HStack w={'100%'} justifyContent={'center'} alignItems={'start'}>
       <VStack flexBasis={'100%'} alignItems={'start'}>
-        <VStack alignItems={'start'}>
+        <VStack alignItems={'start'} >
           <HStack w={'50px'} pos={'relative'} bg={'white'}>
             <MdOutlinePersonOutline size={'50px'} color='#F27CA2' />
           </HStack>
@@ -19,7 +19,7 @@ export const EmployeeGeneralInformation = ({ employee }: Props) => {
           </Text>
         </VStack>
       </VStack>
-      <VStack flexBasis={'100%'}>
+      <VStack flexBasis={'100%'} alignItems={'end'}>
         <VStack w={'100%'} p={5} bg={'#F4F4F4'} maxW={'400px'}>
           <FormControl>
             <FormLabel>Imię</FormLabel>

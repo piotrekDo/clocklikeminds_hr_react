@@ -35,7 +35,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
 
   return (
     <GridItem w={'100%'} display={'flex'} flexDirection={'column'}>
-      <Text mb={5}>{month.toLocaleString('pl-PL', { month: 'long' })}</Text>
+      <Text as={'i'} fontSize={{base: '.6rem', monitorM: '1rem'}}>{month.toLocaleString('pl-PL', { month: 'long' })}</Text>
       <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={2} columnGap={0}>
         {Array.from({ length: leftPadding }).map((_, index) => (
           <GridItem key={index} w={'100%'} />
@@ -47,7 +47,9 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];
           const isToday =
-            day.getFullYear() === today.getFullYear() && day.getMonth() === today.getMonth() && day.getDate() === today.getDate();
+            day.getFullYear() === today.getFullYear() &&
+            day.getMonth() === today.getMonth() &&
+            day.getDate() === today.getDate();
 
           return (
             <Popover key={index}>
@@ -70,7 +72,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     borderRadius={'50%'}
                     bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
                     color={isToday ? 'blue' : ''}
-                    fontSize={'.5rem'}
+                    fontSize={{base: '.5rem','monitorM': '.7rem' , '4K': '.9rem'}}
                     title={isHoliday}
                     textDecoration={isToday ? 'underline' : ''}
                   >

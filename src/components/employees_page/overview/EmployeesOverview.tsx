@@ -62,7 +62,7 @@ export const EmployeesOverview = () => {
           height: '90%',
         }}
       >
-        <VStack w={'100%'} h={'100%'}>
+        <VStack w={'100%'} h={'100%'} >
           <HStack
             justifyContent={'center'}
             w={'100%'}
@@ -95,9 +95,7 @@ export const EmployeesOverview = () => {
           </HStack>
           <Box w={'100%'} h={'100%'} maxH={'90vh'}>
             {selectedTab === 'timeoff' && (
-              <EmployeesTimeOffTab 
-              ptosToAccept={ptosToAccept} 
-              isPtoFetching={isPtoFetching} />
+              <EmployeesTimeOffTab ptosToAccept={ptosToAccept} isPtoFetching={isPtoFetching} />
             )}
 
             {selectedTab === 'employees' && (

@@ -33,7 +33,7 @@ function App() {
         </>
       )}
       <Box w={'100%'} h={'100%'} pt={'60px'}>
-        <Box w={'100%'} h={'100%'} borderRadius={'50px 0 0 0'} bg={'white'}>
+        <Box w={`calc(100vw - 70px)`} h={'100%'} px={{base: 0, '4K' : '250px'}} py={{base: 0, '4K' : '50px'}} borderRadius={'50px 0 0 0'} bg={'white'}>
           <Outlet />
         </Box>
       </Box>

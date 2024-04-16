@@ -16,13 +16,13 @@ export const PtoSummary = ({ onopen }: Props) => {
   const setError = useHttpErrorState(s => s.setError);
 
   useEffect(() => {
-    isError && setError(error)
-  }, [isError])
+    isError && setError(error);
+  }, [isError]);
 
   return (
     <VStack w={'100%'} h={'100%'}>
-      <HStack fontWeight={'600'} w={'100%'} p={5} justifyContent={'space-around'} gap={5}>
-        <VStack w={'100%'} h={'100%'} bg={'#F5F4F6'} borderRadius={'20px'} p={5}>
+      <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
+        <VStack w={'100%'}  minH={'140px'} bg={'#F5F4F6'} borderRadius={'20px'} p={5}>
           <Text w={'100%'} textAlign={'center'}>
             Podsumowanie
           </Text>
@@ -60,7 +60,7 @@ export const PtoSummary = ({ onopen }: Props) => {
           )}
         </VStack>
         {appuser?.isActive && (
-          <HStack bg={'#F5F4F6'} h={'100%'} w={'100%'} borderRadius={'20px'} p={5} cursor={'pointer'} onClick={onopen}>
+          <HStack bg={'#F5F4F6'} minH={'140px'} borderRadius={'20px'} p={5} cursor={'pointer'} onClick={onopen}>
             <FaPlus />
             <Text>Nowy wniosek</Text>
           </HStack>
@@ -71,9 +71,11 @@ export const PtoSummary = ({ onopen }: Props) => {
         {isFetching && <Spinner />}
         {!isFetching && summary?.lastRequests.length === 0 && <Heading>Brak historii wniosków</Heading>}
         {!isFetching && summary && summary.lastRequests.length > 0 && (
-          <VStack w={'100%'} h={'100%'}  overflowY={'scroll'}>
-              <Heading>Ostatnie wnioski:</Heading>
-              {summary.lastRequests.map(r => <PtoCard key={r.id} pto={r}/>)}
+          <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+            <Heading>Ostatnie wnioski:</Heading>
+            {summary.lastRequests.map(r => (
+              <PtoCard key={r.id} pto={r} />
+            ))}
           </VStack>
         )}
       </VStack>

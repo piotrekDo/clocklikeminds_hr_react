@@ -1,11 +1,4 @@
-import {
-  HStack,
-  Input,
-  Text,
-  Tooltip,
-  VStack,
-  useToast
-} from '@chakra-ui/react';
+import { HStack, Input, Text, Tooltip, VStack, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
@@ -80,39 +73,38 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
 
   return (
     <VStack
+      alignItems={'start'}
       onMouseEnter={() => setIsHolidayDetailsHovering(true)}
       onMouseLeave={() => setIsHolidayDetailsHovering(false)}
     >
-      <HStack w={'100%'} maxW={'1000px'} margin={'0 auto'} justifyContent={'center'} alignItems={'start'}>
-        <VStack flexBasis={'100%'} alignItems={'start'}>
-          <VStack alignItems={'start'}>
-            <HStack w={'50px'} pos={'relative'} bg={'white'}>
-              <LuPalmtree size={'50px'} color='#F27CA2' />
-              {employee.registrationFinished && isUpdatingEmployee === 'holidayDetails' && (
-                <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
-                  <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
-                  <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
-                </HStack>
-              )}
-              {employee.registrationFinished && isUpdatingEmployee !== 'holidayDetails' && (
-                <HStack
-                  cursor={'pointer'}
-                  position={'absolute'}
-                  opacity={isHolidayDetailsHovering ? 1 : 0}
-                  right={isHolidayDetailsHovering ? '-10' : 0}
-                  transitionProperty={'right, opacity'}
-                  transitionDuration={'250ms'}
-                  transitionTimingFunction={'ease'}
-                  onClick={() => setIsUpdatingEmployee('holidayDetails')}
-                >
-                  <CiEdit size={'2rem'} />
-                </HStack>
-              )}
-            </HStack>
-            <Text as={'b'} fontSize={'1.3rem'}>
-              Informacje o urlopie
-            </Text>
-          </VStack>
+      <HStack w={'100%'} maxW={'1000px'}>
+        <VStack alignItems={'start'}>
+          <HStack w={'50px'} pos={'relative'} bg={'white'}>
+            <LuPalmtree size={'50px'} color='#F27CA2' />
+            {employee.registrationFinished && isUpdatingEmployee === 'holidayDetails' && (
+              <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
+                <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
+                <FcDisapprove size={'2rem'} onClick={() => cancelUpdating()} />
+              </HStack>
+            )}
+            {employee.registrationFinished && isUpdatingEmployee !== 'holidayDetails' && (
+              <HStack
+                cursor={'pointer'}
+                position={'absolute'}
+                opacity={isHolidayDetailsHovering ? 1 : 0}
+                right={isHolidayDetailsHovering ? '-10' : 0}
+                transitionProperty={'right, opacity'}
+                transitionDuration={'250ms'}
+                transitionTimingFunction={'ease'}
+                onClick={() => setIsUpdatingEmployee('holidayDetails')}
+              >
+                <CiEdit size={'2rem'} />
+              </HStack>
+            )}
+          </HStack>
+          <Text as={'b'} fontSize={'1.3rem'}>
+            Informacje o urlopie
+          </Text>
         </VStack>
       </HStack>
       <HStack w={'100%'} border={'2px solid lightgray'} borderRadius={'10px'} p={5} mt={'20px'}>

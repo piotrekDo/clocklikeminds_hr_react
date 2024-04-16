@@ -22,6 +22,14 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
     }
   };
 
+  const trimDisplay = (str: string): string => {
+    if (!str || (str && str.length <= 25)) {
+      return str;
+    }
+
+    return str.substring(0, 22) + '...';
+  };
+
   return (
     <HStack
       w={'100%'}
@@ -36,8 +44,8 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
         <FaRegCircleUser />
       </Box>
       <Text flexBasis={'100%'}>{employee.firstName}</Text>
-      <Text flexBasis={'100%'}>{employee.lastName}</Text>
-      <Text flexBasis={'100%'}>{employee.position ? employee.position.displayName : ''}</Text>
+      <Text flexBasis={'100%'}>{trimDisplay(employee.lastName)}</Text>
+      <Text flexBasis={'100%'}>{employee.position ? trimDisplay(employee.position.displayName) : ''}</Text>
       <Text flexBasis={'100%'}>{determineSeniority()}</Text>
       <Box flexBasis={'50%'}>
         {!employee.registrationFinished && <UnfinishedRegistrationBadge />}

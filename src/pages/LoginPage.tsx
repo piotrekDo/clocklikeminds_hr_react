@@ -12,7 +12,7 @@ export const LoginPage = () => {
       };
 
   return (
-    <VStack w={'100%'} h={'100%'} justifyContent={'center'} spacing={'50px'} bg={backgroundGradient}>
+    <VStack position={'absolute'} top={0} left={0} w={'100vw'} h={'100vh'} justifyContent={'center'} spacing={'50px'} bg={backgroundGradient}>
         <Image src={logo}/>
         <Button isLoading={isLoading} spinner={<Spinner />} onClick={onLoginHandler}>Zaloguj się z Google</Button>
     </VStack>
