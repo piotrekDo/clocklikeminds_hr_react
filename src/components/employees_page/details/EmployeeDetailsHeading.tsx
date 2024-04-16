@@ -1,8 +1,8 @@
 import { Box, HStack, Heading, Tooltip } from '@chakra-ui/react';
 import { FaExclamationCircle } from 'react-icons/fa';
 import { IoArrowBack } from 'react-icons/io5';
-import { Employee } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
+import { Employee } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
 
 interface Props {
   employee: Employee;

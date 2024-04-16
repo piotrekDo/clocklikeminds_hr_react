@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, HStack, Text, VStack } from '@chakra-ui/react';
 import { MdOutlinePersonOutline } from 'react-icons/md';
-import { Employee } from '../../model/User';
+import { Employee } from '../../../model/User';
 
 interface Props {
   employee: Employee;

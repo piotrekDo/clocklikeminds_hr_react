@@ -1,7 +1,7 @@
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Box, Flex, HStack, Input } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { Employee, EmployeePositionHistory } from '../../model/User';
+import { Employee, EmployeePositionHistory } from '../../../model/User';
 
 interface Props {
   empployee: Employee;

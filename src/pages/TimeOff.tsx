@@ -1,8 +1,8 @@
 import { Text, Flex, HStack, VStack, useDisclosure, Box } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar } from '../components/Calendar/Calendar';
-import { PtoRequestModal } from '../components/PtoRequestModal';
-import { PtoSummary } from '../components/PtoSummary';
+import { PtoRequestModal } from '../components/timeoff/PtoRequestModal';
+import { PtoSummary } from '../components/timeoff/PtoSummary';
 import { useState } from 'react';
 import useAuthentication from '../state/useAuthentication';
 

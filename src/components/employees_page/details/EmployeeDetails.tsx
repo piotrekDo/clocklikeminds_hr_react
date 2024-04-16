@@ -1,9 +1,9 @@
 import { Box, Spinner, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
-import useEmployeeDetails from '../../hooks/useEmployeeDetails';
-import useEmployeeState from '../../state/useEmployeesState';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useEmployeeDetails from '../../../hooks/useEmployeeDetails';
+import useEmployeeState from '../../../state/useEmployeesState';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 import { EmployeeAccountInfo } from './EmployeeAccountInfo';
 import { EmployeeContractinformation } from './EmployeeContractinformation';
 import { EmployeeDetailsHeading } from './EmployeeDetailsHeading';

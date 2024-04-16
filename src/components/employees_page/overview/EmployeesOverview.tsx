@@ -1,11 +1,11 @@
 import { Box, HStack, Tabs, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import useEmployees from '../../hooks/useEmployees';
-import useJobPostitions from '../../hooks/useJobPositions';
-import usePtoToAccept from '../../hooks/usePtoToAccept';
-import useAuthentication from '../../state/useAuthentication';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useEmployees from '../../../hooks/useEmployees';
+import useJobPostitions from '../../../hooks/useJobPositions';
+import usePtoToAccept from '../../../hooks/usePtoToAccept';
+import useAuthentication from '../../../state/useAuthentication';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 import { EmployeeListTab } from './EmployeeListTab';
 import { EmployeesTimeOffTab } from './EmployeesTimeOffTab';
 import { NewJobPositionModal } from './NewJobPositionModal';

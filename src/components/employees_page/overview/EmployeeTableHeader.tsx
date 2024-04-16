@@ -1,7 +1,7 @@
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Box, Flex, HStack, Input, InputGroup, InputRightAddon, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
-import useSortState from '../../state/useSortState';
+import useSortState from '../../../state/useSortState';
 
 export const EmployeeTableHeader = () => {
   const {

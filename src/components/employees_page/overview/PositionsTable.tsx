@@ -1,5 +1,5 @@
 import React from 'react';
-import { EmployeePosition } from '../../model/User';
+import { EmployeePosition } from '../../../model/User';
 import { Box, HStack, VStack, Text } from '@chakra-ui/react';
 
 interface Props {

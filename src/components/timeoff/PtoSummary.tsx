@@ -1,9 +1,9 @@
 import { HStack, Heading, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa6';
-import useUserPtoSummary from '../hooks/useUserPtoSummary';
-import useAuthentication from '../state/useAuthentication';
+import useUserPtoSummary from '../../hooks/useUserPtoSummary';
+import useAuthentication from '../../state/useAuthentication';
 import { useEffect } from 'react';
-import useHttpErrorState from '../state/useHttpErrorState';
+import useHttpErrorState from '../../state/useHttpErrorState';
 import { PtoCard } from './PtoCard';
 
 interface Props {

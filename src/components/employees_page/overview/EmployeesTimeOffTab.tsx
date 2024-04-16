@@ -1,6 +1,6 @@
 import { VStack, HStack, Heading, Box, Text } from '@chakra-ui/react';
 import { FaSuitcase } from 'react-icons/fa';
-import { PtoRequestFormatted } from '../../model/Pto';
+import { PtoRequestFormatted } from '../../../model/Pto';
 
 interface Props {
   ptosToAccept: PtoRequestFormatted[] | undefined;

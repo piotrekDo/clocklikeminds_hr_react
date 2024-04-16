@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 import { GoPeople, GoPlus } from 'react-icons/go';
-import { EmployeePosition } from '../../model/User';
+import { EmployeePosition } from '../../../model/User';
 import { PositionsTable } from './PositionsTable';
 
 interface Props {

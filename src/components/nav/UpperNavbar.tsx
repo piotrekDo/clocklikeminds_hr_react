@@ -3,7 +3,7 @@ import { FaPowerOff } from 'react-icons/fa';
 import { FaRegCircleUser } from 'react-icons/fa6';
 
 import { useNavigate } from 'react-router-dom';
-import useAuthentication from '../state/useAuthentication';
+import useAuthentication from '../../state/useAuthentication';
 
 export const Uppernavbar = () => {
   const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import { FaRegCircleUser } from 'react-icons/fa6';
-import { EmployeeBasic } from '../../model/User';
-import { Activebadge } from './Activebadge';
-import { InactiveBadge } from './InactiveBadge';
-import { UnfinishedRegistrationBadge } from '../UnfinishedRegistrationBadge';
+import { EmployeeBasic } from '../../../model/User';
+import { Activebadge } from '../../badges/Activebadge';
+import { InactiveBadge } from '../../badges/InactiveBadge';
+import { UnfinishedRegistrationBadge } from '../../badges/UnfinishedRegistrationBadge';
 
 interface Props {
   employee: EmployeeBasic;

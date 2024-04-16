@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { MdOutlineWorkHistory } from 'react-icons/md';
-import updatePositionHistoryData from '../../hooks/useUpdatePositionHistoryData';
-import { Employee, EmployeePositionHistory } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
+import updatePositionHistoryData from '../../../hooks/useUpdatePositionHistoryData';
+import { Employee, EmployeePositionHistory } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
 import { EmployeeHistoryRecordEdit } from './EmployeeHistoryRecordEdit';
 
 interface Props {

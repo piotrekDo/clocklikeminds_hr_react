@@ -1,8 +1,8 @@
 import { Box, Flex, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { SideNavbar } from './components/SideNavbar';
-import { Uppernavbar } from './components/UpperNavbar';
+import { SideNavbar } from './components/nav/SideNavbar';
+import { Uppernavbar } from './components/nav/UpperNavbar';
 import { backgroundGradient } from './library';
 import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';

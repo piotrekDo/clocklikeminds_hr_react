@@ -1,6 +1,6 @@
 import { Box, VStack } from '@chakra-ui/react';
-import { EmployeeDetails } from '../components/employees_page/EmployeeDetails';
-import { EmployeesOverview } from '../components/employees_page/EmployeesOverview';
+import { EmployeeDetails } from '../components/employees_page/details/EmployeeDetails';
+import { EmployeesOverview } from '../components/employees_page/overview/EmployeesOverview';
 import useEmployeeState from '../state/useEmployeesState';
 
 export const EmployeesPage = () => {

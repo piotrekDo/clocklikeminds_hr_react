@@ -20,12 +20,12 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import useEmployeeDetails from '../../hooks/useEmployeeDetails';
-import useFinishRegistration from '../../hooks/useFinishRegistration';
-import useJobPostitions from '../../hooks/useJobPositions';
-import { FinishRegistrationRequest } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useEmployeeDetails from '../../../hooks/useEmployeeDetails';
+import useFinishRegistration from '../../../hooks/useFinishRegistration';
+import useJobPostitions from '../../../hooks/useJobPositions';
+import { FinishRegistrationRequest } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 
 interface Props {
   isOpen: boolean;

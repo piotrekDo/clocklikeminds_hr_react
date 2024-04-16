@@ -4,8 +4,8 @@ import { CgHome } from 'react-icons/cg';
 import { GoPeople } from 'react-icons/go';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuPalmtree } from 'react-icons/lu';
-import logo from '../assets/CM-logo-color.png';
-import useAuthentication from '../state/useAuthentication';
+import logo from '../../assets/CM-logo-color.png';
+import useAuthentication from '../../state/useAuthentication';
 import { NavbarLink } from './NavbarLink';
 
 export const SideNavbar = () => {

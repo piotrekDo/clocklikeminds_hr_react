@@ -14,9 +14,9 @@ import {
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import useNewJobPosition from '../../hooks/useNewJobPosition';
-import { EmployePositionRequest } from '../../model/User';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useNewJobPosition from '../../../hooks/useNewJobPosition';
+import { EmployePositionRequest } from '../../../model/User';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 
 interface Props {
   isOpen: boolean;

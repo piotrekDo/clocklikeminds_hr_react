@@ -10,10 +10,10 @@ import { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { LuPalmtree } from 'react-icons/lu';
-import useUpdateHolidayData from '../../hooks/useUpdateHolidayData';
-import { Employee, UpdateHolidayDataRequest } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useUpdateHolidayData from '../../../hooks/useUpdateHolidayData';
+import { Employee, UpdateHolidayDataRequest } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 
 interface Props {
   employee: Employee;

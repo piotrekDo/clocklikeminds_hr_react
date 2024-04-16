@@ -1,7 +1,7 @@
 import { HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 import { GoPeople } from 'react-icons/go';
-import { Page } from '../../model/Page';
-import { EmployeeBasic } from '../../model/User';
+import { Page } from '../../../model/Page';
+import { EmployeeBasic } from '../../../model/User';
 import { EmployeeTable } from './EmployeeTable';
 
 interface Props {

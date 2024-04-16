@@ -1,7 +1,7 @@
 import { VStack, Text } from '@chakra-ui/react';
-import { EmployeeBasic } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
-import useSortState from '../../state/useSortState';
+import { EmployeeBasic } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
+import useSortState from '../../../state/useSortState';
 import { EmployeeTab } from './EmployeeTab';
 import { EmployeeTableHeader } from './EmployeeTableHeader';
 import { useEffect, useState } from 'react';

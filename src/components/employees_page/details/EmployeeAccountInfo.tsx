@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { MdOutlineManageAccounts } from 'react-icons/md';
-import useUpdateUserPermission from '../../hooks/useUpdateUserPermission';
-import { Employee, UpdateUserPermissionRequest } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
-import { AdminBadge } from '../AdminBadge';
-import { UserBadge } from '../UserBadge';
-import { Activebadge } from './Activebadge';
-import useAuthentication from '../../state/useAuthentication';
+import useUpdateUserPermission from '../../../hooks/useUpdateUserPermission';
+import { Employee, UpdateUserPermissionRequest } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
+import { AdminBadge } from '../../badges/AdminBadge';
+import { UserBadge } from '../../badges/UserBadge';
+import { Activebadge } from '../../badges/Activebadge';
+import useAuthentication from '../../../state/useAuthentication';
 
 interface Props {
   employee: Employee;

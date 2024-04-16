@@ -1,5 +1,5 @@
 import { HStack, VStack, Text, Tooltip, Box } from '@chakra-ui/react';
-import { PtoRequestResponse } from '../model/Pto';
+import { PtoRequestResponse } from '../../model/Pto';
 import { FaCalendarAlt, FaCalendarTimes, FaRegCalendarCheck } from 'react-icons/fa';
 import { FaCheckCircle, FaTimesCircle, FaClock } from 'react-icons/fa';
 import { VscGitPullRequestNewChanges } from 'react-icons/vsc';

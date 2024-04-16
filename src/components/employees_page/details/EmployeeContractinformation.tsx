@@ -16,11 +16,11 @@ import { useEffect, useState } from 'react';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
-import useJobPostitions from '../../hooks/useJobPositions';
-import useUpdateHireData from '../../hooks/useUpdateHireData';
-import { Employee, UpdateHireDataRequest } from '../../model/User';
-import useEmployeeState from '../../state/useEmployeesState';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import useJobPostitions from '../../../hooks/useJobPositions';
+import useUpdateHireData from '../../../hooks/useUpdateHireData';
+import { Employee, UpdateHireDataRequest } from '../../../model/User';
+import useEmployeeState from '../../../state/useEmployeesState';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 
 interface Props {
   employee: Employee;
