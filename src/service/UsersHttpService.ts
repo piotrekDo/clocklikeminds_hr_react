@@ -11,6 +11,14 @@ import {
 } from '../model/User';
 import APIclient from './APIclient';
 
+export const fetchSupervisors = () => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.get<EmployeeBasic[]>('/api/v1/users/supervisors').then(
+    (res: AxiosResponse<EmployeeBasic[]>) => res.data
+  );
+  return { request: httpRequest, cancel: () => controller.abort() };
+}
+
 export const fetchEmployeePage = (page: PageQuery) => {
   const controller = new AbortController();
   const httpRequest = APIclient.get<Page<EmployeeBasic>>('/api/v1/users/all-users', {

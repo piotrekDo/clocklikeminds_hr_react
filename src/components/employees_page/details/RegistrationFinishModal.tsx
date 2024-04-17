@@ -26,6 +26,7 @@ import useJobPostitions from '../../../hooks/useJobPositions';
 import { FinishRegistrationRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
+import useSupervisors from '../../../hooks/useSupervisors';
 
 interface Props {
   isOpen: boolean;
@@ -35,7 +36,8 @@ interface Props {
 export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
-  const { data: positions, refetch } = useJobPostitions();
+  const { data: positions, refetch: refetchPositions } = useJobPostitions();
+  const {data: supervisors, refetch: refetchSupervisors} = useSupervisors();
   const { selectedEmloyee } = useEmployeeState();
   const { data: employee, isError: isUseEmplError, error: useEmpError } = useEmployeeDetails(selectedEmloyee || -1);
   const {
@@ -58,7 +60,10 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   }, [isUseEmplError, isRegistrationError]);
 
   useEffect(() => {
-    if (isOpen) refetch();
+    if (isOpen) {
+      refetchPositions();
+      refetchSupervisors();
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -82,7 +87,8 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
       hireStart: data.hireStart,
       hireEnd: (data.hireEnd && data.hireEnd) || undefined,
       ptoDaysTotal: data.ptoDaysTotal,
-      stillHired: true
+      stillHired: true,
+      supervisorId: data.supervisorId
     };
 
     sendRequest(request);
@@ -110,7 +116,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
             </FormControl>
             <FormControl mb={5} isInvalid={errors && errors.ptoDaysTotal ? true : false}>
               <FormLabel>Dni urlopu</FormLabel>
-              <NumberInput>
+              <NumberInput min={0}>
                 <NumberInputField {...register('ptoDaysTotal', { required: true, min: 0 })} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -119,7 +125,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
               </NumberInput>
               <FormErrorMessage>Podaj pozostałe dni urlopu</FormErrorMessage>
             </FormControl>
-            <FormControl mb={10} isInvalid={errors && errors.positionKey ? true : false}>
+            <FormControl mb={5} isInvalid={errors && errors.positionKey ? true : false}>
               <Select placeholder='Stanowisko' {...register('positionKey', { required: true })}>
                 {positions?.map(p => (
                   <option key={p.positionKey} value={p.positionKey}>
@@ -129,6 +135,20 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
               </Select>
               <FormErrorMessage>Uzupełnij stanowisko</FormErrorMessage>
             </FormControl>
+            
+
+            <FormControl mb={10} isInvalid={errors && errors.supervisorId ? true : false}>
+              <Select placeholder='Przełożony' {...register('supervisorId', { required: true })}>
+                {supervisors?.map(s => (
+                  <option key={s.appUserId} value={s.appUserId}>
+                    {`${s.firstName} ${s.lastName}`}
+                  </option>
+                ))}
+              </Select>
+              <FormErrorMessage>Wybierz przełożonego</FormErrorMessage>
+            </FormControl>
+
+
             <Button isLoading={isLoading} mb={10} type='submit' w={'100%'} colorScheme='green'>
               Wyślij
             </Button>

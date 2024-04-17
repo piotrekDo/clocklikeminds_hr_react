@@ -21,13 +21,14 @@ import useUpdateHireData from '../../../hooks/useUpdateHireData';
 import { Employee, UpdateHireDataRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
+import useSupervisors from '../../../hooks/useSupervisors';
 
 interface Props {
   employee: Employee;
 }
 
 export const EmployeeContractinformation = ({ employee }: Props) => {
-  const [showDateEndInput, setShowDateEndInput] = useState(true);
+  const [showDateEndInput, setShowDateEndInput] = useState<boolean>(!employee.hireEnd);
   const [isHireDetailsHovering, setIsHireDetailsHovering] = useState(false);
   const isUpdatingEmployee = useEmployeeState(s => s.isUpdatingEmployee);
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
@@ -35,11 +36,13 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   const [positionKey, setPositionKey] = useState<undefined | string>(undefined);
   const [positionChangeDate, setPositionChangeDate] = useState<undefined | string>(undefined);
   const [workStartDate, setWorkStartDate] = useState<undefined | string>(undefined);
-  const [workEndDate, setWorkEndDate] = useState<undefined | string>(undefined);
+  const [workEndDate, setWorkEndDate] = useState<undefined | string>(employee.hireEnd || undefined);
+  const [supervisorId, setSupervisorId] = useState<undefined | number>(employee.supervisorId);
 
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
   const { data: positions } = useJobPostitions();
+  const { data: supervisors } = useSupervisors();
 
   const cancelUpdating = (): void => {
     setPositionKey(undefined);
@@ -75,7 +78,9 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       positionChangeDate: positionChangeDate,
       workStartDate: workStartDate,
       workEndDate: workEndDate,
+      supervisorId: supervisorId,
     };
+    console.log(request)
     sendRequest(request);
   };
 
@@ -102,6 +107,18 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
     return `${year}-${month}-${day}`;
   };
 
+  const getDefaultHireEndDate = () => {
+    if (employee.hireEnd) {
+      const date = new Date(employee.hireEnd);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } else {
+      return getTodayInput();
+    }
+  };
+
   return (
     <VStack
       w={'100%'}
@@ -109,10 +126,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       onMouseEnter={() => setIsHireDetailsHovering(true)}
       onMouseLeave={() => setIsHireDetailsHovering(false)}
     >
-      <HStack
-        w={'100%'}
-        alignItems={'start'}
-      >
+      <HStack w={'100%'} alignItems={'start'}>
         <VStack flexBasis={'100%'} alignItems={'start'}>
           <HStack w={'50px'} pos={'relative'} bg={'white'}>
             <BsSuitcaseLg size={'50px'} color='#F27CA2' />
@@ -194,6 +208,41 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               </Text>
             </FormControl>
             <FormControl>
+              <FormLabel>Przełożony</FormLabel>
+              {isUpdatingEmployee !== 'hireDetails' && (
+                <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
+                  {employee.supervisorFirstName && employee.supervisorLastName
+                    ? `${employee.supervisorFirstName} ${employee.supervisorLastName}`
+                    : 'Uzupełnij dane'}
+                </Text>
+              )}
+              {isUpdatingEmployee === 'hireDetails' && (
+                <Select
+                  bg={'white'}
+                  placeholder={employee.supervisorId ? '' : 'Uzupełnij dane'}
+                  onChange={e => setSupervisorId(+e.target.value)}
+                >
+                  {employee.supervisorId && (
+                    <>
+                      <optgroup label='Obecne:'>
+                        <option value={employee.supervisorId}>
+                          {employee.supervisorFirstName} {employee.supervisorLastName}
+                        </option>
+                      </optgroup>
+                      <optgroup></optgroup>
+                    </>
+                  )}
+                  <optgroup label='---'>
+                    {supervisors?.map(s => (
+                      <option key={s.appUserId} value={s.appUserId}>
+                        {s.firstName} {s.lastName}
+                      </option>
+                    ))}
+                  </optgroup>
+                </Select>
+              )}
+            </FormControl>
+            <FormControl>
               <Checkbox isChecked={employee.stillHired}>Nadal zatrudniony</Checkbox>
             </FormControl>
           </VStack>
@@ -237,7 +286,13 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           {isUpdatingEmployee === 'hireDetails' && (
             <Flex w={'100%'} h={'100%'} justifyContent={'space-between'} alignItems={'center'}>
               {showDateEndInput && <Text>Umowa na czas nieokreślony</Text>}
-              {!showDateEndInput && <Input type='date' onChange={e => setWorkEndDate(e.target.value)} />}
+              {!showDateEndInput && (
+                <Input
+                  type='date'
+                  defaultValue={getDefaultHireEndDate()}
+                  onChange={e => setWorkEndDate(e.target.value)}
+                />
+              )}
               <VStack>
                 <TriangleUpIcon cursor={'pointer'} onClick={() => setShowDateEndInput(data => !data)} />
                 <TriangleDownIcon cursor={'pointer'} onClick={() => setShowDateEndInput(data => !data)} />

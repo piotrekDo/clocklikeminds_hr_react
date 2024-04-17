@@ -70,6 +70,10 @@ export interface Employee {
   ptoDaysLeftFromLastYear: number;
   ptoDaysLeftTotal: number;
   ptoDaysTaken: number;
+  supervisorId: number;
+  supervisorFirstName: string;
+  supervisorLastName: string;
+  subordinates: EmployeeBasic[];
 }
 
 export interface FinishRegistrationRequest {
@@ -79,6 +83,7 @@ export interface FinishRegistrationRequest {
   hireEnd: string | undefined;
   ptoDaysTotal: number;
   stillHired: boolean;
+  supervisorId: number;
 }
 
 export interface UpdateHireDataRequest {
@@ -87,6 +92,7 @@ export interface UpdateHireDataRequest {
   positionChangeDate: string | undefined;
   workStartDate: string | undefined;
   workEndDate: string | undefined;
+  supervisorId: number | undefined;
 }
 
 export interface UpdateHolidayDataRequest {
@@ -103,5 +109,6 @@ export interface UpdatePositionHistoryRequest {
 export interface UpdateUserPermissionRequest {
   appUserId: number;
   hasAdminPermission: boolean;
+  hasSupervisorRole: boolean;
   isActive: boolean;
 }

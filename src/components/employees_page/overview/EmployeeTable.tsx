@@ -1,10 +1,9 @@
-import { VStack, Text } from '@chakra-ui/react';
+import { Text, VStack } from '@chakra-ui/react';
 import { EmployeeBasic } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useSortState from '../../../state/useSortState';
 import { EmployeeTab } from './EmployeeTab';
 import { EmployeeTableHeader } from './EmployeeTableHeader';
-import { useEffect, useState } from 'react';
 
 interface Props {
   employees: EmployeeBasic[];
@@ -14,7 +13,7 @@ export const EmployeeTable = ({ employees }: Props) => {
   const setEmployee = useEmployeeState(s => s.setSelectedEmployee);
   const { employeeTableSortType: sortOrder, firstNameFilter, lastNameFilter, positionFilter } = useSortState();
 
-  const sortEmployees = () :EmployeeBasic[] => {
+  const sortEmployees = (): EmployeeBasic[] => {
     let result = employees;
     if (positionFilter) {
       result = result.filter(
@@ -65,7 +64,7 @@ export const EmployeeTable = ({ employees }: Props) => {
     } else if (sortOrder === 'statusDesc') {
       result = result.sort((a, b) => b.status - a.status);
     }
-    return result
+    return result;
   };
 
   const filterResult = sortEmployees();

@@ -5,11 +5,12 @@ import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import { MdOutlineManageAccounts } from 'react-icons/md';
 import useUpdateUserPermission from '../../../hooks/useUpdateUserPermission';
 import { Employee, UpdateUserPermissionRequest } from '../../../model/User';
-import useEmployeeState from '../../../state/useEmployeesState';
-import { AdminBadge } from '../../badges/AdminBadge';
-import { UserBadge } from '../../badges/UserBadge';
-import { Activebadge } from '../../badges/Activebadge';
 import useAuthentication from '../../../state/useAuthentication';
+import useEmployeeState from '../../../state/useEmployeesState';
+import { Activebadge } from '../../badges/Activebadge';
+import { AdminBadge } from '../../badges/AdminBadge';
+import { SupervisorBadge } from '../../badges/SupervisorBadge';
+import { UserBadge } from '../../badges/UserBadge';
 
 interface Props {
   employee: Employee;
@@ -24,6 +25,9 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
 
   const [userHasAdminPermission, setUserHasAdminPermission] = useState(
     employee.userRoles.filter(r => r.roleName === 'admin').length > 0
+  );
+  const [userHasSupervisorRole, setUserHasSupervisorRole] = useState(
+    employee.userRoles.filter(r => r.roleName === 'supervisor').length > 0
   );
   const [userIsActive, setUserIsActive] = useState(employee.active);
 
@@ -48,6 +52,7 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
     const request: UpdateUserPermissionRequest = {
       appUserId: employee.appUserId,
       hasAdminPermission: userHasAdminPermission,
+      hasSupervisorRole: userHasSupervisorRole,
       isActive: userIsActive,
     };
     sendRequest(request);
@@ -118,6 +123,12 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
               <Text>Administrator systemu</Text>
             </HStack>
           )}
+          {employee.userRoles.map(r => r.roleName).indexOf('supervisor') > -1 && (
+            <HStack w={'100%'}>
+              <SupervisorBadge />
+              <Text>Rola przełożonego</Text>
+            </HStack>
+          )}
         </VStack>
       )}
       {isUpdatingEmployee === 'permissionDetails' && (
@@ -143,6 +154,15 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
           >
             <AdminBadge />
             <Text>Administrator systemu</Text>
+          </HStack>
+          <HStack
+            w={'100%'}
+            cursor={'pointer'}
+            opacity={userHasSupervisorRole ? 1 : 0.4}
+            onClick={() => setUserHasSupervisorRole(s => !s)}
+          >
+            <SupervisorBadge />
+            <Text>Rola przełożonego</Text>
           </HStack>
         </VStack>
       )}
