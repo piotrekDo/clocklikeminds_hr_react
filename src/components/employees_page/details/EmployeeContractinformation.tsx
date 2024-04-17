@@ -22,13 +22,14 @@ import { Employee, UpdateHireDataRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
 import useSupervisors from '../../../hooks/useSupervisors';
+import { set } from 'zod';
 
 interface Props {
   employee: Employee;
 }
 
 export const EmployeeContractinformation = ({ employee }: Props) => {
-  const [showDateEndInput, setShowDateEndInput] = useState<boolean>(!employee.hireEnd);
+  const [showDateEndInput, setShowDateEndInput] = useState<boolean>(!!employee.hireEnd);
   const [isHireDetailsHovering, setIsHireDetailsHovering] = useState(false);
   const isUpdatingEmployee = useEmployeeState(s => s.isUpdatingEmployee);
   const setIsUpdatingEmployee = useEmployeeState(s => s.setIsUpdatingEmployee);
@@ -77,10 +78,9 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       positionKey: positionKey,
       positionChangeDate: positionChangeDate,
       workStartDate: workStartDate,
-      workEndDate: workEndDate,
+      workEndDate: showDateEndInput ? workEndDate : undefined,
       supervisorId: supervisorId,
     };
-    console.log(request)
     sendRequest(request);
   };
 
@@ -115,7 +115,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       const day = String(date.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
     } else {
-      return getTodayInput();
+      return undefined;
     }
   };
 
@@ -285,8 +285,8 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           )}
           {isUpdatingEmployee === 'hireDetails' && (
             <Flex w={'100%'} h={'100%'} justifyContent={'space-between'} alignItems={'center'}>
-              {showDateEndInput && <Text>Umowa na czas nieokreślony</Text>}
-              {!showDateEndInput && (
+              {!showDateEndInput && <Text>Umowa na czas nieokreślony</Text>}
+              {showDateEndInput && (
                 <Input
                   type='date'
                   defaultValue={getDefaultHireEndDate()}
