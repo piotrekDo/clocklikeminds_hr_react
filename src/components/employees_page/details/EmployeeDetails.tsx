@@ -25,7 +25,7 @@ export const EmployeeDetails = () => {
 
   return (
     <>
-      <VStack w={'100%'} h={'100%'} overflowY={'scroll'} >
+      <VStack w={'100%'} h={'100%'} >
         {isFetching && <Spinner size={'xl'} />}
         {!isFetching && employee && (
           <>

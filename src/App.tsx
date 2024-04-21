@@ -8,7 +8,7 @@ import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
 
 function App() {
-  const { appUser, isAdmin } = useAuthentication();
+  const { appUser } = useAuthentication();
   const { error } = useHttpErrorState();
   const toast = useToast();
 
@@ -25,17 +25,31 @@ function App() {
   }, [error]);
 
   return (
-    <Flex w={'100wv'} minH={'100vh'} maxH={'100vh'} h={'100vh'} bg={backgroundGradient}>
+    <Flex
+      w={'100wv'}
+      minH={'100vh'}
+      maxH={'100vh'}
+      h={'100vh'}
+      bg={backgroundGradient}
+      justifyContent={'end'}
+      alignItems={'end'}
+    >
       {appUser && (
         <>
           <Uppernavbar />
           <SideNavbar />
         </>
       )}
-      <Box w={'100%'} h={'100%'} pt={'60px'}>
-        <Box w={`calc(100vw - 70px)`} h={'100%'} px={{base: 0, '4K' : '250px'}} py={{base: 0, '4K' : '50px'}} borderRadius={'50px 0 0 0'} bg={'white'}>
-          <Outlet />
-        </Box>
+      <Box
+        w={`calc(100vw - 70px)`}
+        h={`calc(100vh - 60px)`}
+        px={{ base: 0, '4K': '250px' }}
+        py={{ base: 0, '4K': '50px' }}
+        borderRadius={'50px 0 0 0'}
+        bg={'white'}
+        overflowY={'scroll'}
+      >
+        <Outlet />
       </Box>
     </Flex>
   );

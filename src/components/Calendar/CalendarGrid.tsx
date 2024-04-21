@@ -13,7 +13,7 @@ export const CalendarGrid = ({ selectedYear, daysOff }: Props) => {
   const holidays = useMemo(() => getHolidaysPoland(selectedYear.getFullYear()), [selectedYear.getFullYear()]);
   const months = Array.from({ length: 12 }).map((_, index) => new Date(selectedYear.getFullYear(), index, 1));
   return (
-    <Grid templateColumns={'repeat(3, 1fr)'} gap={1} w={'100%'} h={'100%'}>
+    <Grid templateColumns={'repeat(3, 1fr)'} gap={5} w={'100%'}>
       {months.map((month, index) => (
         <CalendarMonth key={index} month={month} holidays={holidays} daysOff={daysOff} />
       ))}

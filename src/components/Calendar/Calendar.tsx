@@ -19,7 +19,7 @@ export const Calendar = () => {
   };
 
   return (
-    <VStack bg={'#F5F4F6'} w={'100%'} h={'100%'} borderRadius={'20px'} p={{base: 2, monitorM: 5}} position={'relative'}>
+    <VStack bg={'#F5F4F6'} w={'100%'}  maxH={'calc(100vh - 100px)'} borderRadius={'20px'} p={{base: 2, monitorM: 5}} position={'relative'}>
       <HStack justifyContent={'center'} alignItems={'center'} spacing={3}>
         <MdOutlineArrowBackIosNew cursor={'pointer'} onClick={onArrowLeftClickHandler} />
         <Text>{selectedYear.getFullYear()}</Text>

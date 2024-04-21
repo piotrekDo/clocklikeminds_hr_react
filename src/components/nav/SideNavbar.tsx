@@ -18,7 +18,7 @@ export const SideNavbar = () => {
 
   return (
     <VStack
-      w={!isExpanded ? '80px' : '250px'}
+      w={!isExpanded ? '80px' : '180px'}
       minH={'100vh'}
       h={'100%'}
       py={5}
