@@ -6,6 +6,7 @@ interface AuthStore {
   appUser: AppUser | undefined;
   isSessionActive: boolean;
   isAdmin: boolean;
+  isSupervisor: boolean;
   setUserData: (token: string) => void;
   setLogoutTimer: (mils: number) => void;
   checkAutologin: () => void;
@@ -24,7 +25,7 @@ const convertTokenToUser = (token: string): AppUser => {
     userRoles: tokenPayload.roles,
     jwtToken: token,
     jwtExpiresAt: tokenPayload.exp * 1000,
-    isActive: tokenPayload.active
+    isActive: tokenPayload.active,
   };
 };
 
@@ -35,6 +36,7 @@ const useAuthentication = create<AuthStore>(set => {
     appUser: undefined,
     isSessionActive: false,
     isAdmin: false,
+    isSupervisor: false,
     setLogoutTimer: mils => {
       if (logoutTimer) {
         clearTimeout(logoutTimer);
@@ -53,7 +55,8 @@ const useAuthentication = create<AuthStore>(set => {
         const milliseconds = user.jwtExpiresAt - new Date().getTime();
         store.setLogoutTimer(milliseconds);
         const isAdmin = user && user.userRoles.indexOf('admin') > -1;
-        return { ...store, appUser: user, isSessionActive: true, isAdmin: isAdmin };
+        const isSupervisor = user && user.userRoles.indexOf('supervisor') > -1;
+        return { ...store, appUser: user, isSessionActive: true, isAdmin: isAdmin, isSupervisor: isSupervisor };
       }),
     checkAutologin: () =>
       set(store => {

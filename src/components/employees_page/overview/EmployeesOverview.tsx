@@ -29,12 +29,6 @@ export const EmployeesOverview = () => {
     error: positionsError,
     isFetching: isPositionsFetching,
   } = useJobPostitions();
-  const {
-    data: ptosToAccept,
-    isError: ptoIsError,
-    error: ptoError,
-    isFetching: isPtoFetching,
-  } = usePtoToAccept(user?.userId || -1);
   const [pendingRegistration, setPendingRegistration] = useState<number | undefined>();
   const [positionModalOpened, setPositionModalOpened] = useState<boolean>(false);
 
@@ -49,8 +43,7 @@ export const EmployeesOverview = () => {
   useEffect(() => {
     employeesIsError && setError(employeesError);
     positionsIsError && setError(positionsError);
-    ptoError && setError(ptoError);
-  }, [employeesIsError, positionsIsError, ptoIsError]);
+  }, [employeesIsError, positionsIsError]);
 
   return (
     <AnimatePresence>
@@ -94,10 +87,6 @@ export const EmployeesOverview = () => {
             </Box>
           </HStack>
           <Box w={'100%'} h={'100%'} maxH={'90vh'}>
-            {selectedTab === 'timeoff' && (
-              <EmployeesTimeOffTab ptosToAccept={ptosToAccept} isPtoFetching={isPtoFetching} />
-            )}
-
             {selectedTab === 'employees' && (
               <EmployeeListTab
                 employees={employees}

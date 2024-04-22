@@ -5,11 +5,13 @@ import { GoPeople } from 'react-icons/go';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuPalmtree } from 'react-icons/lu';
 import logo from '../../assets/CM-logo-color.png';
+import { VscGitPullRequestNewChanges } from 'react-icons/vsc';
 import useAuthentication from '../../state/useAuthentication';
 import { NavbarLink } from './NavbarLink';
 
 export const SideNavbar = () => {
   const isAdmin = useAuthentication(s => s.isAdmin);
+  const isSupervisor = useAuthentication(s => s.isSupervisor);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const onLogoClickhandler = () => {
@@ -18,7 +20,7 @@ export const SideNavbar = () => {
 
   return (
     <VStack
-      w={!isExpanded ? '80px' : '180px'}
+      w={!isExpanded ? '80px' : '270px'}
       minH={'100vh'}
       h={'100%'}
       py={5}
@@ -46,6 +48,11 @@ export const SideNavbar = () => {
         <NavbarLink to='/timeoff' text='Urlopy'>
           <LuPalmtree size={'40px'} />
         </NavbarLink>
+        {(isAdmin || isSupervisor) && (
+          <NavbarLink to='/supervisor' text='Wnioski Pracowników'>
+            <VscGitPullRequestNewChanges size={'40px'} />
+          </NavbarLink>
+        )}
         {isAdmin && (
           <NavbarLink to='/employees' text='Pracownicy'>
             <GoPeople size={'40px'} />
