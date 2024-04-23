@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { PtoRequestFormatted } from '../model/Pto';
-import { fetchPtoToAccept } from '../service/PtoHttpService';
+import { fetchPtosByAcceptor } from '../service/PtoHttpService';
 
-const usePtoToAccept = (acceptorId: number) => {
+const usePtosByAcceptor = (acceptorId: number) => {
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['ptoToAccept', acceptorId],
     queryFn: () =>
-      fetchPtoToAccept(acceptorId).request.then(res =>
+      fetchPtosByAcceptor(acceptorId).request.then(res =>
         res.map(pto => ({
           ...pto,
           requestDateTime: new Date(pto.requestDateTime),
@@ -18,4 +18,4 @@ const usePtoToAccept = (acceptorId: number) => {
   });
 };
 
-export default usePtoToAccept;
+export default usePtosByAcceptor;

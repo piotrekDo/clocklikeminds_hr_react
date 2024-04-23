@@ -1,10 +1,16 @@
-import { HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { PtoRequestFormatted } from '../../../model/Pto';
+import { getHolidaysPoland } from '../../Calendar/holidays';
 import { CalendarCell } from './CalendarCell';
 import { Header } from './Header';
-import { getHolidaysPoland } from '../../Calendar/holidays';
 
-export const SupervisorCalendar = () => {
+interface Props {
+  ptosToRender: PtoRequestFormatted[];
+}
+
+export const SupervisorCalendar = ({ ptosToRender }: Props) => {
+  console.log('CALENDAR RENDERED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   const ref = useRef<HTMLDivElement>(null);
   const [scroll, setScroll] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -53,29 +59,50 @@ export const SupervisorCalendar = () => {
   }, [isScrolling]);
 
   return (
-    <VStack w={'100%'} h={'100%'} flexShrink={0} justify={'center'} align={'center'}>
+    <VStack w={'90%'} h={'100%'} gap={0} flexShrink={0} justify={'center'} align={'center'}>
       <HStack flexShrink={0}>
         <Text>{highlightedDate.toLocaleDateString('pl-Pl', { month: 'long', year: 'numeric' })}</Text>
       </HStack>
       <Header />
-      <VStack ref={ref}>
-        {[0, 7, 14, 21, 28, 35].map(offset => (
-          <SimpleGrid key={offset} columns={7} w={1100} h={100}>
-            {Array.from({ length: 7 }).map((_, index) => {
-              let day = new Date(selectedDate);
-              day.setDate(day.getDate() + offset + index + scroll);
-              return (
-                <CalendarCell
-                  key={index}
-                  today={today}
-                  highlightedDate={highlightedDate}
-                  day={day}
-                  holidays={holidays}
-                />
-              );
-            })}
-          </SimpleGrid>
-        ))}
+      <VStack ref={ref} w={'100%'} h={'100%'}>
+        {[0, 7, 14, 21, 28, 35].map(offset => {
+          const firstDayOfWeek = new Date(selectedDate);
+          firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset + scroll);
+          const lastDayOfWeek = new Date(firstDayOfWeek);
+          lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+          const requestsInWeek = ptosToRender.filter(
+            p =>
+              (p.ptoStart >= firstDayOfWeek && p.ptoStart <= lastDayOfWeek) ||
+              (p.ptoEnd >= firstDayOfWeek && p.ptoEnd <= lastDayOfWeek)
+          );
+          return (
+            <SimpleGrid
+              key={offset}
+              columns={7}
+              w={'100%'}
+              h={'100%'}
+              bg={'gray.50'}
+              borderRadius={offset === 0 ? '0 0 20px 20px' : '20px'}
+              position={'relative'}
+            >
+              
+              {Array.from({ length: 7 }).map((_, index) => {
+                let day = new Date(selectedDate);
+                day.setDate(day.getDate() + offset + index + scroll);
+                return (
+                  <CalendarCell
+                    key={index}
+                    today={today}
+                    highlightedDate={highlightedDate}
+                    day={day}
+                    holidays={holidays}
+                    requestsInWeek={requestsInWeek}
+                  />
+                );
+              })}
+            </SimpleGrid>
+          );
+        })}
       </VStack>
     </VStack>
   );

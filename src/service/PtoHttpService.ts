@@ -12,9 +12,9 @@ export const fetchUserPtoSummary = (userId: number) => {
   return { request: httpRequest, cancel: () => controller.abort() };
 };
 
-export const fetchPtoToAccept = (acceptorId: number) => {
+export const fetchPtosByAcceptor = (acceptorId: number) => {
   const controller = new AbortController();
-  const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-to-accept', {
+  const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-by-acceptor', {
     params: {
       acceptorId: acceptorId,
     },

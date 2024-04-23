@@ -2,7 +2,7 @@ import { Flex, SimpleGrid } from '@chakra-ui/react';
 
 export const Header = () => {
   return (
-    <SimpleGrid columns={7} bg={'green.100'} w={1100}>
+    <SimpleGrid columns={7} bg={'green.100'} w={'100%'} borderRadius={'20px 20px 0 0'}>
       <Flex justifyContent={'center'} alignItems={'center'}>
         PON
       </Flex>

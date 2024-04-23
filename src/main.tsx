@@ -28,12 +28,13 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
+  // <React.StrictMode>
+
+  // </React.StrictMode>
+      <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
         <ReactQueryDevtools/>
       </QueryClientProvider>
     </ChakraProvider>
-  </React.StrictMode>
 );
