@@ -5,6 +5,7 @@ import useAuthentication from '../state/useAuthentication';
 import useEmployeeDetails from '../hooks/useEmployeeDetails';
 import { useEffect, useState } from 'react';
 import { PtoRequestFormatted } from '../model/Pto';
+import { Calendar } from '../components/supervisor/SupervisorCalendat/Calendar';
 
 export const SupervisorPage = () => {
   const [ptosToAccept, setPtosToAccept] = useState<PtoRequestFormatted[]>([]);
@@ -27,9 +28,11 @@ export const SupervisorPage = () => {
     setPtosToAccept(ptosToAccept);
   }, [ptosByAcceptor]);
 
+
   return (
     <VStack w={'100%'} h={'100%'}>
-      <HStack w={'100%'} h={'100%'} flexShrink={0}>
+      <Calendar ptos={ptosByAcceptor?.sort((x,y) => x.ptoStart.getTime() - y.ptoEnd.getTime()) || []}/>
+      {/* <HStack w={'100%'} h={'100%'} flexShrink={0}>
         <VStack h={'100%'} flexBasis={'100%'}>
           <VStack p={5} w={'100%'} minH={'300px'}>
             <Heading>Wnioski do akceptacji</Heading>
@@ -60,14 +63,14 @@ export const SupervisorPage = () => {
               </Box>
             ))}
         </VStack>
-      </HStack>
-      {isPtosFetching ||
+      </HStack> */}
+      {/* {isPtosFetching ||
         (isSupervisorFetching && (
           <VStack w={'100%'} justify={'center'} align={'center'}>
             <Spinner />
           </VStack>
         ))}
-      {!isPtosFetching && !isSupervisorFetching && ptosByAcceptor &&(
+      {!isPtosFetching && !isSupervisorFetching && ptosByAcceptor && (
         <SupervisorCalendar
           ptosToRender={
             (ptosByAcceptor &&
@@ -75,7 +78,7 @@ export const SupervisorPage = () => {
             []
           }
         />
-      )}
+      )} */}
     </VStack>
   );
 };

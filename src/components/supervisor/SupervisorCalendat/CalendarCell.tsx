@@ -43,12 +43,25 @@ export const CalendarCell = ({ today, highlightedDate, day, holidays, requestsIn
           const isFirstDay = day.getDate() === p.ptoStart.getDate();
           const isLastDay = day.getDate() === p.ptoEnd.getDate();
           return (
-            <Flex key={index} bg={'teal.100'} justify={'center'} align={'center'} margin={0} borderRadius={isFirstDay ? '10px 0 0 10px' : isLastDay ? '0 10px 10px 0' : ''}>
+            <Flex
+              key={index}
+              bg={'teal.200'}
+              justify={'center'}
+              align={'center'}
+              margin={0}
+              borderRadius={
+                isFirstDay && isLastDay ? '10px' : isFirstDay ? '10px 0 0 10px' : isLastDay ? '0 10px 10px 0' : ''
+              }
+            >
               {p.applierFirstName}
             </Flex>
           );
         } else {
-          return <Flex key={index} justify={'center'} align={'center'} margin={0}>{'\u200B'}</Flex>;
+          return (
+            <Flex key={index} justify={'center'} align={'center'} margin={0}>
+              {'\u200B'}
+            </Flex>
+          );
         }
       })}
     </Flex>

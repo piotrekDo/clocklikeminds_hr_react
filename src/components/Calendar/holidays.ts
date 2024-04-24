@@ -35,11 +35,11 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
     ['43', 'Święto Konstytucji 3maja'],
     [`${whitsun.getMonth()}${whitsun.getDate()}`, 'Zielone Świątki'],
     [`${corpusChristi.getMonth()}${corpusChristi.getDate()}`, 'Boże Ciało'],
-    ['715', 'Wniebowzięcie Najświętszej Maryi Panny'],
+    ['715', 'Wniebowzięcie NMP'],
     ['101', 'Wszystkich Świętych'],
-    ['1011', 'Narodowe Święto Niepodległości'],
-    ['1125', 'Boże Narodzenie 1-szy dzień'],
-    ['1126', 'Boże Narodzenie 2-gi dzień'],
+    ['1011', 'Święto Niepodległości'],
+    ['1125', 'Boże Narodzenie'],
+    ['1126', 'Boże Narodzenie'],
   ]);
 };
 

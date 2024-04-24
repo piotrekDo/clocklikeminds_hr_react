@@ -66,15 +66,20 @@ export const SupervisorCalendar = ({ ptosToRender }: Props) => {
       <Header />
       <VStack ref={ref} w={'100%'} h={'100%'}>
         {[0, 7, 14, 21, 28, 35].map(offset => {
-          const firstDayOfWeek = new Date(selectedDate);
-          firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset + scroll);
-          const lastDayOfWeek = new Date(firstDayOfWeek);
-          lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+          const monday = new Date(selectedDate);
+          monday.setDate(monday.getDate() + offset + scroll);
+          const sunday = new Date(monday);
+          sunday.setDate(sunday.getDate() + 6);
           const requestsInWeek = ptosToRender.filter(
             p =>
-              (p.ptoStart >= firstDayOfWeek && p.ptoStart <= lastDayOfWeek) ||
-              (p.ptoEnd >= firstDayOfWeek && p.ptoEnd <= lastDayOfWeek)
+              (p.ptoStart >= monday && p.ptoStart <= sunday) || 
+              (p.ptoEnd >= monday && p.ptoEnd <= sunday) || 
+              (monday >= p.ptoStart && sunday <= p.ptoEnd) ||
+              (p.ptoStart.getDate() === monday.getDate() ) ||
+              (p.ptoEnd.getDate() === monday.getDate())
           );
+          console.log(monday)
+          console.log(requestsInWeek)
           return (
             <SimpleGrid
               key={offset}
@@ -85,7 +90,6 @@ export const SupervisorCalendar = ({ ptosToRender }: Props) => {
               borderRadius={offset === 0 ? '0 0 20px 20px' : '20px'}
               position={'relative'}
             >
-              
               {Array.from({ length: 7 }).map((_, index) => {
                 let day = new Date(selectedDate);
                 day.setDate(day.getDate() + offset + index + scroll);
