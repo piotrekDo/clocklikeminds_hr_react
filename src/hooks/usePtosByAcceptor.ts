@@ -7,12 +7,18 @@ const usePtosByAcceptor = (acceptorId: number) => {
     queryKey: ['ptoToAccept', acceptorId],
     queryFn: () =>
       fetchPtosByAcceptor(acceptorId).request.then(res =>
-        res.map(pto => ({
-          ...pto,
-          requestDateTime: new Date(pto.requestDateTime),
-          ptoStart: new Date(pto.ptoStart),
-          ptoEnd: new Date(pto.ptoEnd),
-        }))
+        res.map(pto => {
+          const ptoStart =  new Date(pto.ptoStart);
+          ptoStart.setHours(0, 0, 0, 0);
+          const ptoEnd = new Date(pto.ptoEnd);
+          ptoEnd.setHours(0, 0, 0, 0);
+          return {
+            ...pto,
+            requestDateTime: new Date(pto.requestDateTime),
+            ptoStart: ptoStart,
+            ptoEnd: ptoEnd,
+          };
+        })
       ),
     enabled: acceptorId > 0,
   });

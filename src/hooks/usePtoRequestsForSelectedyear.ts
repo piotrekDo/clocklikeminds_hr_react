@@ -12,8 +12,6 @@ const usePtoRequestsForSelectedYear = (userId: number, year: number) => {
           ptoStart.setHours(0, 0, 0, 0);
           const ptoEnd = new Date(pto.ptoEnd);
           ptoEnd.setHours(0, 0, 0, 0);
-          console.log(ptoStart)
-          console.log(ptoEnd)
           return {
             ...pto,
             requestDateTime: new Date(pto.requestDateTime),

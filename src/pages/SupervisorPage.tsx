@@ -1,6 +1,6 @@
 import { Box, HStack, Heading, Spinner, VStack } from '@chakra-ui/react';
 import { SupervisorCalendar } from '../components/supervisor/SupervisorCalendat/SupervisorCalendar';
-import usePtosByAcceptor from '../hooks/usePtoToAccept';
+import usePtosByAcceptor from '../hooks/usePtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useEmployeeDetails from '../hooks/useEmployeeDetails';
 import { useEffect, useState } from 'react';
