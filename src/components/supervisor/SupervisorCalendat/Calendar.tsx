@@ -98,7 +98,7 @@ export const Calendar = ({ ptos }: Props) => {
               );
             });
             return (
-              <VStack w={'100%'} h={'100%'}>
+              <VStack key={index} w={'100%'} h={'100%'}>
                 {sunday.getDate() < 8 && (
                   <HStack w={'100%'} h={'50px'}>
                     <Text as={'b'}>{sunday.toLocaleString('pl-PL', { month: 'long', year: 'numeric' })}</Text>
