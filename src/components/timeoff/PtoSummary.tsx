@@ -71,7 +71,7 @@ export const PtoSummary = ({ onopen }: Props) => {
         {isFetching && <Spinner />}
         {!isFetching && summary?.lastRequests.length === 0 && <Heading>Brak historii wniosków</Heading>}
         {!isFetching && summary && summary.lastRequests.length > 0 && (
-          <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+          <VStack w={'100%'} h={'100%'} overflowY={'scroll'} p={3}>
             <Heading>Ostatnie wnioski:</Heading>
             {summary.lastRequests.map(r => (
               <PtoCard key={r.id} pto={r} />
