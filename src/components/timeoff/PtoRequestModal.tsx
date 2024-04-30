@@ -91,7 +91,7 @@ export const PtoRequestModal = ({ isOpen, onClose }: Props) => {
   };
 
   return (
-    <Modal size={'lg'} isOpen={isOpen} onClose={onClose} >
+    <Modal size={'lg'} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>

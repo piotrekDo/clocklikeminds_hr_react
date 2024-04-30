@@ -1,10 +1,12 @@
-import { HStack, Heading, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Button, HStack, Heading, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa6';
 import useUserPtoSummary from '../../hooks/useUserPtoSummary';
 import useAuthentication from '../../state/useAuthentication';
 import { useEffect } from 'react';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import { PtoCard } from './PtoCard';
+import usePtoByUser from '../../hooks/usePtoRequestsByUser';
+import React from 'react';
 
 interface Props {
   onopen: () => void;
@@ -12,17 +14,26 @@ interface Props {
 
 export const PtoSummary = ({ onopen }: Props) => {
   const appuser = useAuthentication(s => s.appUser);
-  const { data: summary, isError, error, isFetching } = useUserPtoSummary(appuser?.userId || -1);
+  const { data: summary, error: summaryError, isFetching } = useUserPtoSummary(appuser?.userId || -1);
+  const {
+    data: ptos,
+    error: ptoError,
+    isLoading: isLoadingPtos,
+    fetchNextPage,
+    isFetchingNextPage: isFetchingNextPtosPage,
+    hasNextPage,
+  } = usePtoByUser(appuser?.userId || -1);
   const setError = useHttpErrorState(s => s.setError);
 
   useEffect(() => {
-    isError && setError(error);
-  }, [isError]);
+    summaryError && setError(summaryError);
+    ptoError && setError(ptoError);
+  }, [summaryError, ptoError]);
 
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
-        <VStack w={'100%'}  minH={'140px'} bg={'#F5F4F6'} borderRadius={'20px'} p={5}>
+        <VStack w={'100%'} minH={'140px'} bg={'#F5F4F6'} borderRadius={'20px'} p={5}>
           <Text w={'100%'} textAlign={'center'}>
             Podsumowanie
           </Text>
@@ -67,15 +78,31 @@ export const PtoSummary = ({ onopen }: Props) => {
         )}
       </HStack>
 
-      <VStack w={'100%'} h={'100%'} pt={'50px'}>
-        {isFetching && <Spinner />}
-        {!isFetching && summary?.lastRequests.length === 0 && <Heading>Brak historii wniosków</Heading>}
-        {!isFetching && summary && summary.lastRequests.length > 0 && (
-          <VStack w={'100%'} h={'100%'} overflowY={'scroll'} p={3}>
+      <VStack w={'100%'} h={'100%'} maxH={'600px'} pt={'50px'} position={'relative'}>
+        {isLoadingPtos && <Spinner />}
+        {!isLoadingPtos && ptos?.pages[0].content.length === 0 && <Heading>Brak historii wniosków</Heading>}
+
+        {!isLoadingPtos && ptos && ptos?.pages[0].content.length > 0 && (
+          <VStack w={'100%'} h={'100%'} overflowY={'scroll'} p={3} pb={12}>
             <Heading>Ostatnie wnioski:</Heading>
-            {summary.lastRequests.map(r => (
-              <PtoCard key={r.id} pto={r} />
+            {ptos.pages.map((page, index) => (
+              <React.Fragment key={index}>
+                {page.content.map((r, rIndex) => (
+                  <PtoCard key={r.id} pto={r} />
+                ))}
+              </React.Fragment>
             ))}
+            {ptos?.pages[0].content.length > 0 && (
+              <Button
+                isDisabled={isFetchingNextPtosPage || !hasNextPage}
+                position={'absolute'}
+                w={'200px'}
+                bottom={5}
+                onClick={() => fetchNextPage()}
+              >
+                {isFetchingNextPtosPage ? <Spinner /> : hasNextPage ? 'Pobierz więcej' : 'To już wszystko'}
+              </Button>
+            )}
           </VStack>
         )}
       </VStack>

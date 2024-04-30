@@ -3,17 +3,20 @@ import { NewPtoRequest, PtoRequestResponse } from '../model/Pto';
 import { sendNewPtoRequest } from '../service/PtoHttpService';
 
 const useNewPtoRequest = () => {
- const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation<PtoRequestResponse, Error, NewPtoRequest>({
     mutationFn: (request: NewPtoRequest) => sendNewPtoRequest(request).request,
     onSuccess: (response, request) => {
       queryClient.invalidateQueries({
-        queryKey: ['ptoSummary']
+        queryKey: ['ptoSummary'],
       }),
-      queryClient.invalidateQueries({
-        queryKey: ['ptoReqYear']
-      })
-    } 
+        queryClient.invalidateQueries({
+          queryKey: ['ptoReqYear'],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['ptoByUser'],
+        });
+    },
   });
 };
 

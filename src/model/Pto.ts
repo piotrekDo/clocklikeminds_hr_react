@@ -57,7 +57,6 @@ export interface UserPtoSummary {
   ptoDaysLeftFromLastYear: number;
   ptoDaysLeftCurrentYear: number;
   ptoDaysTaken: number;
-  lastRequests: PtoRequestResponse[];
 }
 
 export interface NewPtoRequest {
