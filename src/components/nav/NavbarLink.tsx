@@ -18,10 +18,6 @@ export const NavbarLink = ({ to, text, children }: Props) => {
           alignItems={'center'}
           background={isActive ? 'whiteAlpha.900' : 'inherit'}
           borderRadius={'50px'}
-          //   _hover={{
-          //     bg: isActive ? 'blue.200' : 'gray.100',
-          //   }}
-
           transitionProperty={'background'}
           transitionDuration={'.5s'}
         >

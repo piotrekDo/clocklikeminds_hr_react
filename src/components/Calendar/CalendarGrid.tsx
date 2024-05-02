@@ -11,7 +11,7 @@ interface Props {
 
 export const CalendarGrid = ({ selectedYear, daysOff }: Props) => {
   const holidays = useMemo(() => getHolidaysPoland(selectedYear.getFullYear()), [selectedYear.getFullYear()]);
-  const months = Array.from({ length: 12 }).map((_, index) => new Date(selectedYear.getFullYear(), index, 1));
+  const months = Array.from({ length: 12 }).map((_, index) => new Date(Date.UTC(selectedYear.getFullYear(), index, 1)));
   return (
     <Grid templateColumns={'repeat(3, 1fr)'} gap={5} w={'100%'}>
       {months.map((month, index) => (

@@ -46,7 +46,7 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
 export const calculateBusinessDays = (from: Date, to: Date): NewPtoRequestSummary => {
   let year = from.getFullYear();
   let holidays = getHolidaysPoland(year);
-  let checkedDate = new Date(from);
+  let checkedDate = new Date(Date.UTC(from.getFullYear(), from.getMonth(), from.getDate()));
   let businessDays = 0;
   const holidayDays: { desc: string; isWeekend: boolean }[] = [];
 

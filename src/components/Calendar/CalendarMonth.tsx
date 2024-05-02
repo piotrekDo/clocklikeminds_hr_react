@@ -29,10 +29,9 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
   const newPtoEndDate = usePtoRequestState(s => s.endDate);
   const startingDayOfWeek = month.getDay();
   const leftPadding = startingDayOfWeek === 0 ? 6 : startingDayOfWeek === 1 ? 0 : startingDayOfWeek - 1;
-  const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const days = new Date(Date.UTC(month.getFullYear(), month.getMonth() + 1, 0)).getDate();
   const currentMonthDays: Date[] = Array.from({ length: days }, (_, index) => {
-    const date = new Date(month.getFullYear(), month.getMonth(), index + 1);
-    date.setHours(0)
+    const date = new Date(Date.UTC(month.getFullYear(), month.getMonth(), index + 1));
     return date;
   });
 
@@ -46,17 +45,11 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
           <GridItem key={index} w={'100%'} />
         ))}
         {currentMonthDays.map((day, index) => {
-          const today = new Date();
+          const todayLocal = new Date();
+          const today = new Date(Date.UTC(todayLocal.getFullYear(), todayLocal.getMonth(), todayLocal.getDate()))
           const dayTimestamp = day.getTime();
           const startTimestamp = newPtoStartDate?.getTime();
           const endTimestamp = newPtoEndDate?.getTime();
-          // if(day.getDate() === 1 && day.getMonth() === 4) {
-          //   console.log(day)
-          //   console.log(dayTimestamp)
-          //   console.log(newPtoStartDate)
-          //   console.log(startTimestamp)
-          //   console.log(dayTimestamp - startTimestamp)
-          // }
           const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
           const isDayOff = daysOff.filter(testedPto => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();

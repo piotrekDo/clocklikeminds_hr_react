@@ -19,22 +19,15 @@ const usePtoRequestState = create<PtoRequestState>(set => ({
       isRequestingPto: bol,
     })),
   setStartDate: date => {
-    const dateStart = date ? new Date(date) : undefined;
-    if(dateStart) {
-      dateStart.setHours(0, 0, 0, 0)
-    }
-    console.log(dateStart)
     set(store => ({
       ...store,
-      startDate: dateStart,
+      startDate: date,
     }));
   },
   setEndDate: date => {
-    const dateEnd = date ? new Date(date) : undefined;
-    dateEnd && dateEnd.setHours(0, 0, 0, 0);
     set(store => ({
       ...store,
-      endDate: dateEnd,
+      endDate: date,
     }));
   },
 }));

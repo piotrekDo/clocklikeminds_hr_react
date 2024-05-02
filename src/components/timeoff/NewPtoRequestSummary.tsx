@@ -35,12 +35,11 @@ export const PtoRequestSummary = () => {
 
   const handleSubmitNewPto = () => {
     if (!appUser || !startDate || !endDate) return;
-    const options = { timeZone: 'Europe/Warsaw' };
     const request: NewPtoRequest = {
-      ptoStart: startDate.toLocaleString('sv', options).slice(0, 10),
-      ptoEnd: endDate.toLocaleString('sv', options).slice(0, 10),
+      ptoStart: startDate.toISOString().slice(0, 10),
+      ptoEnd: endDate.toISOString().slice(0, 10),
       applierId: appUser.userId,
-      acceptorId: undefined,
+      acceptorId: 2,
     };
     sendRequest(request);
   };
