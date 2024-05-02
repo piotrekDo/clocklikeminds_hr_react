@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const SupervisorCalendar = ({ ptosToRender }: Props) => {
-  console.log('CALENDAR RENDERED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   const ref = useRef<HTMLDivElement>(null);
   const [scroll, setScroll] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -78,8 +77,6 @@ export const SupervisorCalendar = ({ ptosToRender }: Props) => {
               (p.ptoStart.getDate() === monday.getDate() ) ||
               (p.ptoEnd.getDate() === monday.getDate())
           );
-          console.log(monday)
-          console.log(requestsInWeek)
           return (
             <SimpleGrid
               key={offset}

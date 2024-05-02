@@ -10,7 +10,7 @@ interface Props {
 export const Calendar = ({ ptos }: Props) => {
   const holidays = getHolidaysPoland(2023);
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  today.setUTCHours(0, 0, 0, 0);
   const mondayOffset = today.getDay() === 0 ? 6 : today.getDay() - 1;
   const monday = new Date();
   monday.setDate(monday.getDate() - mondayOffset);
@@ -77,10 +77,9 @@ export const Calendar = ({ ptos }: Props) => {
         <VStack w={'100%'} h={'100%'} position={'relative'}>
           {weeks.map((monday, index) => {
             const sunday = new Date(monday);
-            sunday.setHours(0, 0, 0, 0);
+            sunday.setUTCHours(0, 0, 0, 0);
             sunday.setDate(sunday.getDate() + 6);
             const ptosToRenderThisWeek = ptos.filter(p => {
-              // day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime()
               return (
                 (p.ptoStart.getFullYear() === monday.getFullYear() ||
                   p.ptoStart.getFullYear() === sunday.getFullYear() ||

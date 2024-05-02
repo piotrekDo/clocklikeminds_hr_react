@@ -1,16 +1,15 @@
 import { Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/input';
 import { Box, HStack } from '@chakra-ui/react';
+import usePtoRequestState from '../../state/usePtoRequestState';
 
-interface Props {
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  setStartDate: (date: Date) => void;
-  setEndDate: (date: Date) => void;
-}
-
-export const SimplePtoForm = ({ startDate, endDate, setStartDate, setEndDate }: Props) => {
-  const defaultStartDate = startDate ? startDate.toISOString().slice(0, 10) : '';
-  const defaultEndDate = endDate ? endDate.toISOString().slice(0, 10) : '';
+export const SimplePtoForm = () => {
+  const options = { timeZone: 'Europe/Warsaw' };
+  const { startDate, endDate, setStartDate, setEndDate } = usePtoRequestState();
+  console.log(startDate);
+  console.log(startDate && startDate.toISOString());
+  console.log(startDate && startDate.toLocaleString('sv', options));
+  const defaultStartDate = startDate ? startDate.toLocaleString('sv', options).slice(0, 10) : '';
+  const defaultEndDate = endDate ? endDate.toLocaleString('sv', options).slice(0, 10) : '';
 
   return (
     <Box>

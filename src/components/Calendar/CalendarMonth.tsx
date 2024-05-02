@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { PtoRequestFormatted } from '../../model/Pto';
+import usePtoRequestState from '../../state/usePtoRequestState';
 
 interface Props {
   month: Date;
@@ -24,31 +25,41 @@ interface Props {
 }
 
 export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
+  const newPtoStartDate = usePtoRequestState(s => s.startDate);
+  const newPtoEndDate = usePtoRequestState(s => s.endDate);
   const startingDayOfWeek = month.getDay();
   const leftPadding = startingDayOfWeek === 0 ? 6 : startingDayOfWeek === 1 ? 0 : startingDayOfWeek - 1;
   const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
   const currentMonthDays: Date[] = Array.from({ length: days }, (_, index) => {
     const date = new Date(month.getFullYear(), month.getMonth(), index + 1);
-    // const offset = new Date().getTimezoneOffset();
-    // date.setMinutes(date.getMinutes() - offset);
     date.setHours(0)
     return date;
   });
 
   return (
     <GridItem w={'100%'} display={'flex'} flexDirection={'column'}>
-      <Text as={'i'} fontSize={{base: '.6rem', monitorM: '1rem'}}>{month.toLocaleString('pl-PL', { month: 'long' })}</Text>
+      <Text as={'i'} fontSize={{ base: '.6rem', monitorM: '1rem' }}>
+        {month.toLocaleString('pl-PL', { month: 'long' })}
+      </Text>
       <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={2} columnGap={0}>
         {Array.from({ length: leftPadding }).map((_, index) => (
           <GridItem key={index} w={'100%'} />
         ))}
         {currentMonthDays.map((day, index) => {
           const today = new Date();
+          const dayTimestamp = day.getTime();
+          const startTimestamp = newPtoStartDate?.getTime();
+          const endTimestamp = newPtoEndDate?.getTime();
+          // if(day.getDate() === 1 && day.getMonth() === 4) {
+          //   console.log(day)
+          //   console.log(dayTimestamp)
+          //   console.log(newPtoStartDate)
+          //   console.log(startTimestamp)
+          //   console.log(dayTimestamp - startTimestamp)
+          // }
           const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
           const isDayOff = daysOff.filter(testedPto => {
-            // testedPto.ptoStart.setHours(0)
-            // testedPto.ptoEnd.setHours(0)
-            return (day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime());
+            return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];
           const isToday =
             day.getFullYear() === today.getFullYear() &&
@@ -65,7 +76,19 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                   justifyContent={'center'}
                   alignItems={'center'}
                   cursor={isDayOff ? 'pointer' : 'default'}
-                  bgColor={isDayOff ? (isDayOff.pending ? 'yellow.400' : 'green.300') : ''}
+                  bgColor={
+                    (newPtoStartDate && dayTimestamp === startTimestamp) ||
+                    (newPtoStartDate &&
+                      newPtoEndDate &&
+                      dayTimestamp >= startTimestamp! &&
+                      dayTimestamp <= endTimestamp!)
+                      ? 'green'
+                      : isDayOff
+                      ? isDayOff.pending
+                        ? 'yellow.400'
+                        : 'green.300'
+                      : ''
+                  }
                 >
                   <Flex
                     p={2}
@@ -76,7 +99,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     borderRadius={'50%'}
                     bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
                     color={isToday ? 'blue' : ''}
-                    fontSize={{base: '.5rem','monitorM': '.7rem' , '4K': '.9rem'}}
+                    fontSize={{ base: '.5rem', monitorM: '.7rem', '4K': '.9rem' }}
                     title={isHoliday}
                     textDecoration={isToday ? 'underline' : ''}
                   >

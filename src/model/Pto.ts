@@ -63,5 +63,5 @@ export interface NewPtoRequest {
   ptoStart: string;
   ptoEnd: string;
   applierId: number;
-  acceptorId: number;
+  acceptorId: number | undefined;
 }
