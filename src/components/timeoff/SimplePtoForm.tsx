@@ -17,7 +17,8 @@ export const SimplePtoForm = () => {
             value={defaultStartDate}
             onChange={e => {
               const localDate = new Date(e.target.value);
-              setStartDate(new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate())));
+              const startDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
+              setStartDate(startDate);
             }}
           />
         </InputGroup>
@@ -27,7 +28,8 @@ export const SimplePtoForm = () => {
             value={defaultEndDate}
             onChange={e => {
               const localDate = new Date(e.target.value);
-              setEndDate(new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate())));
+              const endDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
+              setEndDate(endDate);
             }}
           />
           <InputRightAddon>Do</InputRightAddon>

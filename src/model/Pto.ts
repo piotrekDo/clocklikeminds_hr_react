@@ -65,3 +65,9 @@ export interface NewPtoRequest {
   applierId: number;
   acceptorId: number | undefined;
 }
+
+export interface ResolvePtoRequest {
+  ptoRequestId: number;
+  isAccepted: boolean;
+  declineReason: string | undefined;
+}

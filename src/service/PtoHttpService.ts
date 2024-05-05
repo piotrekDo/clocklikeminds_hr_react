@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import APIclient from './APIclient';
-import { NewPtoRequest, PtoRequestResponse, UserPtoSummary } from '../model/Pto';
+import { NewPtoRequest, PtoRequestResponse, ResolvePtoRequest, UserPtoSummary } from '../model/Pto';
 import { Page } from '../model/Page';
 
 export const fetchUserPtoSummary = (userId: number) => {
@@ -10,6 +10,16 @@ export const fetchUserPtoSummary = (userId: number) => {
       id: userId,
     },
   }).then((res: AxiosResponse<UserPtoSummary>) => res.data);
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
+export const fetchUnresolvedPtosByAcceptor = (acceptorId: number) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/unresolved-by-acceptor', {
+    params: {
+      id: acceptorId,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
   return { request: httpRequest, cancel: () => controller.abort() };
 };
 
@@ -52,5 +62,14 @@ export const getPtoRequestsForSelectedYear = (year: number, userId: number) => {
       year: year,
     },
   }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
+export const resolvePto = (resolve: ResolvePtoRequest) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.post<PtoRequestResponse>('/api/v1/pto/resolve-request', resolve).then(
+    (res: AxiosResponse<PtoRequestResponse>) => res.data
+  );
+
   return { request: httpRequest, cancel: () => controller.abort() };
 };

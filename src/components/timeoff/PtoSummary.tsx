@@ -30,9 +30,9 @@ export const PtoSummary = () => {
   }, [summaryError, ptoError]);
 
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} >
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
-        <VStack w={'100%'} h={'140px'} bg={'#F5F4F6'} borderRadius={'20px'}>
+        <VStack w={'100%'} h={'140px'} bg={'#F5F4F6'} borderRadius={'20px'} transition={'all 2s'}>
           {!isRequestingPto && (
             <PtoDaysLeftUsedSummary
               isUserActive={appuser?.isActive || false}

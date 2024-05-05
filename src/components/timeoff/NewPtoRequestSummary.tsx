@@ -10,7 +10,8 @@ import useHttpErrorState from '../../state/useHttpErrorState';
 
 export const PtoRequestSummary = () => {
   const { appUser } = useAuthentication();
-  const { startDate, endDate, setStartDate, setEndDate, setIsRequestingPto } = usePtoRequestState();
+  const { startDate, endDate, isEndDateError, setStartDate, setEndDate, setIsRequestingPto, setIsEndDateError } =
+    usePtoRequestState();
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
   const { mutate: sendRequest, isSuccess, isError, error } = useNewPtoRequest();
   const setHttpError = useHttpErrorState(s => s.setError);
@@ -28,10 +29,10 @@ export const PtoRequestSummary = () => {
   }, [isError]);
 
   useEffect(() => {
-    if (startDate && endDate) {
+    if (!isEndDateError && startDate && endDate) {
       setSummary(calculateBusinessDays(startDate, endDate));
     } else setSummary(undefined);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, isEndDateError]);
 
   const handleSubmitNewPto = () => {
     if (!appUser || !startDate || !endDate) return;
@@ -48,8 +49,19 @@ export const PtoRequestSummary = () => {
     <VStack p={6} h={'100%'} w={'100%'} position={'relative'}>
       <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
       <SimplePtoForm />
-      {summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
-      <Button colorScheme='green' position={'absolute'} top={'-15px'} onClick={handleSubmitNewPto}>
+      {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
+      {isEndDateError && <Text>{isEndDateError}</Text>}
+      <Button
+        cursor={isEndDateError != undefined || !startDate || !endDate ? 'auto' : 'pointer'}
+        opacity={isEndDateError != undefined || !startDate || !endDate ? 0 : 1}
+        colorScheme={'green'}
+        position={'absolute'}
+        top={isEndDateError != undefined || !startDate || !endDate ? '-5px' :'-15px'}
+        transitionProperty={'top opacity'}
+        transitionDuration={'250ms'}
+        transitionTimingFunction={'ease-in'}
+        onClick={handleSubmitNewPto}
+      >
         Wyślij wniosek
       </Button>
       <HStack zIndex={10} h={'50px'} w={'50%'} justifyContent={'space-between'} position={'absolute'} bottom={'-40px'}>

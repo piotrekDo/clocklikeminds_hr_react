@@ -3,11 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import useEmployees from '../../../hooks/useEmployees';
 import useJobPostitions from '../../../hooks/useJobPositions';
-import usePtosByAcceptor from '../../../hooks/usePtosByAcceptor';
 import useAuthentication from '../../../state/useAuthentication';
 import useHttpErrorState from '../../../state/useHttpErrorState';
 import { EmployeeListTab } from './EmployeeListTab';
-import { EmployeesTimeOffTab } from './EmployeesTimeOffTab';
 import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsListTab } from './PositionsListTab';
 
