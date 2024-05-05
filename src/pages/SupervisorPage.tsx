@@ -1,14 +1,29 @@
-import { Box, HStack, Heading, Spinner, VStack, Text } from '@chakra-ui/react';
-import { SupervisorCalendar } from '../components/supervisor/SupervisorCalendat/SupervisorCalendar';
-import usePtosByAcceptor from '../hooks/usePtosByAcceptor';
-import useAuthentication from '../state/useAuthentication';
-import useEmployeeDetails from '../hooks/useEmployeeDetails';
+import {
+  Box,
+  Button,
+  HStack,
+  Heading,
+  Select,
+  Spinner,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { PtoRequestFormatted } from '../model/Pto';
-import { Calendar } from '../components/supervisor/SupervisorCalendat/Calendar';
-import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
-import useHttpErrorState from '../state/useHttpErrorState';
+import { PaginationBar } from '../components/supervisor/PaginationBar';
 import { PtoToAcceptCard } from '../components/supervisor/PtoToAcceptCard';
+import useEmployeeDetails from '../hooks/useEmployeeDetails';
+import useEmployeePtoRequestsSimplePagination from '../hooks/useEmployeePtoRequestsSimplePagination';
+import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
+import useAuthentication from '../state/useAuthentication';
+import useHttpErrorState from '../state/useHttpErrorState';
 
 export const SupervisorPage = () => {
   // const [ptosToAccept, setPtosToAccept] = useState<PtoRequestFormatted[]>([]);
@@ -38,6 +53,10 @@ export const SupervisorPage = () => {
 
   const appUser = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
+  const [selectedEmployee, setSelectedEmployee] = useState(-1);
+  const [selectedPage, setSelectedPage] = useState(0);
+  const pageSize = 5;
+
   const {
     data: unresolvedPtos,
     isFetching: isUnresolvedPtosFetching,
@@ -45,20 +64,108 @@ export const SupervisorPage = () => {
     isError: isUnresolvedPtosError,
     error: unresolvedPtosError,
   } = useUnresolvedPtosByAcceptor(appUser?.userId || -1);
+  const {
+    data: userData,
+    isFetching: isUserDataFetching,
+    isLoading: isUserDataLoading,
+    isError: isUserDataError,
+    error: userDataError,
+  } = useEmployeeDetails(appUser?.userId || -1);
+  const {
+    data: ptosByEmployee,
+    error: ptosByEmployeeError,
+    isLoading: isLoadingPtosByEmployee,
+    refetch,
+  } = useEmployeePtoRequestsSimplePagination(selectedEmployee, selectedPage, pageSize);
 
   useEffect(() => {
     isUnresolvedPtosError && setError(unresolvedPtosError);
-  }, [isUnresolvedPtosError]);
+    isUserDataError && setError(userDataError);
+  }, [isUnresolvedPtosError, isUserDataError]);
+
+  useEffect(() => {
+    console.log('SELECTED', selectedPage);
+    refetch();
+  }, [selectedPage]);
 
   return (
     <VStack w={'100%'} h={'100%'}>
-      <VStack w={'100%'}>
-        <Heading>Wnioski do rozpatrzenia</Heading>
+      {/* <VStack w={'90%'} p={5} minH={'300px'} alignItems={'start'}>
+        <Heading textAlign={'left'}>Wnioski do rozpatrzenia</Heading>
         <VStack>
+          {isUnresolvedPtosFetching && <Spinner />}
+          {!isUnresolvedPtosFetching && unresolvedPtos && unresolvedPtos.length === 0 && (
+            <Box>
+              <Text>Brak nowych wniosków</Text>
+            </Box>
+          )}
           {unresolvedPtos &&
             unresolvedPtos.length > 0 &&
             unresolvedPtos.map((pto, index) => <PtoToAcceptCard key={pto.id} pto={pto} />)}
         </VStack>
+      </VStack> */}
+
+      <VStack w={'100%'}>
+        <HStack w={'90%'}>
+          <Select
+            placeholder='Pobierz wnioski pracownika'
+            onChange={e => {
+              setSelectedEmployee(+e.target.value);
+            }}
+          >
+            {userData?.subordinates.map((sub, index) => (
+              <option key={sub.appUserId} value={sub.appUserId}>
+                {sub.firstName} {sub.lastName}
+              </option>
+            ))}
+          </Select>
+        </HStack>
+
+        <TableContainer w={'90%'} p={5}>
+          <Table variant='simple'>
+            <TableCaption>Łącznie {ptosByEmployee && ptosByEmployee.totalElements} elementów</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>ID wniosku</Th>
+                <Th>Data wniosku</Th>
+                <Th>Początek</Th>
+                <Th>Koniec</Th>
+                <Th>Status</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {ptosByEmployee?.content.map(pto => {
+                const requestDate = new Date(pto.requestDateTime);
+                const start = new Date(pto.ptoStart);
+                const end = new Date(pto.ptoEnd);
+                return (
+                  <Tr key={pto.id}>
+                    <Td>{pto.id}</Td>
+                    <Td>
+                      {requestDate.toLocaleDateString('pl-PL', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </Td>
+                    <Td>{start.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}</Td>
+                    <Td>{end.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}</Td>
+                    <Td>{pto.pending ? 'Oczekuje' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}</Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        {ptosByEmployee && ptosByEmployee.totalPages > 1 && (
+          <PaginationBar
+            currentPage={selectedPage}
+            pages={ptosByEmployee?.totalPages || 0}
+            switchPage={setSelectedPage}
+          />
+        )}
       </VStack>
     </VStack>
   );
