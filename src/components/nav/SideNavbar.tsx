@@ -1,11 +1,12 @@
 import { Box, Flex, Image, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { CgHome } from 'react-icons/cg';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 import { GoPeople } from 'react-icons/go';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuPalmtree } from 'react-icons/lu';
-import logo from '../../assets/CM-logo-color.png';
 import { VscGitPullRequestNewChanges } from 'react-icons/vsc';
+import logo from '../../assets/CM-logo-color.png';
 import useAuthentication from '../../state/useAuthentication';
 import { NavbarLink } from './NavbarLink';
 
@@ -51,6 +52,11 @@ export const SideNavbar = () => {
         {(isAdmin || isSupervisor) && (
           <NavbarLink to='/supervisor' text='Wnioski Pracowników'>
             <VscGitPullRequestNewChanges size={'40px'} />
+          </NavbarLink>
+        )}
+        {(isAdmin || isSupervisor) && (
+          <NavbarLink to='/calendar' text='Kalendarz'>
+            <FaRegCalendarAlt size={'40px'} />
           </NavbarLink>
         )}
         {isAdmin && (

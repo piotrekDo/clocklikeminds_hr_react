@@ -55,7 +55,7 @@ export const SupervisorPage = () => {
   const setError = useHttpErrorState(s => s.setError);
   const [selectedEmployee, setSelectedEmployee] = useState(-1);
   const [selectedPage, setSelectedPage] = useState(0);
-  const pageSize = 5;
+  const pageSize = 10;
 
   const {
     data: unresolvedPtos,
@@ -90,7 +90,7 @@ export const SupervisorPage = () => {
 
   return (
     <VStack w={'100%'} h={'100%'}>
-      {/* <VStack w={'90%'} p={5} minH={'300px'} alignItems={'start'}>
+      <VStack w={'90%'} p={5} minH={'300px'} maxH={'600px'} alignItems={'start'} overflowY={'scroll'}>
         <Heading textAlign={'left'}>Wnioski do rozpatrzenia</Heading>
         <VStack>
           {isUnresolvedPtosFetching && <Spinner />}
@@ -103,7 +103,7 @@ export const SupervisorPage = () => {
             unresolvedPtos.length > 0 &&
             unresolvedPtos.map((pto, index) => <PtoToAcceptCard key={pto.id} pto={pto} />)}
         </VStack>
-      </VStack> */}
+      </VStack>
 
       <VStack w={'100%'}>
         <HStack w={'90%'}>
@@ -121,7 +121,7 @@ export const SupervisorPage = () => {
           </Select>
         </HStack>
 
-        <TableContainer w={'90%'} p={5}>
+        <TableContainer w={'90%'} minH={'500px'} p={5}>
           <Table variant='simple'>
             <TableCaption>Łącznie {ptosByEmployee && ptosByEmployee.totalElements} elementów</TableCaption>
             <Thead>
@@ -140,8 +140,8 @@ export const SupervisorPage = () => {
                 const end = new Date(pto.ptoEnd);
                 return (
                   <Tr key={pto.id}>
-                    <Td>{pto.id}</Td>
-                    <Td>
+                    <Td py={2}>{pto.id}</Td>
+                    <Td py={0}>
                       {requestDate.toLocaleDateString('pl-PL', {
                         day: '2-digit',
                         month: '2-digit',
@@ -150,9 +150,13 @@ export const SupervisorPage = () => {
                         minute: '2-digit',
                       })}
                     </Td>
-                    <Td>{start.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}</Td>
-                    <Td>{end.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}</Td>
-                    <Td>{pto.pending ? 'Oczekuje' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}</Td>
+                    <Td py={0}>
+                      {start.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                    </Td>
+                    <Td py={0}>
+                      {end.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                    </Td>
+                    <Td py={0}>{pto.pending ? 'Oczekuje' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}</Td>
                   </Tr>
                 );
               })}

@@ -11,6 +11,7 @@ import { MainPage } from './pages/MainPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SupervisorPage } from './pages/SupervisorPage';
 import { TimeOff } from './pages/TimeOff';
+import { PtoCalendar } from './pages/PtoCalendar';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: '/timeoff', element: <AuthenticatedGuard><TimeOff /></AuthenticatedGuard> },
       { path: '/supervisor', element: <SupervisorGuard><SupervisorPage /></SupervisorGuard>},
       { path: '/profile', element: <AuthenticatedGuard><ProfilePage /></AuthenticatedGuard> },
+      { path: '/calendar', element: <SupervisorGuard><PtoCalendar /></SupervisorGuard> },
       { path: '/employees', element: <AdminGuard><EmployeesPage /></AdminGuard> },
     ],
   },

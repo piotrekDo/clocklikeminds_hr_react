@@ -1,4 +1,4 @@
-import { GridItem, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { GridItem, HStack, SimpleGrid, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PtoRequestFormatted } from '../../../model/Pto';
 import { getHolidaysPoland } from '../../Calendar/holidays';
@@ -8,17 +8,23 @@ interface Props {
   ptos: PtoRequestFormatted[];
 }
 export const Calendar = ({ ptos }: Props) => {
+  const [hihhlightedPto, setHighlightedPto] = useState(-1);
   const holidays = getHolidaysPoland(2023);
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  const todayLoc = new Date();
+  const today = new Date(Date.UTC(todayLoc.getFullYear(), todayLoc.getMonth(), todayLoc.getDate()));
+  const mondayLoc = new Date();
   const mondayOffset = today.getDay() === 0 ? 6 : today.getDay() - 1;
-  const monday = new Date();
-  monday.setDate(monday.getDate() - mondayOffset);
+  mondayLoc.setDate(mondayLoc.getDate() - mondayOffset);
+  const monday = new Date(Date.UTC(mondayLoc.getFullYear(), mondayLoc.getMonth(), mondayLoc.getDate()));
+
   const startWeeks: Date[] = [];
   Array.from({ length: 13 }).forEach((_, index) => {
-    const firstMonday = new Date(monday);
-    firstMonday.setDate(firstMonday.getDate() - 28);
-    firstMonday.setDate(firstMonday.getDate() + 7 * index);
+    const firstMondayLoc = new Date(monday);
+    firstMondayLoc.setDate(firstMondayLoc.getDate() - 28);
+    firstMondayLoc.setDate(firstMondayLoc.getDate() + 7 * index);
+    const firstMonday = new Date(
+      Date.UTC(firstMondayLoc.getFullYear(), firstMondayLoc.getMonth(), firstMondayLoc.getDate())
+    );
     startWeeks.push(firstMonday);
   });
   const ref = useRef<HTMLDivElement>(null);
@@ -33,18 +39,18 @@ export const Calendar = ({ ptos }: Props) => {
     if (scrollPercent > 80) {
       setWeeks(w => [
         ...w,
-        new Date(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 7),
-        new Date(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 14),
-        new Date(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 21),
-        new Date(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 28),
+        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 7)),
+        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 14)),
+        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 21)),
+        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 28)),
       ]);
     }
     if (scrollPercent < 20) {
       setWeeks(w => [
-        new Date(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 28),
-        new Date(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 21),
-        new Date(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 14),
-        new Date(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 7),
+        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 28)),
+        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 21)),
+        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 14)),
+        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 7)),
         ...w,
       ]);
       setScroll(container.scrollTop + 512);
@@ -73,12 +79,19 @@ export const Calendar = ({ ptos }: Props) => {
   return (
     <VStack w={'90%'} h={'100%'} gap={0} flexShrink={0} justify={'center'} align={'center'}>
       <Header />
-      <VStack ref={ref} w={'100%'} h={'100%'} overflowY={'scroll'} onScroll={handleScroll}>
+      <VStack
+        ref={ref}
+        w={'100%'}
+        h={'100%'}
+        overflowY={'scroll'}
+        style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+        onScroll={handleScroll}
+      >
         <VStack w={'100%'} h={'100%'} position={'relative'}>
           {weeks.map((monday, index) => {
-            const sunday = new Date(monday);
-            sunday.setUTCHours(0, 0, 0, 0);
-            sunday.setDate(sunday.getDate() + 6);
+            const sundayLoc = new Date(monday);
+            sundayLoc.setDate(sundayLoc.getDate() + 6);
+            const sunday = new Date(Date.UTC(sundayLoc.getFullYear(), sundayLoc.getMonth(), sundayLoc.getDate()));
             const ptosToRenderThisWeek = ptos.filter(p => {
               return (
                 (p.ptoStart.getFullYear() === monday.getFullYear() ||
@@ -111,11 +124,12 @@ export const Calendar = ({ ptos }: Props) => {
                   flex={'0 0 auto'}
                   w={'100%'}
                   minH={'120px'}
+                  justifyContent={'start'}
+                  alignItems={'start'}
                 >
                   {Array.from({ length: 7 }).map((_, indexNested) => {
-                    const day = new Date(monday);
+                    const day = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
                     day.setDate(day.getDate() + indexNested);
-                    const isToday = day.toDateString() === today.toDateString();
                     const isSunday = day.getDay() === 0;
                     const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
                     return (
@@ -135,15 +149,46 @@ export const Calendar = ({ ptos }: Props) => {
                     );
                   })}
                   {ptosToRenderThisWeek.map(p => {
-                    const startingThisWeek = p.ptoStart.getDate() >= monday.getDate();
-                    const endingThisWeek = p.ptoEnd.getDate() <= sunday.getDate();
+                    console.log(p.ptoStart);
+                    console.log(monday);
+                    const startingThisWeek = p.ptoStart.getTime() >= monday.getTime();
+                    const endingThisWeek = p.ptoEnd.getTime() <= sunday.getTime();
                     const start = startingThisWeek ? (p.ptoStart.getDay() === 0 ? 7 : p.ptoStart.getDay()) : 1;
                     const end = endingThisWeek ? (p.ptoEnd.getDay() === 0 ? 7 : p.ptoEnd.getDay()) : 7;
 
                     return (
-                      <GridItem key={p.id} colStart={start} colEnd={end + 1} bg={'teal.200'}>
-                        {p.id}
-                      </GridItem>
+                      <Tooltip
+                        label={`ID: ${p.id} \n ${p.ptoStart.toLocaleString('pl-PL', {
+                          day: '2-digit',
+                          month: 'short',
+                        })} - ${p.ptoEnd.toLocaleString('pl-PL', { day: '2-digit', month: 'short' })}`}
+                        whiteSpace='pre-line'
+                      >
+                        <GridItem
+                          key={p.id}
+                          h={'100%'}
+                          maxH={'30px'}
+                          colStart={start}
+                          colEnd={end + 1}
+                          bg={'teal.200'}
+                          opacity={p.pending ? '.5' : 1}
+                          px={3}
+                          borderRadius={
+                            startingThisWeek && endingThisWeek
+                              ? '10px'
+                              : startingThisWeek
+                              ? '10px 0 0 10px'
+                              : endingThisWeek
+                              ? '0 10px 10px 0'
+                              : ''
+                          }
+                          outline={p.id === hihhlightedPto ? 'solid' : ''}
+                          onMouseEnter={() => setHighlightedPto(p.id)}
+                          onMouseLeave={() => setHighlightedPto(-1)}
+                        >
+                          {p.applierFirstName}
+                        </GridItem>
+                      </Tooltip>
                     );
                   })}
                 </SimpleGrid>
