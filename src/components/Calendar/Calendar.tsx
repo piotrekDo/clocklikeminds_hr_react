@@ -19,10 +19,26 @@ export const Calendar = () => {
   };
 
   return (
-    <VStack bg={'#F5F4F6'} w={'100%'}  maxH={'calc(100vh - 100px)'} borderRadius={'20px'} p={{base: 2, monitorM: 5}} position={'relative'}>
-      <HStack justifyContent={'center'} alignItems={'center'} spacing={3}>
+    <VStack
+      // bg={'rgba(66, 68, 90, 1)'}
+      py={1}
+      w={'100%'}
+      maxH={'calc(100vh - 100px)'}
+      borderRadius={'20px'}
+      px={{ base: 2, monitorM: 5 }}
+      position={'relative'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+      color={'whiteAlpha.900'}
+    >
+      <HStack
+        justifyContent={'center'}
+        alignItems={'center'}
+        spacing={3}
+        _hover={{ transform: 'scale(1.4)' }}
+        transition={'transform .15s ease-in'}
+      >
         <MdOutlineArrowBackIosNew cursor={'pointer'} onClick={onArrowLeftClickHandler} />
-        <Text>{selectedYear.getFullYear()}</Text>
+        <Text as={'b'}>{selectedYear.getFullYear()}</Text>
         <MdOutlineArrowForwardIos cursor={'pointer'} onClick={onArrowRightClickHandler} />
         {isFetching && (
           <HStack position={'absolute'} right={10}>

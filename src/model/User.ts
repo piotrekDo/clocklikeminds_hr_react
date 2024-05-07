@@ -5,6 +5,7 @@ export interface AppUser {
   jwtToken: string;
   jwtExpiresAt: number;
   isActive: boolean;
+  imageUrl: string;
 }
 
 export interface TokenPayload {
@@ -14,6 +15,7 @@ export interface TokenPayload {
   sub: string;
   userId: number;
   active: boolean;
+  imageUrl: string;
 }
 
 export interface EmployeeRole {
@@ -43,6 +45,7 @@ export interface EmployeeBasic {
   firstName: string;
   lastName: string;
   userEmail: string;
+  imageUrl: string;
   registrationFinished: boolean;
   active: boolean;
   stillHired: boolean;
@@ -56,6 +59,7 @@ export interface Employee {
   firstName: string;
   lastName: string;
   userEmail: string;
+  imageUrl: string;
   userRoles: EmployeeRole[];
   registrationFinished: boolean;
   active: boolean;

@@ -26,6 +26,7 @@ const convertTokenToUser = (token: string): AppUser => {
     jwtToken: token,
     jwtExpiresAt: tokenPayload.exp * 1000,
     isActive: tokenPayload.active,
+    imageUrl: tokenPayload.imageUrl
   };
 };
 

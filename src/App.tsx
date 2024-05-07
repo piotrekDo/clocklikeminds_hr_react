@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { SideNavbar } from './components/nav/SideNavbar';
 import { Uppernavbar } from './components/nav/UpperNavbar';
-import { backgroundGradient } from './library';
+import { backgroundGradient, loggedBackgorund } from './library';
 import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
 
@@ -30,9 +30,10 @@ function App() {
       minH={'100vh'}
       maxH={'100vh'}
       h={'100vh'}
-      bg={backgroundGradient}
+      bg={!appUser ? backgroundGradient : loggedBackgorund}
       justifyContent={'end'}
       alignItems={'end'}
+      transition={'background-color .5s ease-in, color .5s ease-in'}
     >
       {appUser && (
         <>
@@ -46,8 +47,10 @@ function App() {
         px={{ base: 0, '4K': '250px' }}
         py={{ base: 0, '4K': '50px' }}
         borderRadius={'50px 0 0 0'}
-        bg={'white'}
+        // bg={'white'}
         overflowY={'scroll'}
+        style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+
       >
         <Outlet />
       </Box>

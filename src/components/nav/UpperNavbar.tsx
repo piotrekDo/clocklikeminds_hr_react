@@ -1,6 +1,6 @@
-import { HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text, Image } from '@chakra-ui/react';
 import { FaPowerOff } from 'react-icons/fa';
-
+import { IoPersonCircleOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '../../state/useAuthentication';
 
@@ -29,10 +29,34 @@ export const Uppernavbar = () => {
       justifyContent={'end'}
     >
       <HStack cursor={'pointer'} fontSize={'1.3rem'}>
-        {/* <FaRegCircleUser  size={'2rem'}/> */}
-        <Text>{user?.userEmail}</Text>
+        {user?.imageUrl && (
+          <Box
+            w={'40px'}
+            h={'40px'}
+            borderRadius={'30px'}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            overflow={'hidden'}
+          >
+            <img
+              src={user.imageUrl}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              referrerPolicy='no-referrer'
+            />
+          </Box>
+        )}
+        <Text as={'b'}>{user?.userEmail}</Text>
       </HStack>
-      <FaPowerOff onClick={onLogoutHandler} size={'1.5rem'} cursor={'pointer'} />
+      <Box
+        color={'red.100'}
+        _hover={{ color: 'red.400', transform: 'scale(1.3)' }}
+        transitionProperty={'color transform'}
+        transitionDuration={'.5s'}
+        transitionTimingFunction={'ease-in-out'}
+      >
+        <FaPowerOff onClick={onLogoutHandler} size={'1.5rem'} cursor={'pointer'} />
+      </Box>
     </HStack>
   );
 };

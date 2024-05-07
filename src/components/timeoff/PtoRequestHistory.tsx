@@ -15,14 +15,27 @@ interface Props {
   ) => Promise<InfiniteQueryObserverResult<Page<PtoRequestResponse>, Error>>;
 }
 
-export const PtoRequestHistory = ({ isLoadingPtos, isFetchingNextPtosPage, hasNextPage, ptos, fetchNextPage }: Props) => {
+export const PtoRequestHistory = ({
+  isLoadingPtos,
+  isFetchingNextPtosPage,
+  hasNextPage,
+  ptos,
+  fetchNextPage,
+}: Props) => {
   return (
     <>
       {isLoadingPtos && <Spinner />}
       {!isLoadingPtos && ptos?.pages[0].content.length === 0 && <Heading>Brak historii wniosków</Heading>}
 
       {!isLoadingPtos && ptos && ptos?.pages[0].content.length > 0 && (
-        <VStack w={'100%'} h={'100%'} overflowY={'scroll'} p={3} pb={12}>
+        <VStack
+          w={'100%'}
+          h={'100%'}
+          overflowY={'scroll'}
+          p={3}
+          pb={12}
+          style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+        >
           <Heading>Ostatnie wnioski:</Heading>
           {ptos.pages.map((page, index) => (
             <React.Fragment key={index}>

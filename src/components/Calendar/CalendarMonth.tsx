@@ -36,8 +36,16 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
   });
 
   return (
-    <GridItem w={'100%'} display={'flex'} flexDirection={'column'}>
-      <Text as={'i'} fontSize={{ base: '.6rem', monitorM: '1rem' }}>
+    <GridItem
+      w={'100%'}
+      p={1}
+      borderRadius={'10px'}
+      display={'flex'}
+      flexDirection={'column'}
+      _hover={{ transform: 'scale(1.1)' }}
+      transition={'transform .15s ease-in'}
+    >
+      <Text as={'b'} fontSize={{ base: '1rem', monitorM: '1.1rem' }}>
         {month.toLocaleString('pl-PL', { month: 'long' })}
       </Text>
       <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={2} columnGap={0}>
@@ -46,7 +54,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
         ))}
         {currentMonthDays.map((day, index) => {
           const todayLocal = new Date();
-          const today = new Date(Date.UTC(todayLocal.getFullYear(), todayLocal.getMonth(), todayLocal.getDate()))
+          const today = new Date(Date.UTC(todayLocal.getFullYear(), todayLocal.getMonth(), todayLocal.getDate()));
           const dayTimestamp = day.getTime();
           const startTimestamp = newPtoStartDate?.getTime();
           const endTimestamp = newPtoEndDate?.getTime();
@@ -78,8 +86,8 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                       ? 'green'
                       : isDayOff
                       ? isDayOff.pending
-                        ? 'yellow.400'
-                        : 'green.300'
+                        ? 'rgba(255, 255, 120, .6)'
+                        : 'rgba(20, 255, 120, .6)'
                       : ''
                   }
                 >
@@ -89,19 +97,19 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     alignItems={'center'}
                     w={'10px'}
                     h={'10px'}
-                    borderRadius={'50%'}
+                    borderRadius={'30%'}
                     bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
-                    color={isToday ? 'blue' : ''}
-                    fontSize={{ base: '.5rem', monitorM: '.7rem', '4K': '.9rem' }}
+                    // color={isToday ? 'teal' : ''}
+                    fontSize={{ base: '.8rem', monitorM: '.9rem', '4K': '.9rem' }}
                     title={isHoliday}
-                    textDecoration={isToday ? 'underline' : ''}
+                    border={isToday ? 'solid' : ''}
                   >
-                    {day.getDate()}
+                    <Text>{day.getDate()}</Text>
                   </Flex>
                 </GridItem>
               </PopoverTrigger>
               {isDayOff && (
-                <PopoverContent>
+                <PopoverContent color='blackAlpha.900' bg={isDayOff ? isDayOff.pending ? 'rgba(255, 255, 120, 1)' : 'rgba(20, 255, 120, 1)' : ''}>
                   <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverHeader>
@@ -110,7 +118,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                       {isDayOff.applierFirstName} {isDayOff.applierLastName}
                     </Text>
                   </PopoverHeader>
-                  <PopoverBody>
+                  <PopoverBody >
                     <Text>
                       Wniosek urlopowy z dnia
                       {isDayOff.requestDateTime.toLocaleString('pl-PL', {

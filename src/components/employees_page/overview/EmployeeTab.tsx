@@ -41,7 +41,20 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       _hover={{ bg: '#E3EDF2' }}
     >
       <Box flexBasis={'50%'}>
-        <FaRegCircleUser />
+        {employee.imageUrl && (
+          <Box
+            w={'30px'}
+            h={'30px'}
+            borderRadius={'30px'}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            overflow={'hidden'}
+          >
+            <img src={employee.imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer"/>
+          </Box>
+        )}
+        {!employee.imageUrl && <FaRegCircleUser size={'30px'}/>}
       </Box>
       <Text flexBasis={'100%'}>{employee.firstName}</Text>
       <Text flexBasis={'100%'}>{trimDisplay(employee.lastName)}</Text>

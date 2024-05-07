@@ -10,7 +10,7 @@ interface Props {
 export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Props) => {
   return (
     <VStack w={'100%'} p={5}>
-      <Text w={'100%'} textAlign={'center'}>
+      <Text w={'100%'} fontSize={'1.3rem'} textAlign={'center'} as={'b'}>
         Podsumowanie
       </Text>
       {isUserActive && (
@@ -18,31 +18,31 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
           <VStack spacing={0}>
             {!isFetching && summary && (
               <Tooltip label={`W tym pozostałe z zeszłego roku ${summary.ptoDaysAccruedLastYear}`}>
-                <Text>{summary.ptoDaysAccruedLastYear + summary.ptoDaysAccruedCurrentYear}</Text>
+                <Text as={'em'}>{summary.ptoDaysAccruedLastYear + summary.ptoDaysAccruedCurrentYear}</Text>
               </Tooltip>
             )}
             {isFetching && <Spinner />}
-            <Text>Naliczone</Text>
+            <Text as={'b'}>Naliczone</Text>
           </VStack>
           <VStack spacing={0}>
             {!isFetching && summary && (
               <Tooltip label={`W tym dni z ubiegłego roku ${summary.ptoDaysLeftFromLastYear}`}>
-                <Text>{summary.ptoDaysLeftFromLastYear + summary.ptoDaysLeftCurrentYear}</Text>
+                <Text as={'em'}>{summary.ptoDaysLeftFromLastYear + summary.ptoDaysLeftCurrentYear}</Text>
               </Tooltip>
             )}
             {isFetching && <Spinner />}
-            <Text>Pozostałe</Text>
+            <Text as={'b'}>Pozostałe</Text>
           </VStack>
           <VStack spacing={0}>
-            {!isFetching && summary && <Text>{summary.ptoDaysTaken}</Text>}
+            {!isFetching && summary && <Text as={'em'}>{summary.ptoDaysTaken}</Text>}
             {isFetching && <Spinner />}
-            <Text>Wykorzystane</Text>
+            <Text as={'b'}>Wykorzystane</Text>
           </VStack>
         </HStack>
       )}
       {!isUserActive && (
         <HStack fontSize={'1.2rem'} minW={'300px'} w={'100%'} justifyContent={'space-around'} alignItems={'center'}>
-          <Text>Konto nieaktywne</Text>
+          <Text as={'b'}>Konto nieaktywne</Text>
         </HStack>
       )}
     </VStack>

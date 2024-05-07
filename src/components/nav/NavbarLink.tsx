@@ -16,8 +16,6 @@ export const NavbarLink = ({ to, text, children }: Props) => {
           w={'400px'}
           justifyContent={'start'}
           alignItems={'center'}
-          background={isActive ? 'whiteAlpha.900' : 'inherit'}
-          borderRadius={'50px'}
           transitionProperty={'background'}
           transitionDuration={'.5s'}
         >

@@ -20,7 +20,7 @@ export const PtoCard = ({ pto }: Props) => {
     <VStack
       position={'relative'}
       w={'100%'}
-      h={!isExpanded ? '50px' : '250px'}
+      h={!isExpanded ? '50px' : '300px'}
       flexShrink={0}
       flexGrow={0}
       px={2}
@@ -29,14 +29,16 @@ export const PtoCard = ({ pto }: Props) => {
       overflow={'hidden'}
       borderRadius={'20px'}
       spacing={0}
-      bg={pto.pending ? 'yellow.200' : pto.wasAccepted ? 'whatsapp.100' : 'red.100'}
+      bg={pto.pending ? 'rgba(255, 255, 120, .6)' : pto.wasAccepted ? 'rgba(20, 255, 120, .6)' : 'rgba(255, 120, 120, .6)'}
       transitionProperty={'height'}
       transitionDuration={'250ms'}
+      boxShadow={'6px 4px 4px 0px rgba(66, 68, 90, 1)'}
+      color={'blackAlpha.800'}
     >
-      <HStack w={'100%'} h={'50px'} flexShrink={0} justifyContent={'center'} alignItems={'center'} fontSize={'.9rem'}>
+      <HStack w={'100%'} h={'50px'} flexShrink={0} justifyContent={'center'} alignItems={'center'} fontSize={'.9rem'} >
         <Tooltip label={'Data wniosku'}>
           <HStack flexBasis={'100%'} justifyContent={'center'} alignItems={'center'}>
-            <Text>
+            <Text as={'b'}>
               {request.toLocaleString('pl-PL', {
                 day: '2-digit',
                 month: 'short',
@@ -50,13 +52,13 @@ export const PtoCard = ({ pto }: Props) => {
         <Tooltip label={'Pierwszy dzień urlopu'}>
           <HStack flexBasis={'100%'} justifyContent={'center'} alignItems={'center'}>
             <FaRegCalendarCheck />
-            <Text>{pto.ptoStart}</Text>
+            <Text  as={'b'}>{pto.ptoStart}</Text>
           </HStack>
         </Tooltip>
         <Tooltip label={'Ostatni dzień urlopu'}>
           <HStack flexBasis={'100%'} justifyContent={'center'} alignItems={'center'}>
             <FaCalendarTimes />
-            <Text>{pto.ptoEnd}</Text>
+            <Text  as={'b'}>{pto.ptoEnd}</Text>
           </HStack>
         </Tooltip>
         <Tooltip label={pto.pending ? 'Oczekuje na akceptację' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}>
@@ -81,12 +83,12 @@ export const PtoCard = ({ pto }: Props) => {
           />
         </Box>
       </HStack>
-      <VStack h={'calc(100% - 60px)'} w={'100%'} flexShrink={0} flexGrow={0}>
+      <VStack  w={'100%'} flexShrink={0} flexGrow={0} p={3}>
         <Heading w={'100%'} textAlign={'left'} fontSize={'1rem'}>
           Id wniosku: {pto.id}
         </Heading>
         <HStack w={'100%'} spacing={10}>
-          <VStack w={'50%'} textAlign={'left'}>
+          <VStack w={'50%'} textAlign={'left'} p={2} borderRadius={'15px'} boxShadow={'2px 2px 5px 0px rgba(66, 68, 90, 1)'}>
             <Heading w={'100%'} fontSize={'1rem'}>
               Akceptujący
             </Heading>
@@ -95,7 +97,7 @@ export const PtoCard = ({ pto }: Props) => {
             </Text>
             <Text w={'100%'}>{pto.acceptorEmail}</Text>
           </VStack>
-          <VStack w={'50%'}>
+          <VStack w={'50%'} p={2} borderRadius={'15px'} boxShadow={'2px 2px 5px 0px rgba(66, 68, 90, 1)'}>
             <Heading w={'100%'} fontSize={'1rem'}>
               Podsumowanie
             </Heading>

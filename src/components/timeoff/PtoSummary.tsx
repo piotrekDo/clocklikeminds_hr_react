@@ -9,6 +9,7 @@ import { NewPtoButton } from './NewPtoButton';
 import { PtoRequestSummary } from './NewPtoRequestSummary';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
 import { PtoRequestHistory } from './PtoRequestHistory';
+import { backgroundGradient } from '../../library';
 
 export const PtoSummary = () => {
   const appuser = useAuthentication(s => s.appUser);
@@ -29,10 +30,24 @@ export const PtoSummary = () => {
     ptoError && setError(ptoError);
   }, [summaryError, ptoError]);
 
+  // '#F5F4F6'
+
   return (
-    <VStack w={'100%'} h={'100%'} >
-      <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
-        <VStack w={'100%'} h={'140px'} bg={'#F5F4F6'} borderRadius={'20px'} transition={'all 2s'}>
+    <VStack w={'100%'} h={'100%'}>
+      <HStack
+        justifyContent={'center'}
+        alignItems={'start'}
+        fontWeight={'600'}
+        w={'100%'}
+        gap={5}
+      >
+        <VStack
+          w={'100%'}
+          h={'140px'}
+          boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+          borderRadius={'20px'}
+          transition={'background .25s ease-in'}
+        >
           {!isRequestingPto && (
             <PtoDaysLeftUsedSummary
               isUserActive={appuser?.isActive || false}
@@ -45,7 +60,7 @@ export const PtoSummary = () => {
         {appuser?.isActive && <NewPtoButton />}
       </HStack>
 
-      <VStack w={'100%'} h={'100%'} maxH={'600px'} pt={'50px'} position={'relative'}>
+      <VStack w={'100%'} h={'80%'} maxH={'600px'} pt={'50px'} position={'relative'}>
         <PtoRequestHistory
           isLoadingPtos={isLoadingPtos}
           isFetchingNextPtosPage={isFetchingNextPtosPage}
