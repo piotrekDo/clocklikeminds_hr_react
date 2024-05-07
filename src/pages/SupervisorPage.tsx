@@ -83,11 +83,6 @@ export const SupervisorPage = () => {
     isUserDataError && setError(userDataError);
   }, [isUnresolvedPtosError, isUserDataError]);
 
-  useEffect(() => {
-    console.log('SELECTED', selectedPage);
-    refetch();
-  }, [selectedPage]);
-
   return (
     <VStack w={'100%'} h={'100%'}>
       <VStack w={'90%'} p={5} minH={'300px'} maxH={'600px'} alignItems={'start'} overflowY={'scroll'}>

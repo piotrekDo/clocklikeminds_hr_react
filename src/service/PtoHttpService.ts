@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
-import APIclient from './APIclient';
-import { NewPtoRequest, PtoRequestResponse, ResolvePtoRequest, UserPtoSummary } from '../model/Pto';
 import { Page } from '../model/Page';
+import { NewPtoRequest, PtoRequestResponse, ResolvePtoRequest, UserPtoSummary } from '../model/Pto';
+import APIclient from './APIclient';
 
 export const fetchUserPtoSummary = (userId: number) => {
   const controller = new AbortController();
@@ -28,6 +28,18 @@ export const fetchPtosByAcceptor = (acceptorId: number) => {
   const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-by-acceptor', {
     params: {
       acceptorId: acceptorId,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
+
+export const fetchPtosForUserCalendar = (acceptorId: number, start: string, end: string) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-for-supervisor-calendar', {
+    params: {
+      acceptorId: acceptorId,
+      start: start,
+      end: end,
     },
   }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
   return { request: httpRequest, cancel: () => controller.abort() };

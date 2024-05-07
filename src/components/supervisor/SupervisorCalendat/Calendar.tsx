@@ -1,15 +1,18 @@
 import { GridItem, HStack, SimpleGrid, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { PtoRequestFormatted } from '../../../model/Pto';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getHolidaysPoland } from '../../Calendar/holidays';
 import { Header } from './Header';
+import useAuthentication from '../../../state/useAuthentication';
+import usePtosRequestsForSupervisorCalendar from '../../../hooks/usePtosForSupervisorCalendar';
+import { PtoRequestFormatted } from '../../../model/Pto';
 
-interface Props {
-  ptos: PtoRequestFormatted[];
-}
-export const Calendar = ({ ptos }: Props) => {
+export const Calendar = () => {
+  const queryClient = useQueryClient();
+  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']);
+
+  const user = useAuthentication(s => s.appUser);
   const [hihhlightedPto, setHighlightedPto] = useState(-1);
-  const holidays = getHolidaysPoland(2023);
   const todayLoc = new Date();
   const today = new Date(Date.UTC(todayLoc.getFullYear(), todayLoc.getMonth(), todayLoc.getDate()));
   const mondayLoc = new Date();
@@ -27,6 +30,21 @@ export const Calendar = ({ ptos }: Props) => {
     );
     startWeeks.push(firstMonday);
   });
+  const [holidaysYear, setHolidaysYear] = useState(today.getFullYear());
+  const holidays = getHolidaysPoland(holidaysYear);
+  const [start, setStart] = useState(startWeeks[0].toISOString().slice(0, 10));
+  const [end, setEnd] = useState(startWeeks[startWeeks.length - 1].toISOString().slice(0, 10));
+  const {
+    isFetching: isPtosFetching,
+    isError: isPtosFetchingError,
+    error: ptosFetchingError,
+    refetch: refetchPtos,
+  } = usePtosRequestsForSupervisorCalendar(user?.userId || -1, start, end);
+
+  useEffect(() => {
+    refetchPtos();
+  }, [start, end]);
+
   const ref = useRef<HTMLDivElement>(null);
   const [weeks, setWeeks] = useState(startWeeks);
   const [scroll, setScroll] = useState(0);
@@ -36,23 +54,41 @@ export const Calendar = ({ ptos }: Props) => {
     const scrollPos = container.scrollTop;
     const totalHeight = container.scrollHeight - container.clientHeight;
     const scrollPercent = (scrollPos / totalHeight) * 100;
+
     if (scrollPercent > 80) {
-      setWeeks(w => [
-        ...w,
-        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 7)),
-        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 14)),
-        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 21)),
-        new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 28)),
-      ]);
+      setWeeks(w => {
+        const start = new Date(
+          Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 7)
+        );
+        const end = new Date(
+          Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 28)
+        );
+        setStart(start.toISOString().slice(0, 10));
+        setEnd(end.toISOString().slice(0, 10));
+        return [
+          ...w,
+          new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 7)),
+          new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 14)),
+          new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 21)),
+          new Date(Date.UTC(w[w.length - 1].getFullYear(), w[w.length - 1].getMonth(), w[w.length - 1].getDate() + 28)),
+        ];
+      });
     }
     if (scrollPercent < 20) {
-      setWeeks(w => [
-        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 28)),
-        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 21)),
-        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 14)),
-        new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 7)),
-        ...w,
-      ]);
+      setWeeks(w => {
+        const start = new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 28));
+        const end = new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 7));
+        setStart(start.toISOString().slice(0, 10));
+        setEnd(end.toISOString().slice(0, 10));
+        return [
+          new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 28)),
+          new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 21)),
+          new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 14)),
+          new Date(Date.UTC(w[0].getFullYear(), w[0].getMonth(), w[0].getDate() - 7)),
+          ...w,
+        ];
+      });
+
       setScroll(container.scrollTop + 512);
     }
   };
@@ -92,23 +128,26 @@ export const Calendar = ({ ptos }: Props) => {
             const sundayLoc = new Date(monday);
             sundayLoc.setDate(sundayLoc.getDate() + 6);
             const sunday = new Date(Date.UTC(sundayLoc.getFullYear(), sundayLoc.getMonth(), sundayLoc.getDate()));
-            const ptosToRenderThisWeek = ptos.filter(p => {
-              return (
-                (p.ptoStart.getFullYear() === monday.getFullYear() ||
-                  p.ptoStart.getFullYear() === sunday.getFullYear() ||
-                  p.ptoEnd.getFullYear() === monday.getFullYear() ||
-                  p.ptoEnd.getFullYear() === sunday.getFullYear()) &&
-                (p.ptoStart.getMonth() === monday.getMonth() ||
-                  p.ptoStart.getMonth() === sunday.getMonth() ||
-                  p.ptoEnd.getMonth() === monday.getMonth() ||
-                  p.ptoEnd.getMonth() === sunday.getMonth()) &&
-                ((p.ptoStart >= monday && p.ptoStart <= sunday) ||
-                  (p.ptoEnd >= monday && p.ptoEnd <= sunday) ||
-                  (monday >= p.ptoStart && sunday <= p.ptoEnd) ||
-                  p.ptoStart.getDate() === monday.getDate() ||
-                  p.ptoEnd.getDate() === monday.getDate())
-              );
-            });
+            const ptosToRenderThisWeek =
+              (ptos &&
+                ptos.filter(p => {
+                  return (
+                    (p.ptoStart.getFullYear() === monday.getFullYear() ||
+                      p.ptoStart.getFullYear() === sunday.getFullYear() ||
+                      p.ptoEnd.getFullYear() === monday.getFullYear() ||
+                      p.ptoEnd.getFullYear() === sunday.getFullYear()) &&
+                    (p.ptoStart.getMonth() === monday.getMonth() ||
+                      p.ptoStart.getMonth() === sunday.getMonth() ||
+                      p.ptoEnd.getMonth() === monday.getMonth() ||
+                      p.ptoEnd.getMonth() === sunday.getMonth()) &&
+                    ((p.ptoStart >= monday && p.ptoStart <= sunday) ||
+                      (p.ptoEnd >= monday && p.ptoEnd <= sunday) ||
+                      (monday >= p.ptoStart && sunday <= p.ptoEnd) ||
+                      p.ptoStart.getDate() === monday.getDate() ||
+                      p.ptoEnd.getDate() === monday.getDate())
+                  );
+                })) ||
+              [];
             return (
               <VStack key={index} w={'100%'} h={'100%'}>
                 {sunday.getDate() < 8 && (
@@ -126,6 +165,7 @@ export const Calendar = ({ ptos }: Props) => {
                   minH={'120px'}
                   justifyContent={'start'}
                   alignItems={'start'}
+                  px={2}
                 >
                   {Array.from({ length: 7 }).map((_, indexNested) => {
                     const day = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
@@ -149,8 +189,6 @@ export const Calendar = ({ ptos }: Props) => {
                     );
                   })}
                   {ptosToRenderThisWeek.map(p => {
-                    console.log(p.ptoStart);
-                    console.log(monday);
                     const startingThisWeek = p.ptoStart.getTime() >= monday.getTime();
                     const endingThisWeek = p.ptoEnd.getTime() <= sunday.getTime();
                     const start = startingThisWeek ? (p.ptoStart.getDay() === 0 ? 7 : p.ptoStart.getDay()) : 1;
@@ -158,6 +196,7 @@ export const Calendar = ({ ptos }: Props) => {
 
                     return (
                       <Tooltip
+                        key={p.id}
                         label={`ID: ${p.id} \n ${p.ptoStart.toLocaleString('pl-PL', {
                           day: '2-digit',
                           month: 'short',
