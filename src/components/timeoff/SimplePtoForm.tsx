@@ -11,7 +11,9 @@ export const SimplePtoForm = () => {
     <Box>
       <HStack>
         <InputGroup>
-          <InputLeftAddon>Od</InputLeftAddon>
+          <InputLeftAddon bg={'#385898'} color={'whiteAlpha.900'}>
+            Od
+          </InputLeftAddon>
           <Input
             type='date'
             value={defaultStartDate}
@@ -32,7 +34,9 @@ export const SimplePtoForm = () => {
               setEndDate(endDate);
             }}
           />
-          <InputRightAddon>Do</InputRightAddon>
+          <InputRightAddon bg={'#385898'} color={'whiteAlpha.900'}>
+            Do
+          </InputRightAddon>
         </InputGroup>
       </HStack>
     </Box>

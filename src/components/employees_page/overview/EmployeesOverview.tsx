@@ -53,7 +53,7 @@ export const EmployeesOverview = () => {
           height: '90%',
         }}
       >
-        <VStack w={'100%'} h={'100%'} >
+        <VStack w={'100%'} h={'100%'}>
           <HStack
             justifyContent={'center'}
             w={'100%'}

@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface Props {

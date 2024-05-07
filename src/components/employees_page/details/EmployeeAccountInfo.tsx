@@ -69,12 +69,15 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
   return (
     <VStack
       w={'100%'}
+      p={3}
+      borderRadius={'20px'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       onMouseEnter={() => setIsPermissionDetailsHovering(true)}
       onMouseLeave={() => setIsPermissionDetailsHovering(false)}
     >
-      <VStack alignItems={'start'} w={'100%'} bg={'white'}>
+      <VStack alignItems={'start'} w={'100%'}>
         <HStack position={'relative'}>
-          <MdOutlineManageAccounts size={'50px'} color='#F27CA2' />
+          <MdOutlineManageAccounts size={'50px'} color='#385898' />
           {employee.registrationFinished && isUpdatingEmployee === 'permissionDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
@@ -99,7 +102,7 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
               </HStack>
             )}
         </HStack>
-        <Text as={'b'} fontSize={'1.3rem'}>
+        <Text as={'em'} fontWeight={'700'} fontSize={'1.3rem'}>
           Konto użytkownika
         </Text>
       </VStack>

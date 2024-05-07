@@ -9,7 +9,7 @@ interface Props {
 export const PositionsTable = ({ positions }: Props) => {
   return (
     <VStack w={'80%'} maxW={'1200px'} h={'100%'} maxH={'55vh'}>
-      <VStack w={'100%'} bg={'#F4F4F4'} p={3}>
+      <VStack w={'100%'} p={3} boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'} borderRadius={'20px 20px 0 0'} bg={'#385898'} color={'whiteAlpha.900'}>
         <HStack w={'100%'} gap={0}>
           <Box flexBasis={'50%'} as='b'></Box>
           <Text flexBasis={'100%'} as='b'>
@@ -20,7 +20,14 @@ export const PositionsTable = ({ positions }: Props) => {
           </Text>
         </HStack>
       </VStack>
-      <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+      <VStack
+        w={'100%'}
+        h={'100%'}
+        color={'blackAlpha.900'}
+        fontWeight={'500'}
+        overflowY={'scroll'}
+        style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+      >
         {positions &&
           positions.map(position => (
             <HStack

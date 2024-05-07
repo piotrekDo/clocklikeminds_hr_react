@@ -33,6 +33,8 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
   return (
     <HStack
       w={'100%'}
+      color={'blackAlpha.900'}
+      fontWeight={'500'}
       borderRadius={'30px'}
       py={1}
       px={3}

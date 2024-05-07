@@ -75,7 +75,12 @@ export const EmployeeTable = ({ employees }: Props) => {
         {`Wyświetlam ${filterResult.length} wyników z ${employees.length}`}
       </Text>
       <EmployeeTableHeader />
-      <VStack w={'100%'} h={'100%'} overflowY={'scroll'}>
+      <VStack
+        w={'100%'}
+        h={'100%'}
+        overflowY={'scroll'}
+        style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+      >
         {employees &&
           filterResult.map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
       </VStack>

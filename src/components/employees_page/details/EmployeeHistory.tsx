@@ -53,12 +53,15 @@ export const EmployeeHistory = ({ employee }: Props) => {
     <VStack
       alignItems={'start'}
       w={'100%'}
+      p={3}
+      borderRadius={'20px'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       onMouseEnter={() => setIsPosHistoryDetailsHovering(true)}
       onMouseLeave={() => setIsPosHistoryDetailsHovering(false)}
     >
-      <VStack alignItems={'start'} bg={'white'}>
+      <VStack alignItems={'start'}>
         <HStack pos={'relative'}>
-          <MdOutlineWorkHistory size={'50px'} color='#F27CA2' />
+          <MdOutlineWorkHistory size={'50px'} color='#385898' />
           {employee.registrationFinished && isUpdatingEmployee === 'posHistoryDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
@@ -83,7 +86,7 @@ export const EmployeeHistory = ({ employee }: Props) => {
               </HStack>
             )}
         </HStack>
-        <Text as={'b'} fontSize={'1.3rem'}>
+        <Text as={'em'} fontWeight={'700'} fontSize={'1.3rem'}>
           Historia stanowisk
         </Text>
       </VStack>

@@ -16,7 +16,7 @@ export const EmployeeListTab = ({ employees, isEmployeesFetching, pendingRegistr
       <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
         <HStack w={'80%'} justifyContent={'space-around'}>
           <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>
-            <GoPeople size={'3rem'} color='#F27CA2' />
+            <GoPeople size={'3rem'} color='#385898' />
             <Heading>Pracownicy</Heading>
             <Text>Lista pracowników</Text>
           </VStack>

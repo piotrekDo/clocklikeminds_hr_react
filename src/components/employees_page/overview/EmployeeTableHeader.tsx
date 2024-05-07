@@ -7,6 +7,9 @@ export const EmployeeTableHeader = () => {
   const {
     employeeTableSortType: sortOrder,
     setEmployeeTableSortType: setSortOrder,
+    firstNameFilter,
+    lastNameFilter,
+    positionFilter,
     setFirstNameFilter,
     setLastNameFilter,
     setPositionFilter,
@@ -16,7 +19,14 @@ export const EmployeeTableHeader = () => {
   const [isPositionFiltering, setIsPositionFiltering] = useState(false);
 
   return (
-    <VStack w={'100%'} bg={'#F4F4F4'} p={3}>
+    <VStack
+      w={'100%'}
+      p={3}
+      borderRadius={'20px 20px 0 0'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+      bg={'#385898'}
+      color={'whiteAlpha.900'}
+    >
       <HStack w={'100%'} gap={0}>
         <Box flexBasis={'50%'} as='b'></Box>
         <Flex flexBasis={'100%'} px={2}>
@@ -25,16 +35,17 @@ export const EmployeeTableHeader = () => {
               <Text as='b'>Imię</Text>
             </Box>
           )}
-          {isFirstNameFiltering && (
+          {(isFirstNameFiltering || firstNameFilter) && (
             <Box>
               <InputGroup size={'xs'}>
                 <Input
-                  bg={'white'}
+                  value={firstNameFilter}
                   onChange={e => {
                     setFirstNameFilter(e.target.value);
                   }}
                 />
                 <InputRightAddon
+                  cursor={'pointer'}
                   bg={'red'}
                   color={'white'}
                   onClick={() => {
@@ -68,16 +79,17 @@ export const EmployeeTableHeader = () => {
               <Text as='b'>Nazwisko</Text>
             </Box>
           )}
-          {isLastNameFiltering && (
+          {(isLastNameFiltering || lastNameFilter) && (
             <Box>
               <InputGroup size={'xs'}>
                 <Input
-                  bg={'white'}
+                  value={lastNameFilter}
                   onChange={e => {
                     setLastNameFilter(e.target.value);
                   }}
                 />
                 <InputRightAddon
+                  cursor={'pointer'}
                   bg={'red'}
                   color={'white'}
                   onClick={() => {
@@ -111,16 +123,17 @@ export const EmployeeTableHeader = () => {
               <Text as='b'>Stanowisko</Text>
             </Box>
           )}
-          {isPositionFiltering && (
+          {(isPositionFiltering || positionFilter) && (
             <Box>
               <InputGroup size={'xs'}>
                 <Input
-                  bg={'white'}
+                  value={positionFilter}
                   onChange={e => {
                     setPositionFilter(e.target.value);
                   }}
                 />
                 <InputRightAddon
+                  cursor={'pointer'}
                   bg={'red'}
                   color={'white'}
                   onClick={() => {

@@ -15,12 +15,12 @@ export const PositionsListTab = ({ positions, isPositionsFetching, handleModalTo
       <VStack w={'100%'} h={'100%'} pt={'80px'} pb={'20px'} px={'30px'} justifyContent={'start'} gap={'50px'}>
         <HStack w={'80%'} justifyContent={'space-around'}>
           <VStack alignItems={'start'} justifyContent={'center'} w={'50%'}>
-            <GoPeople size={'3rem'} color='#F27CA2' />
+            <GoPeople size={'3rem'} color='#385898' />
             <Heading>Stanowiska</Heading>
             <Text>Lista stanowisk</Text>
           </VStack>
           <Box w={'40%'} onClick={handleModalToggle}>
-            <Button w={'100%'} maxW={'200px'} h={'80px'}>
+            <Button w={'100%'} maxW={'200px'} h={'80px'} color={'whiteAlpha.900'} colorScheme='facebook'>
               <GoPlus size={'40px'} />
               <Text fontSize={'1.5rem'} as={'b'}>
                 Dodaj nowe

@@ -17,12 +17,11 @@ import { BsSuitcaseLg } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { FcApprove, FcDisapprove } from 'react-icons/fc';
 import useJobPostitions from '../../../hooks/useJobPositions';
+import useSupervisors from '../../../hooks/useSupervisors';
 import useUpdateHireData from '../../../hooks/useUpdateHireData';
 import { Employee, UpdateHireDataRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
-import useSupervisors from '../../../hooks/useSupervisors';
-import { set } from 'zod';
 
 interface Props {
   employee: Employee;
@@ -123,13 +122,16 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
     <VStack
       w={'100%'}
       alignItems={'start'}
+      p={3}
+      borderRadius={'20px'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       onMouseEnter={() => setIsHireDetailsHovering(true)}
       onMouseLeave={() => setIsHireDetailsHovering(false)}
     >
       <HStack w={'100%'} alignItems={'start'}>
         <VStack flexBasis={'100%'} alignItems={'start'}>
-          <HStack w={'50px'} pos={'relative'} bg={'white'}>
-            <BsSuitcaseLg size={'50px'} color='#F27CA2' />
+          <HStack w={'50px'} pos={'relative'}>
+            <BsSuitcaseLg size={'50px'} color='#385898' />
             {employee.registrationFinished && isUpdatingEmployee === 'hireDetails' && (
               <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                 <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
@@ -151,14 +153,14 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               </HStack>
             )}
           </HStack>
-          <Text as={'b'} fontSize={'1.3rem'}>
+          <Text as={'em'} fontWeight={'700'} fontSize={'1.3rem'}>
             Informacje o zatrudnieniu
           </Text>
         </VStack>
         <VStack flexBasis={'100%'} alignItems={'end'}>
-          <VStack w={'100%'} p={5} bg={'#F4F4F4'} maxW={'400px'}>
+          <VStack w={'100%'} p={5}  maxW={'400px'}>
             <FormControl>
-              <FormLabel>Stanowisko</FormLabel>
+              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Stanowisko</Text></FormLabel>
               {isUpdatingEmployee !== 'hireDetails' && (
                 <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
                   {(employee.position && employee.position.displayName) || 'Uzupełnij dane'}
@@ -202,13 +204,13 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                 )}
             </FormControl>
             <FormControl>
-              <FormLabel>Adres e-mail</FormLabel>
+              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Adres e-mail</Text></FormLabel>
               <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
                 {employee.userEmail}
               </Text>
             </FormControl>
             <FormControl>
-              <FormLabel>Przełożony</FormLabel>
+              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Przełożony</Text></FormLabel>
               {isUpdatingEmployee !== 'hireDetails' && (
                 <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
                   {employee.supervisorFirstName && employee.supervisorLastName
@@ -243,12 +245,12 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               )}
             </FormControl>
             <FormControl>
-              <Checkbox isChecked={employee.stillHired}>Nadal zatrudniony</Checkbox>
+              <Checkbox isChecked={employee.stillHired} color={'blackAlpha.800'} fontWeight={'700'}>Nadal zatrudniony</Checkbox>
             </FormControl>
           </VStack>
         </VStack>
       </HStack>
-      <HStack w={'100%'} border={'2px solid lightgray'} borderRadius={'10px'} p={5} mt={'20px'}>
+      <HStack w={'100%'} border={'2px solid #385898'} borderRadius={'10px'} p={5} mt={'20px'} boxShadow={'3px 3px 12px 0px rgba(66, 68, 90, 1)'}>
         <VStack flexBasis={'100%'}>
           <Box as='b'>Data rozpoczęcia pracy</Box>
           {isUpdatingEmployee !== 'hireDetails' && (
