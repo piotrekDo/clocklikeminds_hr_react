@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Heading,
   Select,
@@ -18,44 +19,37 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { PaginationBar } from '../components/supervisor/PaginationBar';
-import { PtoToAcceptCard } from '../components/supervisor/PtoToAcceptCard';
 import useEmployeeDetails from '../hooks/useEmployeeDetails';
 import useEmployeePtoRequestsSimplePagination from '../hooks/useEmployeePtoRequestsSimplePagination';
 import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useHttpErrorState from '../state/useHttpErrorState';
+import { GoPeople } from 'react-icons/go';
+import { CalendarPageIcon } from '../components/general/CalendarPageIcon';
+import { FaCircleCheck } from 'react-icons/fa6';
+import { FaCircleMinus } from 'react-icons/fa6';
+import { FaBusinessTime } from 'react-icons/fa';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { UnresolvedPtoCard } from '../components/supervisor/UnresolvedPtoCard';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
+import usePtoComparationStore from '../state/usePtoComparationState';
+import { PtoCompareModal } from '../components/supervisor/PtoCompareModal';
 
 export const SupervisorPage = () => {
-  // const [ptosToAccept, setPtosToAccept] = useState<PtoRequestFormatted[]>([]);
-  // const {
-  //   data: supervisor,
-  //   isFetching: isSupervisorFetching,
-  //   isError: isSupervisorFetchingError,
-  // } = useEmployeeDetails(appUser?.userId || -1);
-  // const {
-  //   data: ptosByAcceptor,
-  //   isFetching: isPtosFetching,
-  //   isLoading: isPtosLoading,
-  //   isError: isPtosFetchingError,
-  //   refetch: refetchPtos,
-  // } = usePtosByAcceptor(appUser?.userId || -1);
-
-  // useEffect(() => {
-  //   const ptosToAccept = (ptosByAcceptor && ptosByAcceptor?.filter(p => !p.decisionDateTime)) || [];
-  //   setPtosToAccept(ptosToAccept);
-  // }, [ptosByAcceptor]);
-
-  // return (
-  //   <VStack w={'100%'} h={'100%'}>
-  //     <Calendar ptos={ptosByAcceptor?.sort((x,y) => x.ptoStart.getTime() - y.ptoEnd.getTime()) || []}/>
-  //   </VStack>
-  // );
-
   const appUser = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
+  const { pto, setPto } = usePtoComparationStore();
   const [selectedEmployee, setSelectedEmployee] = useState(-1);
   const [selectedPage, setSelectedPage] = useState(0);
-  const pageSize = 10;
+  const pageSize = 2;
 
   const {
     data: unresolvedPtos,
@@ -83,24 +77,32 @@ export const SupervisorPage = () => {
     isUserDataError && setError(userDataError);
   }, [isUnresolvedPtosError, isUserDataError]);
 
-  return (
-    <VStack w={'100%'} h={'100%'}>
-      <VStack w={'90%'} p={5} minH={'300px'} maxH={'600px'} alignItems={'start'} overflowY={'scroll'}>
-        <Heading textAlign={'left'}>Wnioski do rozpatrzenia</Heading>
-        <VStack>
-          {isUnresolvedPtosFetching && <Spinner />}
-          {!isUnresolvedPtosFetching && unresolvedPtos && unresolvedPtos.length === 0 && (
-            <Box>
-              <Text>Brak nowych wniosków</Text>
-            </Box>
-          )}
-          {unresolvedPtos &&
-            unresolvedPtos.length > 0 &&
-            unresolvedPtos.map((pto, index) => <PtoToAcceptCard key={pto.id} pto={pto} />)}
-        </VStack>
-      </VStack>
+  useEffect(() => {
+    refetch();
+  }, [selectedPage]);
 
-      <VStack w={'100%'}>
+  const onCloseModal = () => {
+    setPto(undefined);
+  };
+
+  return (
+    <>
+      <PtoCompareModal isOpen={!!pto} onClose={onCloseModal} />
+      <VStack w={'100%'} h={'100%'}>
+        <VStack w={'100%'}>
+          <VStack w={'80%'} alignItems={'start'} justifyContent={'center'}>
+            <GoPeople size={'3rem'} color='#385898' />
+            <Heading>Urlopy do akceptacji</Heading>
+            <Text>Lista urlopów oczekujących na rozpatrzenie</Text>
+          </VStack>
+          <VStack w={'80%'}>
+            {unresolvedPtos?.map(p => (
+              <UnresolvedPtoCard key={p.id} p={p} />
+            ))}
+          </VStack>
+        </VStack>
+
+        {/* <VStack w={'100%'}>
         <HStack w={'90%'}>
           <Select
             placeholder='Pobierz wnioski pracownika'
@@ -165,7 +167,8 @@ export const SupervisorPage = () => {
             switchPage={setSelectedPage}
           />
         )}
+      </VStack> */}
       </VStack>
-    </VStack>
+    </>
   );
 };

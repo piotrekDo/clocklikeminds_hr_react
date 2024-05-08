@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PtoRequestFormatted } from '../model/Pto';
-import { fetchPtosForUserCalendar } from '../service/PtoHttpService';
+import { fetchPtosInTimeFrame } from '../service/PtoHttpService';
 
 const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string, end: string) => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['tempPto'],
     queryFn: () =>
-      fetchPtosForUserCalendar(acceptorId, start, end).request.then(res =>
+      fetchPtosInTimeFrame(acceptorId, start, end).request.then(res =>
         res.map(pto => {
           const ptoStartLocal = new Date(pto.ptoStart);
           const ptoEndLocal = new Date(pto.ptoEnd);
@@ -24,27 +24,37 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
           };
         })
       ),
-      onSuccess: data => {
-        let existingData = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']) ?? [];
-      
-        data.forEach(newData => {
-          const found = existingData.find(existing => existing.id === newData.id);
-          if (found) {
-            if (newData.decisionDateTime && !newData.wasAccepted) {
-              existingData = existingData.filter(x => x.id !== newData.id);
-            } else {
-              const index = existingData.indexOf(found);
-              existingData[index] = newData;
-            }
+    onSuccess: data => {
+      let existingData = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']) ?? [];
+
+      data.forEach(newData => {
+        const found = existingData.find(existing => existing.id === newData.id);
+        if (found) {
+          if (newData.decisionDateTime && !newData.wasAccepted) {
+            existingData = existingData.filter(x => x.id !== newData.id);
           } else {
-            if (!newData.decisionDateTime || (newData.decisionDateTime && newData.wasAccepted)) {
-              existingData.push(newData);
-            }
+            const index = existingData.indexOf(found);
+            existingData[index] = newData;
           }
-        });
-      
-        queryClient.setQueryData(['ptosForSupervisorCalendar'], existingData);
-      },
+        } else {
+          if (!newData.decisionDateTime || (newData.decisionDateTime && newData.wasAccepted)) {
+            existingData.push(newData);
+          }
+        }
+      });
+
+      existingData.sort((a, b) => {
+        const aStart = a.ptoStart.getTime();
+        const bStart = b.ptoStart.getTime();
+        const aEnd = a.ptoEnd.getTime();
+        const bEnd = b.ptoEnd.getTime();
+        if (bStart <= aEnd && bEnd >= aStart) {
+          return 0;
+        }
+        return aStart - bStart;
+      });
+      queryClient.setQueryData(['ptosForSupervisorCalendar'], existingData);
+    },
     enabled: acceptorId > 0,
   });
 };

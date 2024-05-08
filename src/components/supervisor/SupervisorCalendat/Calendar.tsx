@@ -1,18 +1,18 @@
-import { GridItem, HStack, SimpleGrid, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Box, GridItem, HStack, SimpleGrid, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getHolidaysPoland } from '../../Calendar/holidays';
-import { Header } from './Header';
-import useAuthentication from '../../../state/useAuthentication';
 import usePtosRequestsForSupervisorCalendar from '../../../hooks/usePtosForSupervisorCalendar';
 import { PtoRequestFormatted } from '../../../model/Pto';
+import useAuthentication from '../../../state/useAuthentication';
+import { getHolidaysPoland } from '../../Calendar/holidays';
+import { Header } from './Header';
 
 export const Calendar = () => {
   const queryClient = useQueryClient();
   let ptos = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']);
 
   const user = useAuthentication(s => s.appUser);
-  const [hihhlightedPto, setHighlightedPto] = useState(-1);
+  const [highlightedPto, setHighlightedPto] = useState(-1);
   const todayLoc = new Date();
   const today = new Date(Date.UTC(todayLoc.getFullYear(), todayLoc.getMonth(), todayLoc.getDate()));
   const mondayLoc = new Date();
@@ -113,9 +113,19 @@ export const Calendar = () => {
   }, []);
 
   return (
-    <VStack w={'90%'} h={'100%'} gap={0} flexShrink={0} justify={'center'} align={'center'}>
+    <VStack
+      w={'90%'}
+      h={'100%'}
+      gap={0}
+      flexShrink={0}
+      justify={'center'}
+      align={'center'}
+      borderRadius={'20px 20px 0 0'}
+      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+    >
       <Header />
       <VStack
+        p={2}
         ref={ref}
         w={'100%'}
         h={'100%'}
@@ -128,23 +138,18 @@ export const Calendar = () => {
             const sundayLoc = new Date(monday);
             sundayLoc.setDate(sundayLoc.getDate() + 6);
             const sunday = new Date(Date.UTC(sundayLoc.getFullYear(), sundayLoc.getMonth(), sundayLoc.getDate()));
+
+            const mondayTimestamp = monday.getTime();
+            const sundayTimestamp = sunday.getTime();
             const ptosToRenderThisWeek =
               (ptos &&
                 ptos.filter(p => {
+                  const ptoStartTimestamp = new Date(p.ptoStart).getTime();
+                  const ptoEndTimestamp = new Date(p.ptoEnd).getTime();
                   return (
-                    (p.ptoStart.getFullYear() === monday.getFullYear() ||
-                      p.ptoStart.getFullYear() === sunday.getFullYear() ||
-                      p.ptoEnd.getFullYear() === monday.getFullYear() ||
-                      p.ptoEnd.getFullYear() === sunday.getFullYear()) &&
-                    (p.ptoStart.getMonth() === monday.getMonth() ||
-                      p.ptoStart.getMonth() === sunday.getMonth() ||
-                      p.ptoEnd.getMonth() === monday.getMonth() ||
-                      p.ptoEnd.getMonth() === sunday.getMonth()) &&
-                    ((p.ptoStart >= monday && p.ptoStart <= sunday) ||
-                      (p.ptoEnd >= monday && p.ptoEnd <= sunday) ||
-                      (monday >= p.ptoStart && sunday <= p.ptoEnd) ||
-                      p.ptoStart.getDate() === monday.getDate() ||
-                      p.ptoEnd.getDate() === monday.getDate())
+                    (ptoStartTimestamp >= mondayTimestamp && ptoStartTimestamp <= sundayTimestamp) ||
+                    (ptoEndTimestamp >= mondayTimestamp && ptoEndTimestamp <= sundayTimestamp) ||
+                    (mondayTimestamp >= ptoStartTimestamp && sundayTimestamp <= ptoEndTimestamp)
                   );
                 })) ||
               [];
@@ -156,6 +161,7 @@ export const Calendar = () => {
                   </HStack>
                 )}
                 <SimpleGrid
+                  pos={'relative'}
                   key={index}
                   columns={7}
                   id={`week-${index}`}
@@ -166,6 +172,7 @@ export const Calendar = () => {
                   justifyContent={'start'}
                   alignItems={'start'}
                   px={2}
+                  pt={'25px'}
                 >
                   {Array.from({ length: 7 }).map((_, indexNested) => {
                     const day = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
@@ -173,7 +180,15 @@ export const Calendar = () => {
                     const isSunday = day.getDay() === 0;
                     const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
                     return (
-                      <GridItem key={indexNested} colStart={indexNested + 1} px={2} w={'100%'} h={'100%'}>
+                      <GridItem
+                        pos={'absolute'}
+                        key={indexNested}
+                        colStart={indexNested + 1}
+                        px={2}
+                        w={'100%'}
+                        h={'100%'}
+                        boxShadow={'1px 1px 2px 0px rgba(66, 68, 90, 1)'}
+                      >
                         <HStack w={'100%'}>
                           {day.getDate() != 1 && (
                             <Text color={isSunday || isHoliday ? 'red' : ''}>{day.getDate()}</Text>
@@ -209,8 +224,8 @@ export const Calendar = () => {
                           maxH={'30px'}
                           colStart={start}
                           colEnd={end + 1}
-                          bg={'teal.200'}
-                          opacity={p.pending ? '.5' : 1}
+                          bg={p.id === highlightedPto ? '#385898' : p.pending ? 'yellow.200' : 'teal.200'}
+                          opacity={p.pending ? '.5' : 0.9}
                           px={3}
                           borderRadius={
                             startingThisWeek && endingThisWeek
@@ -221,11 +236,29 @@ export const Calendar = () => {
                               ? '0 10px 10px 0'
                               : ''
                           }
-                          outline={p.id === hihhlightedPto ? 'solid' : ''}
+                          outline={p.id === highlightedPto ? 'solid' : ''}
                           onMouseEnter={() => setHighlightedPto(p.id)}
                           onMouseLeave={() => setHighlightedPto(-1)}
                         >
-                          {p.applierFirstName}
+                          <HStack h={'100%'}>
+                            {p.applierImageUrl && (
+                              <Box
+                                h={'100%'}
+                                borderRadius={'30px'}
+                                display={'flex'}
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                                overflow={'hidden'}
+                              >
+                                <img
+                                  src={p.applierImageUrl}
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                  referrerPolicy='no-referrer'
+                                />
+                              </Box>
+                            )}
+                            <Text>{p.applierFirstName}</Text>
+                          </HStack>
                         </GridItem>
                       </Tooltip>
                     );

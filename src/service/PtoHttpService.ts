@@ -33,7 +33,7 @@ export const fetchPtosByAcceptor = (acceptorId: number) => {
   return { request: httpRequest, cancel: () => controller.abort() };
 };
 
-export const fetchPtosForUserCalendar = (acceptorId: number, start: string, end: string) => {
+export const fetchPtosInTimeFrame = (acceptorId: number, start: string, end: string) => {
   const controller = new AbortController();
   const httpRequest = APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-for-supervisor-calendar', {
     params: {
