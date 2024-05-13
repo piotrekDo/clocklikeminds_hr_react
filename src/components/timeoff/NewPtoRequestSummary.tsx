@@ -1,12 +1,12 @@
-import { Button, Heading, VStack, Text, HStack } from '@chakra-ui/react';
-import usePtoRequestState from '../../state/usePtoRequestState';
-import { SimplePtoForm } from './SimplePtoForm';
-import { calculateBusinessDays } from '../Calendar/holidays';
+import { Button, HStack, Heading, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { NewPtoRequest, NewPtoRequestSummary } from '../../model/Pto';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
+import { NewPtoRequest, NewPtoRequestSummary } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
+import usePtoRequestState from '../../state/usePtoRequestState';
+import { calculateBusinessDays } from '../Calendar/holidays';
+import { SimplePtoForm } from './SimplePtoForm';
 
 export const PtoRequestSummary = () => {
   const { appUser } = useAuthentication();
@@ -56,7 +56,7 @@ export const PtoRequestSummary = () => {
         opacity={isEndDateError != undefined || !startDate || !endDate ? 0 : 1}
         colorScheme={'green'}
         position={'absolute'}
-        top={isEndDateError != undefined || !startDate || !endDate ? '-5px' :'-15px'}
+        top={isEndDateError != undefined || !startDate || !endDate ? '-5px' : '-15px'}
         transitionProperty={'top opacity'}
         transitionDuration={'250ms'}
         transitionTimingFunction={'ease-in'}

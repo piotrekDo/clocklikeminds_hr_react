@@ -95,7 +95,8 @@ export const SupervisorPage = () => {
             <Heading>Urlopy do akceptacji</Heading>
             <Text>Lista urlopów oczekujących na rozpatrzenie</Text>
           </VStack>
-          <VStack w={'80%'}>
+          <VStack w={'80%'}
+          alignItems={'start'}>
             {unresolvedPtos?.map(p => (
               <UnresolvedPtoCard key={p.id} p={p} />
             ))}

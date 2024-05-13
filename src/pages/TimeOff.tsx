@@ -24,10 +24,10 @@ export const TimeOff = () => {
           alignItems={'center'}
         >
           <HStack w={'100%'} h={'100%'} gap={10} alignItems={'start'} justifyContent={'center'}>
-            <VStack h={'100%'} w={'100%'} justifyContent={'center'} alignItems={'center'} >
+            <VStack h={'100%'} w={'100%'} justifyContent={'center'} alignItems={'center'}>
               <PtoSummary />
             </VStack>
-            <Flex w={'100%'} justifyContent={'center'} alignItems={'center'} >
+            <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
               <Calendar />
             </Flex>
           </HStack>

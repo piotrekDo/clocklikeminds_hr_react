@@ -1,9 +1,9 @@
-import { Spinner, Heading, VStack, Button } from '@chakra-ui/react';
-import React from 'react';
-import { PtoCard } from './PtoCard';
-import { PtoRequestResponse } from '../../model/Pto';
-import { Page } from '../../model/Page';
+import { Button, Heading, Spinner, VStack } from '@chakra-ui/react';
 import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query';
+import React from 'react';
+import { Page } from '../../model/Page';
+import { PtoRequestResponse } from '../../model/Pto';
+import { PtoCard } from './PtoCard';
 
 interface Props {
   isLoadingPtos: boolean;

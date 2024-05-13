@@ -16,11 +16,17 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
   const handleBackArrowClick = () => {
     setSelectedEmployee(undefined);
     setIsUpdatingEmployee(undefined);
-  }
-  
+  };
+
   return (
     <HStack justifyContent={'center'} w={'50vw'} position={'relative'}>
-      <Box position={'absolute'} left={0} cursor={'pointer'} onClick={e => handleBackArrowClick()}>
+      <Box
+        position={'absolute'}
+        left={0}
+        cursor={'pointer'}
+        borderRadius={'50%'}
+        onClick={e => handleBackArrowClick()}
+      >
         <IoArrowBack size={'40px'} color='' />
       </Box>
       {!employee.registrationFinished && (
@@ -31,7 +37,9 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
         </Tooltip>
       )}
       <Heading display={'flex'} gap={5}>
-        <Text>{employee.firstName} {employee.lastName}</Text>
+        <Text>
+          {employee.firstName} {employee.lastName}
+        </Text>
         {employee?.imageUrl && (
           <Box
             w={'40px'}

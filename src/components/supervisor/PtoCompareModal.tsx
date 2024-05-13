@@ -69,15 +69,13 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
   const weeksToDisplay: Date[] = [];
   if (startMondayLoc && endMondayLoc) {
     const week = new Date(
-      Date.UTC(startMondayLoc.getFullYear(), startMondayLoc.getMonth(), startMondayLoc.getDate() - 7)
+      Date.UTC(startMondayLoc.getFullYear(), startMondayLoc.getMonth(), startMondayLoc.getDate() - 7, 0)
     );
     weeksToDisplay.push(week);
     while (weeksToDisplay[weeksToDisplay.length - 1] <= endMondayLoc) {
       const i = weeksToDisplay.length - 1;
       const newWeek: Date = new Date(
-        weeksToDisplay[i].getFullYear(),
-        weeksToDisplay[i].getMonth(),
-        weeksToDisplay[i].getDate() + 7
+        Date.UTC(weeksToDisplay[i].getFullYear(), weeksToDisplay[i].getMonth(), weeksToDisplay[i].getDate() + 7, 0)
       );
       weeksToDisplay.push(newWeek);
     }
@@ -85,9 +83,19 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
 
   useEffect(() => {
     if (weeksToDisplay.length > 0) {
+      const fetchEndDay = new Date(
+        Date.UTC(
+          weeksToDisplay[weeksToDisplay.length - 1].getFullYear(),
+          weeksToDisplay[weeksToDisplay.length - 1].getMonth(),
+          weeksToDisplay[weeksToDisplay.length - 1].getDate() + 6,
+          0
+        )
+      );
+      console.log(fetchEndDay)
+
       setUserId(user?.userId || -1);
       setFetchStartDate(weeksToDisplay[0].toISOString().slice(0, 10));
-      setFetchEndDate(weeksToDisplay[weeksToDisplay.length - 1].toISOString().slice(0, 10));
+      setFetchEndDate(fetchEndDay.toISOString().slice(0, 10));
     }
   }, [pto]);
 

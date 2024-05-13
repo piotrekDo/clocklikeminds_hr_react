@@ -30,8 +30,6 @@ export const PtoSummary = () => {
     ptoError && setError(ptoError);
   }, [summaryError, ptoError]);
 
-  // '#F5F4F6'
-
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack
