@@ -48,19 +48,19 @@ export const EmployeeDetails = () => {
                   {!employee.registrationFinished && (
                     <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>
                   )}
-                  <Box w={'90%'} mt={'70px'}>
+                  <Box w={'100%'} mt={'20px'}>
                     <EmployeeGeneralInformation employee={employee} />
                   </Box>
-                  <Box w={'90%'} >
+                  <Box w={'100%'} >
                     <EmployeeContractinformation employee={employee} />
                   </Box>
-                  <Box w={'90%'} >
+                  <Box w={'100%'} >
                     <EmployeeTimeOffDetails employee={employee} />
                   </Box>
-                  <Box w={'90%'} >
+                  <Box w={'100%'} >
                     <EmployeeHistory employee={employee} />
                   </Box>
-                  <Box w={'90%'} mb={'70px'}>
+                  <Box w={'100%'} mb={'70px'}>
                     <EmployeeAccountInfo employee={employee} />
                   </Box>
                 </VStack>

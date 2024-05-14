@@ -94,7 +94,7 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
           bg={'red'}
           position={'absolute'}
           left={'-10px'}
-          bottom={'-20px'}
+          top={'15px'}
           opacity={'.4'}
           borderRadius={'50%'}
         >

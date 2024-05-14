@@ -30,7 +30,7 @@ export const PtoCard = ({ pto }: Props) => {
       maxW={'800px'}
       flexShrink={0}
       flexGrow={0}
-      mb={1}
+      mb={2}
       px={2}
       justifyContent={'start'}
       alignItems={'center'}
@@ -39,10 +39,13 @@ export const PtoCard = ({ pto }: Props) => {
       bg={
         pto.pending ? 'rgba(255, 255, 120, .4)' : pto.wasAccepted ? 'rgba(20, 255, 120, .4)' : 'rgba(255, 120, 120, .4)'
       }
-      transitionProperty={'height'}
-      transitionDuration={'250ms'}
       boxShadow={'6px 4px 4px 0px rgba(66, 68, 90, 1)'}
       color={'blackAlpha.800'}
+      _hover={{
+        transform: 'translateY(-2px)'
+      }}
+      transitionProperty={'transform'}
+      transitionDuration={'.2s'}
     >
       <Flex
         position={'absolute'}

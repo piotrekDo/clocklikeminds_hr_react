@@ -51,6 +51,8 @@ export const EmployeeHistory = ({ employee }: Props) => {
 
   return (
     <VStack
+      bg={'#385898'}
+      color={'whiteAlpha.800'}
       alignItems={'start'}
       w={'100%'}
       p={3}
@@ -61,7 +63,7 @@ export const EmployeeHistory = ({ employee }: Props) => {
     >
       <VStack alignItems={'start'}>
         <HStack pos={'relative'}>
-          <MdOutlineWorkHistory size={'50px'} color='#385898' />
+          <MdOutlineWorkHistory size={'50px'}/>
           {employee.registrationFinished && isUpdatingEmployee === 'posHistoryDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />

@@ -120,6 +120,8 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
 
   return (
     <VStack
+      bg={'#385898'}
+      color={'whiteAlpha.800'}
       w={'100%'}
       alignItems={'start'}
       p={3}
@@ -131,7 +133,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
       <HStack w={'100%'} alignItems={'start'}>
         <VStack flexBasis={'100%'} alignItems={'start'}>
           <HStack w={'50px'} pos={'relative'}>
-            <BsSuitcaseLg size={'50px'} color='#385898' />
+            <BsSuitcaseLg size={'50px'} />
             {employee.registrationFinished && isUpdatingEmployee === 'hireDetails' && (
               <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                 <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
@@ -158,29 +160,30 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
           </Text>
         </VStack>
         <VStack flexBasis={'100%'} alignItems={'end'}>
-          <VStack w={'100%'} p={5}  maxW={'400px'}>
+          <VStack w={'100%'} p={5} maxW={'400px'}>
             <FormControl>
-              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Stanowisko</Text></FormLabel>
+              <FormLabel>
+                <Text fontWeight={'700'}>Stanowisko</Text>
+              </FormLabel>
               {isUpdatingEmployee !== 'hireDetails' && (
-                <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
+                <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1}>
                   {(employee.position && employee.position.displayName) || 'Uzupełnij dane'}
                 </Text>
               )}
               {isUpdatingEmployee === 'hireDetails' && (
                 <Select
-                  bg={'white'}
                   placeholder={employee.position ? '' : 'Uzupełnij dane'}
                   onChange={e => setPositionKey(e.target.value)}
                 >
                   {employee.position && (
                     <>
-                      <optgroup label='Obecne:'>
+                      <optgroup label='Obecne:' style={{ background: '#385898' }}>
                         <option value={employee.position.positionKey}>{employee.position.displayName}</option>
                       </optgroup>
-                      <optgroup></optgroup>
+                      <optgroup style={{ background: '#385898' }}></optgroup>
                     </>
                   )}
-                  <optgroup label='---'>
+                  <optgroup label='---' style={{ background: '#385898' }}>
                     {positions?.map(p => (
                       <option key={p.positionKey} value={p.positionKey}>
                         {p.displayName}
@@ -195,7 +198,6 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                   <>
                     <FormLabel mt={2}>Zmiana od:</FormLabel>
                     <Input
-                      bg={'white'}
                       type='date'
                       defaultValue={getTodayInput()}
                       onChange={e => setPositionChangeDate(e.target.value)}
@@ -204,15 +206,19 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
                 )}
             </FormControl>
             <FormControl>
-              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Adres e-mail</Text></FormLabel>
-              <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
+              <FormLabel>
+                <Text fontWeight={'700'}>Adres e-mail</Text>
+              </FormLabel>
+              <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1}>
                 {employee.userEmail}
               </Text>
             </FormControl>
             <FormControl>
-              <FormLabel><Text color={'blackAlpha.800'} fontWeight={'700'}>Przełożony</Text></FormLabel>
+              <FormLabel>
+                <Text fontWeight={'700'}>Przełożony</Text>
+              </FormLabel>
               {isUpdatingEmployee !== 'hireDetails' && (
-                <Text border={'2px solid lightgray'} bg={'white'} borderRadius={'5px'} p={1}>
+                <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1}>
                   {employee.supervisorFirstName && employee.supervisorLastName
                     ? `${employee.supervisorFirstName} ${employee.supervisorLastName}`
                     : 'Uzupełnij dane'}
@@ -220,21 +226,20 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               )}
               {isUpdatingEmployee === 'hireDetails' && (
                 <Select
-                  bg={'white'}
                   placeholder={employee.supervisorId ? '' : 'Uzupełnij dane'}
                   onChange={e => setSupervisorId(+e.target.value)}
                 >
                   {employee.supervisorId && (
                     <>
-                      <optgroup label='Obecne:'>
+                      <optgroup label='Obecne:' style={{ background: '#385898' }}>
                         <option value={employee.supervisorId}>
                           {employee.supervisorFirstName} {employee.supervisorLastName}
                         </option>
                       </optgroup>
-                      <optgroup></optgroup>
+                      <optgroup style={{ background: '#385898' }}></optgroup>
                     </>
                   )}
-                  <optgroup label='---'>
+                  <optgroup label='---' style={{ background: '#385898' }}>
                     {supervisors?.map(s => (
                       <option key={s.appUserId} value={s.appUserId}>
                         {s.firstName} {s.lastName}
@@ -245,12 +250,21 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               )}
             </FormControl>
             <FormControl>
-              <Checkbox isChecked={employee.stillHired} color={'blackAlpha.800'} fontWeight={'700'}>Nadal zatrudniony</Checkbox>
+              <Checkbox isChecked={employee.stillHired} fontWeight={'700'}>
+                Nadal zatrudniony
+              </Checkbox>
             </FormControl>
           </VStack>
         </VStack>
       </HStack>
-      <HStack w={'100%'} border={'2px solid #385898'} borderRadius={'10px'} p={5} mt={'20px'} boxShadow={'3px 3px 12px 0px rgba(66, 68, 90, 1)'}>
+      <HStack
+        w={'100%'}
+        border={'2px solid #385898'}
+        borderRadius={'10px'}
+        p={5}
+        mt={'20px'}
+        boxShadow={'3px 3px 12px 0px rgba(66, 68, 90, 1)'}
+      >
         <VStack flexBasis={'100%'}>
           <Box as='b'>Data rozpoczęcia pracy</Box>
           {isUpdatingEmployee !== 'hireDetails' && (

@@ -20,8 +20,8 @@ export const Calendar = () => {
 
   return (
     <VStack
-      // bg={'rgba(66, 68, 90, 1)'}
       bg={'#385898'}
+      opacity={'.9'}
       py={1}
       w={'100%'}
       maxH={'calc(100vh - 100px)'}

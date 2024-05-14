@@ -68,6 +68,8 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
 
   return (
     <VStack
+      bg={'#385898'}
+      color={'whiteAlpha.800'}
       w={'100%'}
       p={3}
       borderRadius={'20px'}
@@ -77,7 +79,7 @@ export const EmployeeAccountInfo = ({ employee }: Props) => {
     >
       <VStack alignItems={'start'} w={'100%'}>
         <HStack position={'relative'}>
-          <MdOutlineManageAccounts size={'50px'} color='#385898' />
+          <MdOutlineManageAccounts size={'50px'} />
           {employee.registrationFinished && isUpdatingEmployee === 'permissionDetails' && (
             <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
               <FcApprove size={'2rem'} onClick={() => handleSubmit()} />

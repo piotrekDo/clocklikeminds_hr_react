@@ -73,6 +73,8 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
 
   return (
     <VStack
+      bg={'#385898'}
+      color={'whiteAlpha.800'}
       alignItems={'start'}
       p={3}
       borderRadius={'20px'}
@@ -83,7 +85,7 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
       <HStack w={'100%'} maxW={'1000px'}>
         <VStack alignItems={'start'}>
           <HStack w={'50px'} pos={'relative'}>
-            <LuPalmtree size={'50px'} color='#385898' />
+            <LuPalmtree size={'50px'}/>
             {employee.registrationFinished && isUpdatingEmployee === 'holidayDetails' && (
               <HStack cursor={'pointer'} position={'absolute'} opacity={1} right={'-100'}>
                 <FcApprove size={'2rem'} onClick={() => handleSubmit()} />
@@ -110,7 +112,14 @@ export const EmployeeTimeOffDetails = ({ employee }: Props) => {
           </Text>
         </VStack>
       </HStack>
-      <HStack w={'100%'} border={'2px solid #385898'} borderRadius={'10px'} p={5} mt={'20px'} boxShadow={'3px 3px 12px 0px rgba(66, 68, 90, 1)'}>
+      <HStack
+        w={'100%'}
+        border={'2px solid #385898'}
+        borderRadius={'10px'}
+        p={5}
+        mt={'20px'}
+        boxShadow={'3px 3px 12px 0px rgba(66, 68, 90, 1)'}
+      >
         <VStack flexBasis={'100%'}>
           <HStack w={'100%'}>
             <Text flexBasis={'100%'} as={'b'}>

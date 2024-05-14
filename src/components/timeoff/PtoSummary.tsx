@@ -9,7 +9,6 @@ import { NewPtoButton } from './NewPtoButton';
 import { PtoRequestSummary } from './NewPtoRequestSummary';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
 import { PtoRequestHistory } from './PtoRequestHistory';
-import { backgroundGradient } from '../../library';
 
 export const PtoSummary = () => {
   const appuser = useAuthentication(s => s.appUser);
@@ -32,13 +31,7 @@ export const PtoSummary = () => {
 
   return (
     <VStack w={'100%'} h={'100%'}>
-      <HStack
-        justifyContent={'center'}
-        alignItems={'start'}
-        fontWeight={'600'}
-        w={'100%'}
-        gap={5}
-      >
+      <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
         <VStack
           w={'100%'}
           h={'140px'}
