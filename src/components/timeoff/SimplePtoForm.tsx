@@ -1,6 +1,7 @@
 import { Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/input';
 import { Box, HStack } from '@chakra-ui/react';
 import usePtoRequestState from '../../state/usePtoRequestState';
+import { date } from 'zod';
 
 interface Props {
   isLoading: boolean;
@@ -23,9 +24,14 @@ export const SimplePtoForm = ({ isLoading }: Props) => {
             type='date'
             value={defaultStartDate}
             onChange={e => {
-              const localDate = new Date(e.target.value);
-              const startDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
-              setStartDate(startDate);
+              const val = e.target.value;
+              let localDate;
+              if (val) {
+                localDate = new Date(val);
+              }
+              const newStartDate =
+                localDate && new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
+              setStartDate(newStartDate);
             }}
           />
         </InputGroup>
@@ -33,12 +39,16 @@ export const SimplePtoForm = ({ isLoading }: Props) => {
           <Input
             isDisabled={isLoading}
             type='date'
-            
             value={defaultEndDate}
             onChange={e => {
-              const localDate = new Date(e.target.value);
-              const endDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
-              setEndDate(endDate);
+              const val = e.target.value;
+              let localDate;
+              if (val) {
+                localDate = new Date(val);
+              }
+              const newEndDate =
+                localDate && new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
+              setEndDate(newEndDate);
             }}
           />
           <InputRightAddon bg={'#385898'} color={'whiteAlpha.900'}>
