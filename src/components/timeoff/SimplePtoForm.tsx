@@ -2,7 +2,11 @@ import { Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/i
 import { Box, HStack } from '@chakra-ui/react';
 import usePtoRequestState from '../../state/usePtoRequestState';
 
-export const SimplePtoForm = () => {
+interface Props {
+  isLoading: boolean;
+}
+
+export const SimplePtoForm = ({ isLoading }: Props) => {
   const { startDate, endDate, setStartDate, setEndDate } = usePtoRequestState();
   const defaultStartDate = startDate ? startDate.toISOString().slice(0, 10) : '';
   const defaultEndDate = endDate ? endDate.toISOString().slice(0, 10) : '';
@@ -15,6 +19,7 @@ export const SimplePtoForm = () => {
             Od
           </InputLeftAddon>
           <Input
+            isDisabled={isLoading}
             type='date'
             value={defaultStartDate}
             onChange={e => {
@@ -26,7 +31,9 @@ export const SimplePtoForm = () => {
         </InputGroup>
         <InputGroup>
           <Input
+            isDisabled={isLoading}
             type='date'
+            
             value={defaultEndDate}
             onChange={e => {
               const localDate = new Date(e.target.value);

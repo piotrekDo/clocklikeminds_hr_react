@@ -13,7 +13,7 @@ export const PtoRequestSummary = () => {
   const { startDate, endDate, isEndDateError, setStartDate, setEndDate, setIsRequestingPto, setIsEndDateError } =
     usePtoRequestState();
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
-  const { mutate: sendRequest, isSuccess, isError, error } = useNewPtoRequest();
+  const { mutate: sendRequest, isSuccess, isError, error, isLoading } = useNewPtoRequest();
   const setHttpError = useHttpErrorState(s => s.setError);
 
   useEffect(() => {
@@ -48,10 +48,12 @@ export const PtoRequestSummary = () => {
   return (
     <VStack p={6} h={'100%'} w={'100%'} position={'relative'}>
       <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
-      <SimplePtoForm />
+      <SimplePtoForm isLoading={isLoading} />
       {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
       {isEndDateError && <Text>{isEndDateError}</Text>}
       <Button
+        isDisabled={isLoading}
+        isLoading={isLoading}
         cursor={isEndDateError != undefined || !startDate || !endDate ? 'auto' : 'pointer'}
         opacity={isEndDateError != undefined || !startDate || !endDate ? 0 : 1}
         colorScheme={'green'}
@@ -66,6 +68,7 @@ export const PtoRequestSummary = () => {
       </Button>
       <HStack zIndex={10} h={'50px'} w={'50%'} justifyContent={'space-between'} position={'absolute'} bottom={'-40px'}>
         <Button
+          isDisabled={isLoading}
           w={'150px'}
           colorScheme='yellow'
           onClick={() => {
@@ -77,6 +80,7 @@ export const PtoRequestSummary = () => {
           Anuluj
         </Button>
         <Button
+          isDisabled={isLoading}
           w={'150px'}
           colorScheme='teal'
           onClick={() => {

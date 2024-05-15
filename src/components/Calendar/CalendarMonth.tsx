@@ -1,20 +1,4 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Text,
-  useFormControlStyles,
-} from '@chakra-ui/react';
-import { FaRegCalendarCheck } from 'react-icons/fa6';
+import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import { PtoRequestFormatted } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
 
@@ -42,8 +26,8 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
       borderRadius={'10px'}
       display={'flex'}
       flexDirection={'column'}
-      _hover={{ transform: 'scale(1.1)' }}
-      transition={'transform .15s ease-in'}
+      _hover={{ transform: 'scale(1.05)' }}
+      transition={'transform .1s ease-in'}
     >
       <Text as={'b'} fontSize={{ base: '1rem', monitorM: '1.1rem' }}>
         {month.toLocaleString('pl-PL', { month: 'long' })}
@@ -68,97 +52,39 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
             day.getDate() === today.getDate();
 
           return (
-            <Popover key={index}>
-              <PopoverTrigger>
-                <GridItem
-                  key={index}
-                  w={'100%'}
-                  display={'flex'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  cursor={isDayOff ? 'pointer' : 'default'}
-                  bgColor={
-                    (newPtoStartDate && dayTimestamp === startTimestamp) ||
-                    (newPtoStartDate &&
-                      newPtoEndDate &&
-                      dayTimestamp >= startTimestamp! &&
-                      dayTimestamp <= endTimestamp!)
-                      ? 'green'
-                      : isDayOff
-                      ? isDayOff.pending
-                        ? 'rgba(255, 255, 120, .6)'
-                        : 'rgba(20, 255, 120, .6)'
-                      : ''
-                  }
-                >
-                  <Flex
-                    p={2}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    w={'10px'}
-                    h={'10px'}
-                    borderRadius={'30%'}
-                    bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
-                    // color={isToday ? 'teal' : ''}
-                    fontSize={{ base: '.8rem', monitorM: '.9rem', '4K': '.9rem' }}
-                    title={isHoliday}
-                    border={isToday ? 'solid' : ''}
-                  >
-                    <Text>{day.getDate()}</Text>
-                  </Flex>
-                </GridItem>
-              </PopoverTrigger>
-              {isDayOff && (
-                <PopoverContent color='blackAlpha.900' bg={isDayOff ? isDayOff.pending ? 'rgba(255, 255, 120, 1)' : 'rgba(20, 255, 120, 1)' : ''}>
-                  <PopoverArrow />
-                  <PopoverCloseButton />
-                  <PopoverHeader>
-                    <Text>ID wniosku: {isDayOff.id}</Text>
-                    <Text>
-                      {isDayOff.applierFirstName} {isDayOff.applierLastName}
-                    </Text>
-                  </PopoverHeader>
-                  <PopoverBody >
-                    <Text>
-                      Wniosek urlopowy z dnia
-                      {isDayOff.requestDateTime.toLocaleString('pl-PL', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </Text>
-                    <HStack>
-                      <HStack>
-                        <FaRegCalendarCheck />
-                        <Box>
-                          {isDayOff.ptoStart.toLocaleString('pl-PL', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: '2-digit',
-                          })}
-                        </Box>
-                      </HStack>
-                      <HStack>
-                        <Box>
-                          {isDayOff.ptoEnd.toLocaleString('pl-PL', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: '2-digit',
-                          })}
-                        </Box>
-                      </HStack>
-                    </HStack>
-                    <Text>
-                      {isDayOff.totalDays} dni łącznie{' '}
-                      {isDayOff.totalDays > 1 && `,w tym ${isDayOff.businessDays} roboczych`}
-                    </Text>
-                    {isDayOff.pending && <Text>Oczekujący</Text>}
-                  </PopoverBody>
-                </PopoverContent>
-              )}
-            </Popover>
+            <GridItem
+              key={index}
+              w={'100%'}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              // cursor={isDayOff ? 'pointer' : 'default'}
+              bgColor={
+                (newPtoStartDate && dayTimestamp === startTimestamp) ||
+                (newPtoStartDate && newPtoEndDate && dayTimestamp >= startTimestamp! && dayTimestamp <= endTimestamp!)
+                  ? 'green'
+                  : isDayOff
+                  ? isDayOff.pending
+                    ? 'rgba(255, 255, 120, .6)'
+                    : 'rgba(20, 255, 120, .6)'
+                  : ''
+              }
+            >
+              <Flex
+                p={2}
+                justifyContent={'center'}
+                alignItems={'center'}
+                w={'10px'}
+                h={'10px'}
+                borderRadius={'30%'}
+                bgColor={isHoliday ? 'red.300' : day.getDay() === 0 ? 'red.200' : ''}
+                fontSize={{ base: '.8rem', monitorM: '.9rem', '4K': '.9rem' }}
+                title={isHoliday}
+                outline={isToday ? 'solid' : ''}
+              >
+                <Text>{day.getDate()}</Text>
+              </Flex>
+            </GridItem>
           );
         })}
       </Grid>

@@ -42,7 +42,7 @@ export const PtoCard = ({ pto }: Props) => {
       boxShadow={'6px 4px 4px 0px rgba(66, 68, 90, 1)'}
       color={'blackAlpha.800'}
       _hover={{
-        transform: 'translateY(-2px)'
+        transform: 'translateY(-2px)',
       }}
       transitionProperty={'transform'}
       transitionDuration={'.2s'}
