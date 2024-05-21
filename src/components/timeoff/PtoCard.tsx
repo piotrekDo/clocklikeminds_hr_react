@@ -5,6 +5,8 @@ import { GoCheckCircleFill, GoClockFill, GoXCircleFill } from 'react-icons/go';
 import { MdSupervisorAccount } from 'react-icons/md';
 import { PtoRequestResponse } from '../../model/Pto';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
+import { FaUserTie } from "react-icons/fa";
+
 
 interface Props {
   pto: PtoRequestResponse;
@@ -123,14 +125,14 @@ export const PtoCard = ({ pto }: Props) => {
               <Text
                 style={{
                   position: 'absolute',
-                  fontSize: '.8rem',
+                  fontSize: '.6rem',
                   width: '130px',
                   right: '-5px',
                   opacity: daysTotalHovering ? 1 : 0,
                   visibility: daysTotalHovering ? 'visible' : 'hidden',
                   transitionProperty: 'transform, visibility, opacity',
                   transitionDuration: '.2s',
-                  transform: daysTotalHovering ? 'translateX(-35px)' : 'translateX(0)',
+                  transform: daysTotalHovering ? 'translateX(-1px)' : 'translateX(0)',
                 }}
               >
                 Dni kalendarzowych
@@ -139,6 +141,9 @@ export const PtoCard = ({ pto }: Props) => {
               <Box>{pto.totalDays}</Box>
             </HStack>
           </VStack>
+          <Box >
+            <FaUserTie color={'#385898'} size={'40px'}/>
+          </Box>
           <Flex
             position={'absolute'}
             justifyContent={'space-evenly'}

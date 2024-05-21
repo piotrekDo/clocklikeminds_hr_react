@@ -4,7 +4,6 @@ import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/
 import usePtoRequestsForSelectedYear from '../../hooks/usePtoRequestsForSelectedyear';
 import useAuthentication from '../../state/useAuthentication';
 import { CalendarGrid } from './CalendarGrid';
-import { PtoCard } from '../timeoff/PtoCard';
 
 export const Calendar = () => {
   const { appUser } = useAuthentication();

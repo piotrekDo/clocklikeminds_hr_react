@@ -1,5 +1,7 @@
 export interface PtoRequestResponse {
   id: number;
+  leaveType: string;
+  demand: boolean;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: string;
@@ -25,6 +27,8 @@ export interface PtoRequestResponse {
 
 export interface PtoRequestFormatted {
   id: number;
+  leaveType: string;
+  demand: boolean;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: Date;
