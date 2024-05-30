@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, VStack } from '@chakra-ui/react';
+import { Button, HStack, Heading, Select, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
 import { NewPtoRequest, NewPtoRequestSummary } from '../../model/Pto';
@@ -40,14 +40,30 @@ export const PtoRequestSummary = () => {
       ptoStart: startDate.toISOString().slice(0, 10),
       ptoEnd: endDate.toISOString().slice(0, 10),
       applierId: appUser.userId,
-      acceptorId: 2,
+      acceptorId: undefined,
+      ptoType: 'pto_on_demand',
+      occasionalType: undefined,
+      saturdayHolidayDate: undefined,
     };
     sendRequest(request);
   };
 
   return (
-    <VStack p={6} h={'100%'} w={'100%'} position={'relative'}>
+    <VStack p={6} h={'80%'} w={'100%'} position={'relative'} border={'solid'}>
       <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
+      <Select maxW={'500px'} placeholder={'Rodzaj urlopu'} onChange={e => console.log(e.target.value)}>
+            <>
+              <optgroup>
+                <option selected={true} value={'pto'}>
+                  Urlop wypoczynkowy
+                </option>
+                <option value={'demand'}>Urlop wypoczynkowy na żądanie</option>
+                <option value={'saturday'}>Odbiór dnia wolnego za święto wypadające w sobotę</option>
+                <option value={'oaccasion'}>Urlop okolicznościowy</option>
+                <option value={'child'}>Opieka nad dzieckiem</option>
+              </optgroup>
+            </>
+          </Select>
       <SimplePtoForm isLoading={isLoading} />
       {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
       {isEndDateError && <Text>{isEndDateError}</Text>}

@@ -1,3 +1,12 @@
+export type PtoType = 'pto' | 'pto_on_demand' | 'child_care' | 'on_saturday_pto' | 'occasional_leave'
+
+export interface OccasionalLeaveType {
+  id: number;
+  occasionalType: string;
+  descriptionPolish: string;
+  days: number;
+}
+
 export interface PtoRequestResponse {
   id: number;
   leaveType: string;
@@ -70,6 +79,9 @@ export interface NewPtoRequest {
   ptoEnd: string;
   applierId: number;
   acceptorId: number | undefined;
+  ptoType: PtoType | undefined;
+  occasionalType: string | undefined;
+  saturdayHolidayDate: string | undefined;
 }
 
 export interface ResolvePtoRequest {

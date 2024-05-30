@@ -6,12 +6,13 @@ import { Uppernavbar } from './components/nav/UpperNavbar';
 import { backgroundGradient, loggedBackgorund } from './library';
 import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
+import useMetaData from './hooks/useMetaData';
 
 function App() {
   const { appUser } = useAuthentication();
   const { error } = useHttpErrorState();
   const toast = useToast();
-
+  const data = useMetaData();
   useEffect(() => {
     if (error) {
       toast({
@@ -50,7 +51,6 @@ function App() {
         // bg={'white'}
         overflowY={'scroll'}
         style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
-
       >
         <Outlet />
       </Box>

@@ -2,8 +2,11 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar } from '../components/Calendar/Calendar';
 import { PtoSummary } from '../components/timeoff/PtoSummary';
+import { PtoRequestSummary } from '../components/timeoff/NewPtoRequestSummary';
+import usePtoRequestState from '../state/usePtoRequestState';
 
 export const TimeOff = () => {
+  const isRequestingPto = usePtoRequestState(s => s.isRequestingPto);
   return (
     <AnimatePresence>
       <motion.div
@@ -25,7 +28,8 @@ export const TimeOff = () => {
         >
           <HStack w={'100%'} h={'100%'} gap={10} alignItems={'start'} justifyContent={'center'}>
             <VStack h={'100%'} w={'100%'} justifyContent={'center'} alignItems={'center'}>
-              <PtoSummary />
+              {!isRequestingPto && <PtoSummary />}
+              {isRequestingPto && <PtoRequestSummary />}
             </VStack>
             <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
               <Calendar />

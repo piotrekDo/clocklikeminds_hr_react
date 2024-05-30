@@ -9,6 +9,7 @@ import { NewPtoButton } from './NewPtoButton';
 import { PtoRequestSummary } from './NewPtoRequestSummary';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
 import { PtoRequestHistory } from './PtoRequestHistory';
+import { NewRequestModal } from './NewRequestModal';
 
 export const PtoSummary = () => {
   const appuser = useAuthentication(s => s.appUser);
@@ -29,7 +30,7 @@ export const PtoSummary = () => {
     ptoError && setError(ptoError);
   }, [summaryError, ptoError]);
 
-  console.log(ptos)
+  console.log(ptos);
 
   return (
     <VStack w={'100%'} h={'100%'}>
@@ -41,14 +42,7 @@ export const PtoSummary = () => {
           borderRadius={'20px'}
           transition={'background .25s ease-in'}
         >
-          {!isRequestingPto && (
-            <PtoDaysLeftUsedSummary
-              isUserActive={appuser?.isActive || false}
-              summary={summary}
-              isFetching={isFetching}
-            />
-          )}
-          {isRequestingPto && <PtoRequestSummary />}
+          <PtoDaysLeftUsedSummary isUserActive={appuser?.isActive || false} summary={summary} isFetching={isFetching} />
         </VStack>
         {appuser?.isActive && <NewPtoButton />}
       </HStack>
@@ -62,6 +56,7 @@ export const PtoSummary = () => {
           fetchNextPage={fetchNextPage}
         />
       </VStack>
+      {isRequestingPto && <NewRequestModal />}
     </VStack>
   );
 };
