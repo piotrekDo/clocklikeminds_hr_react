@@ -1,17 +1,23 @@
 import { Button, HStack, Heading, Select, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
-import { NewPtoRequest, NewPtoRequestSummary } from '../../model/Pto';
+import { NewPtoRequest, NewPtoRequestSummary, PtoType } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { calculateBusinessDays } from '../Calendar/holidays';
 import { SimplePtoForm } from './SimplePtoForm';
+import { useQueryClient } from '@tanstack/react-query';
+import { MetaData } from '../../model/MetaData';
 
 export const PtoRequestSummary = () => {
+  const queryClient = useQueryClient();
+  const meta: MetaData | undefined = queryClient.getQueryData(['meta']);
   const { appUser } = useAuthentication();
   const { startDate, endDate, isEndDateError, setStartDate, setEndDate, setIsRequestingPto, setIsEndDateError } =
     usePtoRequestState();
+  const [selectedPtoType, setSelectedPtoType] = useState<PtoType>('pto');
+  const [occasionalType, setOccasionalType] = useState<string | undefined>(undefined);
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
   const { mutate: sendRequest, isSuccess, isError, error, isLoading } = useNewPtoRequest();
   const setHttpError = useHttpErrorState(s => s.setError);
@@ -41,29 +47,63 @@ export const PtoRequestSummary = () => {
       ptoEnd: endDate.toISOString().slice(0, 10),
       applierId: appUser.userId,
       acceptorId: undefined,
-      ptoType: 'pto_on_demand',
-      occasionalType: undefined,
+      ptoType: selectedPtoType,
+      occasionalType: occasionalType,
       saturdayHolidayDate: undefined,
     };
+    console.log(request);
     sendRequest(request);
   };
 
   return (
-    <VStack p={6} h={'80%'} w={'100%'} position={'relative'} border={'solid'}>
+    <VStack
+      p={6}
+      h={'80%'}
+      w={'100%'}
+      position={'relative'}
+      backgroundColor={'rgba(56,88,152, .6)'}
+      color={'whiteAlpha.900'}
+      borderRadius={'30px'}
+    >
       <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
-      <Select maxW={'500px'} placeholder={'Rodzaj urlopu'} onChange={e => console.log(e.target.value)}>
-            <>
-              <optgroup>
-                <option selected={true} value={'pto'}>
-                  Urlop wypoczynkowy
-                </option>
-                <option value={'demand'}>Urlop wypoczynkowy na żądanie</option>
-                <option value={'saturday'}>Odbiór dnia wolnego za święto wypadające w sobotę</option>
-                <option value={'oaccasion'}>Urlop okolicznościowy</option>
-                <option value={'child'}>Opieka nad dzieckiem</option>
-              </optgroup>
-            </>
-          </Select>
+      <Select
+        maxW={'500px'}
+        border={'solid 2px'}
+        backgroundColor={'rgba(56,88,152, .6)'}
+        color={'whiteAlpha.900'}
+        defaultValue={'pto'}
+        onChange={e => {
+          setSelectedPtoType(e.target.value as PtoType), setOccasionalType(undefined);
+        }}
+      >
+        <>
+          <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
+            <option value={'pto'}>Urlop wypoczynkowy</option>
+            <option value={'pto_on_demand'}>Urlop wypoczynkowy na żądanie</option>
+            <option value={'on_saturday_pto'}>Odbiór dnia wolnego za święto wypadające w sobotę</option>
+            <option value={'occasional_leave'}>Urlop okolicznościowy</option>
+            <option value={'child_care'}>Opieka nad dzieckiem</option>
+          </optgroup>
+        </>
+      </Select>
+      {selectedPtoType === 'occasional_leave' && meta?.occasionalLeaveTypes && (
+        <Select
+          backgroundColor={'rgba(56,88,152, .6)'}
+          color={'whiteAlpha.900'}
+          onChange={e => setOccasionalType(e.target.value)}
+        >
+          <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
+            <option value={undefined}>Wybierz rodzaj</option>
+          </optgroup>
+          <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
+            {meta.occasionalLeaveTypes.map(type => (
+              <option key={type.occasionalType} value={type.occasionalType}>
+                {type.descriptionPolish}
+              </option>
+            ))}
+          </optgroup>
+        </Select>
+      )}
       <SimplePtoForm isLoading={isLoading} />
       {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
       {isEndDateError && <Text>{isEndDateError}</Text>}

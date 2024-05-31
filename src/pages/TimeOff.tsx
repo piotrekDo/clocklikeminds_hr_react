@@ -6,7 +6,6 @@ import { PtoRequestSummary } from '../components/timeoff/NewPtoRequestSummary';
 import usePtoRequestState from '../state/usePtoRequestState';
 
 export const TimeOff = () => {
-  const isRequestingPto = usePtoRequestState(s => s.isRequestingPto);
   return (
     <AnimatePresence>
       <motion.div
@@ -28,8 +27,7 @@ export const TimeOff = () => {
         >
           <HStack w={'100%'} h={'100%'} gap={10} alignItems={'start'} justifyContent={'center'}>
             <VStack h={'100%'} w={'100%'} justifyContent={'center'} alignItems={'center'}>
-              {!isRequestingPto && <PtoSummary />}
-              {isRequestingPto && <PtoRequestSummary />}
+              <PtoSummary />
             </VStack>
             <Flex w={'100%'} justifyContent={'center'} alignItems={'center'}>
               <Calendar />

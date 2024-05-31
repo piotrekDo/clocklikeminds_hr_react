@@ -20,6 +20,7 @@ export const SimplePtoForm = ({ isLoading }: Props) => {
             Od
           </InputLeftAddon>
           <Input
+            border={'solid 2px'}
             isDisabled={isLoading}
             type='date'
             value={defaultStartDate}
@@ -37,6 +38,7 @@ export const SimplePtoForm = ({ isLoading }: Props) => {
         </InputGroup>
         <InputGroup>
           <Input
+            border={'solid 2px'}
             isDisabled={isLoading}
             type='date'
             value={defaultEndDate}
@@ -51,7 +53,7 @@ export const SimplePtoForm = ({ isLoading }: Props) => {
               setEndDate(newEndDate);
             }}
           />
-          <InputRightAddon bg={'#385898'} color={'whiteAlpha.900'}>
+          <InputRightAddon bg={'#385898'} color={'whiteAlpha.900'} border={'solid 2px'}>
             Do
           </InputRightAddon>
         </InputGroup>

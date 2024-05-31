@@ -30,8 +30,6 @@ export const PtoSummary = () => {
     ptoError && setError(ptoError);
   }, [summaryError, ptoError]);
 
-  console.log(ptos);
-
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
@@ -48,15 +46,17 @@ export const PtoSummary = () => {
       </HStack>
 
       <VStack w={'100%'} h={'80%'} maxH={'600px'} pt={'50px'} position={'relative'}>
-        <PtoRequestHistory
-          isLoadingPtos={isLoadingPtos}
-          isFetchingNextPtosPage={isFetchingNextPtosPage}
-          hasNextPage={hasNextPage}
-          ptos={ptos}
-          fetchNextPage={fetchNextPage}
-        />
+        {!isRequestingPto && (
+          <PtoRequestHistory
+            isLoadingPtos={isLoadingPtos}
+            isFetchingNextPtosPage={isFetchingNextPtosPage}
+            hasNextPage={hasNextPage}
+            ptos={ptos}
+            fetchNextPage={fetchNextPage}
+          />
+        )}
+        {isRequestingPto && <PtoRequestSummary />}
       </VStack>
-      {isRequestingPto && <NewRequestModal />}
     </VStack>
   );
 };

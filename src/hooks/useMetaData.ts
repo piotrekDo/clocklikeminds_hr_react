@@ -4,7 +4,7 @@ import { fetchMetaData } from '../service/MetaDataHttpService';
 
 const useMetaData = () => {
   return useQuery<MetaData, Error>({
-    queryKey: ['employees'],
+    queryKey: ['meta'],
     queryFn: () => fetchMetaData().request,
     staleTime: 86400000,
   });
