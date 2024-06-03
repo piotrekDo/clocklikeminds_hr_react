@@ -8,6 +8,7 @@ import useHttpErrorState from '../../../state/useHttpErrorState';
 import { EmployeeListTab } from './EmployeeListTab';
 import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsListTab } from './PositionsListTab';
+import { TimeOffListTab } from './TimeOffListTab';
 
 type Tabs = 'timeoff' | 'employees' | 'positions';
 
@@ -85,6 +86,9 @@ export const EmployeesOverview = () => {
             </Box>
           </HStack>
           <Box w={'100%'} h={'100%'} maxH={'90vh'}>
+            {selectedTab === 'timeoff' && (
+              <TimeOffListTab />
+            )}
             {selectedTab === 'employees' && (
               <EmployeeListTab
                 employees={employees}

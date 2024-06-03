@@ -42,7 +42,7 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
           const dayTimestamp = day.getTime();
           const startTimestamp = newPtoStartDate?.getTime();
           const endTimestamp = newPtoEndDate?.getTime();
-          const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
+          const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
           const isDayOff = daysOff.filter(testedPto => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];

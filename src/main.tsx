@@ -23,19 +23,18 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      cacheTime: Infinity
+      cacheTime: Infinity,
     },
   },
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // <React.StrictMode>
-
-  // </React.StrictMode>
-  <ChakraProvider theme={theme}>
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-    <ReactQueryDevtools />
-  </QueryClientProvider>
-</ChakraProvider>
+  <React.StrictMode>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ChakraProvider>
+  </React.StrictMode>
 );

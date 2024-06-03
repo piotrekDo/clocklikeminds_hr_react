@@ -170,7 +170,7 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
                           const day = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate()));
                           day.setDate(day.getDate() + indexNested);
                           const isSunday = day.getDay() === 0;
-                          const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
+                          const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
                           return (
                             <GridItem
                               pos={'absolute'}

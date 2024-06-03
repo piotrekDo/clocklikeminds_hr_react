@@ -27,19 +27,19 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
   const corpusChristi = new Date(easterSunday.getFullYear(), easterSunday.getMonth(), easterSunday.getDate() + 60);
 
   return new Map<string, string>([
-    ['01', 'Nowy Rok'],
-    ['06', 'Trzech Króli'],
-    [`${easterSunday.getMonth()}${easterSunday.getDate()}`, 'Niedziela Wielkanocna'],
-    [`${easterMonday.getMonth()}${easterMonday.getDate()}`, 'Poniedziałek Wielkanocny'],
-    ['41', 'Święto Pracy'],
-    ['43', 'Święto Konstytucji 3maja'],
-    [`${whitsun.getMonth()}${whitsun.getDate()}`, 'Zielone Świątki'],
-    [`${corpusChristi.getMonth()}${corpusChristi.getDate()}`, 'Boże Ciało'],
-    ['715', 'Wniebowzięcie NMP'],
-    ['101', 'Wszystkich Świętych'],
-    ['1011', 'Święto Niepodległości'],
-    ['1125', 'Boże Narodzenie'],
-    ['1126', 'Boże Narodzenie'],
+    ['0,1', 'Nowy Rok'],
+    ['0,6', 'Trzech Króli'],
+    [`${easterSunday.getMonth()},${easterSunday.getDate()}`, 'Niedziela Wielkanocna'],
+    [`${easterMonday.getMonth()},${easterMonday.getDate()}`, 'Poniedziałek Wielkanocny'],
+    ['4,1', 'Święto Pracy'],
+    ['4,3', 'Święto Konstytucji 3maja'],
+    [`${whitsun.getMonth()},${whitsun.getDate()}`, 'Zielone Świątki'],
+    [`${corpusChristi.getMonth()},${corpusChristi.getDate()}`, 'Boże Ciało'],
+    ['7,15', 'Wniebowzięcie NMP'],
+    ['10,1', 'Wszystkich Świętych'],
+    ['10,11', 'Święto Niepodległości'],
+    ['11,25', 'Boże Narodzenie'],
+    ['11,26', 'Boże Narodzenie'],
   ]);
 };
 
@@ -54,7 +54,7 @@ export const calculateBusinessDays = (from: Date, to: Date): NewPtoRequestSummar
     if (checkedDate.getFullYear() !== year) {
       holidays = getHolidaysPoland(checkedDate.getFullYear());
     }
-    const holiday = holidays.get(checkedDate.getMonth() + '' + checkedDate.getDate());
+    const holiday = holidays.get(checkedDate.getMonth() + ',' + checkedDate.getDate());
     const isWeekend = checkedDate.getDay() === 0 || checkedDate.getDay() === 6;
 
     if (!holiday && !isWeekend) {

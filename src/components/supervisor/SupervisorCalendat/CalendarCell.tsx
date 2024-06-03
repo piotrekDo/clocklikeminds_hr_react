@@ -13,7 +13,7 @@ export const CalendarCell = ({ today, highlightedDate, day, holidays, requestsIn
   const isSunday = day.getDay() === 0;
   const isToday = day.toDateString() === today.toDateString();
   const isInCurrentMonth = day.getMonth() === highlightedDate.getMonth();
-  const isHoliday: string | undefined = holidays.get(`${day.getMonth()}${day.getDate()}`);
+  const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
 
   const isPtoToRender = (p: PtoRequestFormatted) => {
     return (

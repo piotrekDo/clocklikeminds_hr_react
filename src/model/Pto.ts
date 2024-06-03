@@ -1,4 +1,6 @@
-export type PtoType = 'pto' | 'pto_on_demand' | 'child_care' | 'on_saturday_pto' | 'occasional_leave'
+import { EmployeeBasic } from './User';
+
+export type PtoType = 'pto' | 'pto_on_demand' | 'child_care' | 'on_saturday_pto' | 'occasional_leave';
 
 export interface OccasionalLeaveType {
   id: number;
@@ -88,4 +90,22 @@ export interface ResolvePtoRequest {
   ptoRequestId: number;
   isAccepted: boolean;
   declineReason: string | undefined;
+}
+
+export interface HolidayOnSaturday {
+  id: number;
+  date: string;
+  note: string;
+}
+
+export interface HolidayOnSaturdayByUser {
+  holiday: HolidayOnSaturday;
+  employee: EmployeeBasic;
+  pto: PtoRequestResponse;
+}
+
+export interface HolidayOnSaturdayAdminSummary {
+  nextHolidayOnSaturday: HolidayOnSaturday;
+  nextHolidayOnSaturdayInDays: number;
+  currentYearHolidaysOnSaturday: HolidayOnSaturdayByUser[];
 }
