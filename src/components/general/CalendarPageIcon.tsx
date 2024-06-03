@@ -5,9 +5,10 @@ type CalendarIconSize = 'md' | 'sm';
 interface Props {
   date: Date;
   size?: CalendarIconSize;
+  color?: string;
 }
 
-export const CalendarPageIcon = ({ date, size = 'md' }: Props) => {
+export const CalendarPageIcon = ({ date, size = 'md', color = '' }: Props) => {
   return (
     <VStack
       gap={0}
@@ -32,6 +33,7 @@ export const CalendarPageIcon = ({ date, size = 'md' }: Props) => {
         gap={0}
         w={'100%'}
         bg={'whiteAlpha.700'}
+        color={color}
         fontSize={size === 'sm' ? '.6rem' : '.8rem'}
         fontWeight={600}
         borderRadius={'0 0 5px 5px'}

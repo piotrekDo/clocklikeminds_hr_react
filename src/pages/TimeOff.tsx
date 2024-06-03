@@ -2,8 +2,6 @@ import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar } from '../components/Calendar/Calendar';
 import { PtoSummary } from '../components/timeoff/PtoSummary';
-import { PtoRequestSummary } from '../components/timeoff/NewPtoRequestSummary';
-import usePtoRequestState from '../state/usePtoRequestState';
 
 export const TimeOff = () => {
   return (

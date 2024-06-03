@@ -74,6 +74,7 @@ export interface UserPtoSummary {
   ptoDaysLeftFromLastYear: number;
   ptoDaysLeftCurrentYear: number;
   ptoDaysTaken: number;
+  unusedSaturdayHolidays: HolidayOnSaturday[];
 }
 
 export interface NewPtoRequest {

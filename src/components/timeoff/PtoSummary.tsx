@@ -55,7 +55,7 @@ export const PtoSummary = () => {
             fetchNextPage={fetchNextPage}
           />
         )}
-        {isRequestingPto && <PtoRequestSummary />}
+        {isRequestingPto && <PtoRequestSummary unusedSaturdayHolidays={summary?.unusedSaturdayHolidays || []}/>}
       </VStack>
     </VStack>
   );

@@ -1,7 +1,7 @@
 import { Button, HStack, Heading, Select, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
-import { NewPtoRequest, NewPtoRequestSummary, PtoType } from '../../model/Pto';
+import { HolidayOnSaturday, NewPtoRequest, NewPtoRequestSummary, PtoType } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
@@ -9,8 +9,13 @@ import { calculateBusinessDays } from '../Calendar/holidays';
 import { SimplePtoForm } from './SimplePtoForm';
 import { useQueryClient } from '@tanstack/react-query';
 import { MetaData } from '../../model/MetaData';
+import { CalendarPageIcon } from '../general/CalendarPageIcon';
 
-export const PtoRequestSummary = () => {
+interface Props {
+  unusedSaturdayHolidays: HolidayOnSaturday[];
+}
+
+export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
   const queryClient = useQueryClient();
   const meta: MetaData | undefined = queryClient.getQueryData(['meta']);
   const { appUser } = useAuthentication();
@@ -18,6 +23,7 @@ export const PtoRequestSummary = () => {
     usePtoRequestState();
   const [selectedPtoType, setSelectedPtoType] = useState<PtoType>('pto');
   const [occasionalType, setOccasionalType] = useState<string | undefined>(undefined);
+  const [selectedSaturdayHoliday, setSelectedSaturdayHoliday] = useState<string | undefined>(undefined);
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
   const { mutate: sendRequest, isSuccess, isError, error, isLoading } = useNewPtoRequest();
   const setHttpError = useHttpErrorState(s => s.setError);
@@ -49,9 +55,8 @@ export const PtoRequestSummary = () => {
       acceptorId: undefined,
       ptoType: selectedPtoType,
       occasionalType: occasionalType,
-      saturdayHolidayDate: undefined,
+      saturdayHolidayDate: selectedSaturdayHoliday,
     };
-    console.log(request);
     sendRequest(request);
   };
 
@@ -61,7 +66,7 @@ export const PtoRequestSummary = () => {
       h={'80%'}
       w={'100%'}
       position={'relative'}
-      backgroundColor={'rgba(56,88,152, .6)'}
+      backgroundColor={'rgba(56,88,152, .2)'}
       color={'whiteAlpha.900'}
       borderRadius={'30px'}
     >
@@ -69,7 +74,7 @@ export const PtoRequestSummary = () => {
       <Select
         maxW={'500px'}
         border={'solid 2px'}
-        backgroundColor={'rgba(56,88,152, .6)'}
+        backgroundColor={'rgba(56,88,152, .2)'}
         color={'whiteAlpha.900'}
         defaultValue={'pto'}
         onChange={e => {
@@ -103,6 +108,26 @@ export const PtoRequestSummary = () => {
             ))}
           </optgroup>
         </Select>
+      )}
+      {selectedPtoType === 'on_saturday_pto' && (
+        <VStack my={4}>
+          {unusedSaturdayHolidays.map(holiday => (
+            <HStack
+              key={holiday.id}
+              w={'100%'}
+              borderRadius={'10px'}
+              px={4}
+              py={1}
+              boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+              cursor={'pointer'}
+              bg={holiday.date === selectedSaturdayHoliday ? 'rgba(56,88,152, .8)' : 'rgba(56,88,152, .2)'}
+              onClick={e => setSelectedSaturdayHoliday(holiday.date)}
+            >
+              <CalendarPageIcon date={new Date(holiday.date)} size='sm' color='blackAlpha.900' />
+              <Text>{holiday.note}</Text>
+            </HStack>
+          ))}
+        </VStack>
       )}
       <SimplePtoForm isLoading={isLoading} />
       {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
