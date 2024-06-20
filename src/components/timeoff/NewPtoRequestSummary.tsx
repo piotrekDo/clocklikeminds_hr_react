@@ -111,22 +111,24 @@ export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
       )}
       {selectedPtoType === 'on_saturday_pto' && (
         <VStack my={4}>
-          {unusedSaturdayHolidays.map(holiday => (
-            <HStack
-              key={holiday.id}
-              w={'100%'}
-              borderRadius={'10px'}
-              px={4}
-              py={1}
-              boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
-              cursor={'pointer'}
-              bg={holiday.date === selectedSaturdayHoliday ? 'rgba(56,88,152, .8)' : 'rgba(56,88,152, .2)'}
-              onClick={e => setSelectedSaturdayHoliday(holiday.date)}
-            >
-              <CalendarPageIcon date={new Date(holiday.date)} size='sm' color='blackAlpha.900' />
-              <Text>{holiday.note}</Text>
-            </HStack>
-          ))}
+          {unusedSaturdayHolidays
+            .filter(holiday => !holiday.usedDate)
+            .map(holiday => (
+              <HStack
+                key={holiday.id}
+                w={'100%'}
+                borderRadius={'10px'}
+                px={4}
+                py={1}
+                boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+                cursor={'pointer'}
+                bg={holiday.date === selectedSaturdayHoliday ? 'rgba(56,88,152, .8)' : 'rgba(56,88,152, .2)'}
+                onClick={e => setSelectedSaturdayHoliday(holiday.date)}
+              >
+                <CalendarPageIcon date={new Date(holiday.date)} size='sm' color='blackAlpha.900' />
+                <Text>{holiday.note}</Text>
+              </HStack>
+            ))}
         </VStack>
       )}
       <SimplePtoForm isLoading={isLoading} />

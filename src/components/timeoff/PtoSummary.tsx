@@ -35,7 +35,6 @@ export const PtoSummary = () => {
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
         <VStack
           w={'100%'}
-          h={'140px'}
           boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
           borderRadius={'20px'}
           transition={'background .25s ease-in'}
@@ -55,7 +54,7 @@ export const PtoSummary = () => {
             fetchNextPage={fetchNextPage}
           />
         )}
-        {isRequestingPto && <PtoRequestSummary unusedSaturdayHolidays={summary?.unusedSaturdayHolidays || []}/>}
+        {isRequestingPto && <PtoRequestSummary unusedSaturdayHolidays={summary?.saturdayHolidaysCurrentYear || []}/>}
       </VStack>
     </VStack>
   );

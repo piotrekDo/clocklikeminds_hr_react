@@ -13,6 +13,7 @@ export interface PtoRequestResponse {
   id: number;
   leaveType: string;
   demand: boolean;
+  notes: string;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: string;
@@ -34,12 +35,19 @@ export interface PtoRequestResponse {
   businessDays: number;
   includingLastYearPool: number;
   declineReason: string;
+  occasional_leaveReason: string;
+  occasional_leaveTypeId: string;
+  occasional_leaveType: string;
+  occasional_descriptionPolish: string;
+  occasional_days: string;
+  saturday_holiday_date: string;
 }
 
 export interface PtoRequestFormatted {
   id: number;
   leaveType: string;
   demand: boolean;
+  notes: string;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: Date;
@@ -61,6 +69,12 @@ export interface PtoRequestFormatted {
   businessDays: number;
   includingLastYearPool: number;
   declineReason: string;
+  occasional_leaveReason: string;
+  occasional_leaveTypeId: string;
+  occasional_leaveType: string;
+  occasional_descriptionPolish: string;
+  occasional_days: string;
+  saturday_holiday_date: string;
 }
 
 export interface NewPtoRequestSummary {
@@ -74,7 +88,7 @@ export interface UserPtoSummary {
   ptoDaysLeftFromLastYear: number;
   ptoDaysLeftCurrentYear: number;
   ptoDaysTaken: number;
-  unusedSaturdayHolidays: HolidayOnSaturday[];
+  saturdayHolidaysCurrentYear: HolidayOnSaturday[];
 }
 
 export interface NewPtoRequest {
@@ -97,6 +111,7 @@ export interface HolidayOnSaturday {
   id: number;
   date: string;
   note: string;
+  usedDate: string;
 }
 
 export interface HolidayOnSaturdayByUser {

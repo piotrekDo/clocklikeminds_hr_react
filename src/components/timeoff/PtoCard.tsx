@@ -1,19 +1,15 @@
 import { Box, Flex, HStack, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
-import { FaBusinessTime, FaCalendarAlt } from 'react-icons/fa';
+import { FaBusinessTime, FaCalendarAlt, FaUserTie } from 'react-icons/fa';
+import { GiPalmTree } from 'react-icons/gi';
 import { GoCheckCircleFill, GoClockFill, GoXCircleFill } from 'react-icons/go';
-import { MdSupervisorAccount } from 'react-icons/md';
+import { MdChildFriendly, MdEventRepeat, MdSupervisorAccount, MdTimer } from 'react-icons/md';
 import { PtoRequestResponse } from '../../model/Pto';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
-import { FaUserTie } from "react-icons/fa";
-
 
 interface Props {
   pto: PtoRequestResponse;
 }
-
-// const pendingGradient = 'linear-gradient(105deg, rgba(143,195,34,1) 0%, rgba(253,187,45,1) 100%)'
-// const acceptedGradient = 'linear-gradient(132deg, rgba(179,199,36,1) 0%, rgba(80,199,36,1) 69%)'
 
 export const PtoCard = ({ pto }: Props) => {
   const [daysTotalHovering, setDaysTotalhovering] = useState(false);
@@ -43,9 +39,6 @@ export const PtoCard = ({ pto }: Props) => {
       }
       boxShadow={'6px 4px 4px 0px rgba(66, 68, 90, 1)'}
       color={'blackAlpha.800'}
-      _hover={{
-        transform: 'translateY(-2px)',
-      }}
       transitionProperty={'transform'}
       transitionDuration={'.2s'}
     >
@@ -141,8 +134,42 @@ export const PtoCard = ({ pto }: Props) => {
               <Box>{pto.totalDays}</Box>
             </HStack>
           </VStack>
-          <Box >
-            <FaUserTie color={'#385898'} size={'40px'}/>
+          <Box>
+            {pto.leaveType === 'pto' && (
+              <Tooltip label='Wypoczynkowy'>
+                <Box>
+                  <GiPalmTree color={'#385898'} size={'40px'} />
+                </Box>
+              </Tooltip>
+            )}
+            {pto.leaveType === 'pto_on_demand' && (
+              <Tooltip label='Na żądanie'>
+                <Box>
+                  <MdTimer color={'#385898'} size={'40px'} />
+                </Box>
+              </Tooltip>
+            )}
+            {pto.leaveType === 'on_saturday_pto' && (
+              <Tooltip label={`Odbiór za święto w sobotę: ${pto.saturday_holiday_date}`}>
+                <Box>
+                  <MdEventRepeat color={'#385898'} size={'40px'} />
+                </Box>
+              </Tooltip>
+            )}
+            {pto.leaveType === 'occasional_leave' && (
+              <Tooltip label={`Okolicznościowy: ${pto.occasional_descriptionPolish}`}>
+                <Box>
+                  <FaUserTie color={'#385898'} size={'40px'} />
+                </Box>
+              </Tooltip>
+            )}
+            {pto.leaveType === 'child_care' && (
+              <Tooltip label='Opieka nad dzieckiem'>
+                <Box>
+                  <MdChildFriendly color={'#385898'} size={'40px'} />
+                </Box>
+              </Tooltip>
+            )}
           </Box>
           <Flex
             position={'absolute'}
