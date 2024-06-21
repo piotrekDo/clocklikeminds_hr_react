@@ -30,11 +30,13 @@ interface Props {
 export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const setIsRequestingPto = usePtoRequestState(s => s.setIsRequestingPto);
+  const setSelectedPtoType = usePtoRequestState(s => s.setSelectedPtoType);
   const hasUnusedHolidayOnSaturday: boolean =
     summary && summary?.saturdayHolidaysCurrentYear.filter(holiday => !holiday.usedDate).length > 0 ? true : false;
 
   const onUseHolidayOnSaturday = () => {
     onClose();
+    setSelectedPtoType('on_saturday_pto');
     setIsRequestingPto(true);
   };
 

@@ -9,7 +9,6 @@ import { NewPtoButton } from './NewPtoButton';
 import { PtoRequestForm } from './NewPtoRequestForm';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
 import { PtoRequestHistory } from './PtoRequestHistory';
-import { NewRequestModal } from './NewRequestModal';
 
 export const PtoSummary = () => {
   const appuser = useAuthentication(s => s.appUser);

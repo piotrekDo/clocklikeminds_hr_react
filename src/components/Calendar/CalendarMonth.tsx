@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
+  const { isRequestingPto, startDate, selectedPtoType, setStartDate, setEndDate } = usePtoRequestState();
   const newPtoStartDate = usePtoRequestState(s => s.startDate);
   const newPtoEndDate = usePtoRequestState(s => s.endDate);
   const startingDayOfWeek = month.getDay();
@@ -18,6 +19,16 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
     const date = new Date(Date.UTC(month.getFullYear(), month.getMonth(), index + 1));
     return date;
   });
+
+  const handleOnClick = (day: Date) => {
+    if (!isRequestingPto) return;
+    if (selectedPtoType === 'on_saturday_pto') {
+      setStartDate(day);
+      setEndDate(day);
+    } else {
+      (!startDate && setStartDate(day)) || setEndDate(day);
+    }
+  };
 
   return (
     <GridItem
@@ -58,7 +69,6 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}
-              // cursor={isDayOff ? 'pointer' : 'default'}
               bgColor={
                 (newPtoStartDate && dayTimestamp === startTimestamp) ||
                 (newPtoStartDate && newPtoEndDate && dayTimestamp >= startTimestamp! && dayTimestamp <= endTimestamp!)
@@ -69,6 +79,8 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     : 'rgba(20, 255, 120, .6)'
                   : ''
               }
+              cursor={isRequestingPto ? 'pointer' : ''}
+              onClick={e => handleOnClick(day)}
             >
               <Flex
                 p={2}

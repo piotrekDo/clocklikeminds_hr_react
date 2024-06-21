@@ -82,10 +82,26 @@ export const PtoCard = ({ pto }: Props) => {
               <CalendarPageIcon date={request} size='sm' />
             </Box>
           </Tooltip>
-          <HStack w={'100px'} justifyContent={'space-between'}>
-            <CalendarPageIcon date={ptoStart} size='sm' />
-            <CalendarPageIcon date={ptoEnd} size='sm' />
-          </HStack>
+          <Tooltip
+            label={
+              (pto.businessDays > 1 &&
+                `${ptoStart.toLocaleString('pl-PL', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })} - ${ptoEnd.toLocaleString('pl-PL', { day: '2-digit', month: 'long', year: 'numeric' })}`) ||
+              ptoStart.toLocaleString('pl-PL', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })
+            }
+          >
+            <HStack w={'100px'} justifyContent={'space-between'} cursor={'help'}>
+              <CalendarPageIcon date={ptoStart} size='sm' />
+              <CalendarPageIcon date={ptoEnd} size='sm' />
+            </HStack>
+          </Tooltip>
           <VStack borderRadius={'20px'} color={'#385898'} fontWeight={'500'} gap={0} spacing={0}>
             <HStack
               position={'relative'}
@@ -134,7 +150,7 @@ export const PtoCard = ({ pto }: Props) => {
               <Box>{pto.totalDays}</Box>
             </HStack>
           </VStack>
-          <Box>
+          <Box cursor={'help'}>
             {pto.leaveType === 'pto' && (
               <Tooltip label='Wypoczynkowy'>
                 <Box>

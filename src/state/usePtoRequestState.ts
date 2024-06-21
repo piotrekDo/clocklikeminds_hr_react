@@ -1,14 +1,17 @@
 import { create } from 'zustand';
+import { PtoType } from '../model/Pto';
 
 interface PtoRequestState {
   isRequestingPto: boolean;
   startDate: Date | undefined;
   endDate: Date | undefined;
   isEndDateError: string | undefined;
+  selectedPtoType: PtoType;
   setIsRequestingPto: (isRequesting: boolean) => void;
   setStartDate: (date: Date | undefined) => void;
   setEndDate: (date: Date | undefined) => void;
   setIsEndDateError: (error: string | undefined) => void;
+  setSelectedPtoType: (type: PtoType) => void;
 }
 
 const usePtoRequestState = create<PtoRequestState>(set => ({
@@ -16,6 +19,7 @@ const usePtoRequestState = create<PtoRequestState>(set => ({
   startDate: undefined,
   endDate: undefined,
   isEndDateError: undefined,
+  selectedPtoType: 'pto',
   setIsRequestingPto: bol =>
     set(store => ({
       ...store,
@@ -59,6 +63,12 @@ const usePtoRequestState = create<PtoRequestState>(set => ({
     set(store => ({
       ...store,
       isEndDateError: err,
+    }));
+  },
+  setSelectedPtoType: type => {
+    set(store => ({
+      ...store,
+      selectedPtoType: type,
     }));
   },
 }));

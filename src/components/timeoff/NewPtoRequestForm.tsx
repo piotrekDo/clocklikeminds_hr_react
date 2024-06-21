@@ -19,9 +19,16 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
   const queryClient = useQueryClient();
   const meta: MetaData | undefined = queryClient.getQueryData(['meta']);
   const { appUser } = useAuthentication();
-  const { startDate, endDate, isEndDateError, setStartDate, setEndDate, setIsRequestingPto, setIsEndDateError } =
-    usePtoRequestState();
-  const [selectedPtoType, setSelectedPtoType] = useState<PtoType>('pto');
+  const {
+    startDate,
+    endDate,
+    isEndDateError,
+    selectedPtoType,
+    setStartDate,
+    setEndDate,
+    setIsRequestingPto,
+    setSelectedPtoType,
+  } = usePtoRequestState();
   const [occasionalType, setOccasionalType] = useState<string | undefined>(undefined);
   const [selectedSaturdayHoliday, setSelectedSaturdayHoliday] = useState<string | undefined>(undefined);
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
@@ -61,6 +68,12 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
     };
     sendRequest(request);
   };
+
+  const isFormCorrect = () => {
+    if(selectedPtoType === 'on_saturday_pto' && !selectedSaturdayHoliday) return false;
+    if(selectedPtoType === 'occasional_leave' && !occasionalType) return false;
+    return !isEndDateError && startDate && endDate
+  }
   return (
     <VStack
       p={6}
@@ -77,7 +90,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
         border={'solid 2px'}
         backgroundColor={'rgba(56,88,152, .2)'}
         color={'whiteAlpha.900'}
-        defaultValue={'pto'}
+        defaultValue={selectedPtoType}
         onChange={e => {
           setSelectedPtoType(e.target.value as PtoType), setOccasionalType(undefined);
         }}
@@ -132,18 +145,26 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
             ))}
         </VStack>
       )}
-      {(selectedPtoType != 'on_saturday_pto' || hasUnusedSaturdayHolidays)  && <PtoDatesForm isLoading={isLoading} isSimplified={selectedPtoType === 'on_saturday_pto'}/>}
-      {selectedPtoType === 'on_saturday_pto' && !hasUnusedSaturdayHolidays && <Text fontSize={'1.7rem'} fontWeight={'600'} fontStyle={'italic'}>Brak dni do odbioru</Text>}
-      {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
+      {(selectedPtoType != 'on_saturday_pto' || hasUnusedSaturdayHolidays) && (
+        <PtoDatesForm isLoading={isLoading} isSimplified={selectedPtoType === 'on_saturday_pto'} />
+      )}
+      {selectedPtoType === 'on_saturday_pto' && !hasUnusedSaturdayHolidays && (
+        <Text fontSize={'1.7rem'} fontWeight={'600'} fontStyle={'italic'}>
+          Brak dni do odbioru
+        </Text>
+      )}
+      {!isEndDateError && summary && selectedPtoType != 'on_saturday_pto' && (
+        <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>
+      )}
       {isEndDateError && <Text>{isEndDateError}</Text>}
       <Button
         isDisabled={isLoading}
         isLoading={isLoading}
-        cursor={isEndDateError != undefined || !startDate || !endDate ? 'auto' : 'pointer'}
-        opacity={isEndDateError != undefined || !startDate || !endDate ? 0 : 1}
+        cursor={isFormCorrect() ? 'pointer' : 'auto'}
+        opacity={isFormCorrect() ? 1 : 0}
         colorScheme={'green'}
         position={'absolute'}
-        top={isEndDateError != undefined || !startDate || !endDate ? '-5px' : '-15px'}
+        top={isFormCorrect() ? '-15px' : '-5px'}
         transitionProperty={'top opacity'}
         transitionDuration={'250ms'}
         transitionTimingFunction={'ease-in'}
