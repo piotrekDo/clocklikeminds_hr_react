@@ -6,7 +6,7 @@ import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { NewPtoButton } from './NewPtoButton';
-import { PtoRequestSummary } from './NewPtoRequestSummary';
+import { PtoRequestForm } from './NewPtoRequestForm';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
 import { PtoRequestHistory } from './PtoRequestHistory';
 import { NewRequestModal } from './NewRequestModal';
@@ -54,7 +54,7 @@ export const PtoSummary = () => {
             fetchNextPage={fetchNextPage}
           />
         )}
-        {isRequestingPto && <PtoRequestSummary unusedSaturdayHolidays={summary?.saturdayHolidaysCurrentYear || []}/>}
+        {isRequestingPto && <PtoRequestForm saturdayHolidays={summary?.saturdayHolidaysCurrentYear || []}/>}
       </VStack>
     </VStack>
   );

@@ -14,7 +14,7 @@ import {
   Text,
   Tooltip,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 import { MdEventRepeat } from 'react-icons/md';
 import { UserPtoSummary } from '../../model/Pto';
@@ -37,38 +37,74 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
     onClose();
     setIsRequestingPto(true);
   };
+
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size={'xl'}>
+      <Modal isOpen={isOpen} onClose={onClose} size={'3xl'}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontSize={'1.1rem'}>Naliczone dni wolne za święta w sobotę w bieżącym roku</ModalHeader>
+        <ModalContent color={'#385898'} bgColor={'rgba(255, 255, 255, .9)'}>
+          <ModalHeader fontSize={'1.5rem'} fontWeight={'600'} fontStyle={'italic'} w={'100%'} textAlign={'center'}>
+            Naliczone dni wolne za święta w sobotę w bieżącym roku
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody w={'100%'}>
-            {!summary?.saturdayHolidaysCurrentYear && <Text>Brak naliczonych dni wolnych</Text>}
+            {summary?.saturdayHolidaysCurrentYear.length === 0 && (
+              <>
+                <Text
+                  mt={5}
+                  w={'100%'}
+                  textAlign={'center'}
+                  fontSize={'1.5rem'}
+                  fontWeight={'700'}
+                  fontStyle={'italic'}
+                >
+                  Brak naliczonych dni wolnych
+                </Text>
+                <Text
+                  mb={5}
+                  w={'100%'}
+                  textAlign={'center'}
+                  fontSize={'1.3rem'}
+                  fontWeight={'600'}
+                  fontStyle={'italic'}
+                >
+                  za święto wypadające w sobotę
+                </Text>
+              </>
+            )}
             {summary?.saturdayHolidaysCurrentYear &&
               summary.saturdayHolidaysCurrentYear.map(holiday => {
                 const holidayDate = new Date(holiday.date);
                 const ptoDate = holiday.usedDate ? new Date(holiday.usedDate) : undefined;
                 return (
-                  <HStack w={'500px'} justifyContent={'center'} mt={4}>
+                  <HStack
+                    key={holiday.id}
+                    w={'100%'}
+                    justifyContent={'center'}
+                    mt={4}
+                    p={2}
+                    borderRadius={'15px'}
+                    boxShadow={'8px 8px 20px 0px rgba(66, 68, 90, .8)'}
+                  >
                     <Box w={'200px'}>
                       <CalendarPageIcon date={holidayDate} size='md' />
                     </Box>
-                    <Box flexBasis={'100%'}>
+                    <Flex flexBasis={'100%'} justifyContent={'center'} alignItems={'center'}>
                       <Text ml={4} fontSize={'1.4rem'} as={'i'} fontWeight={'600'}>
                         {holiday.note}
                       </Text>
-                    </Box>
+                    </Flex>
                     {ptoDate && (
                       <HStack flexBasis={'100%'}>
-                        <Text>wykorzystany: </Text>
-                        <CalendarPageIcon date={ptoDate} />
+                        <Text fontSize={'1rem'} fontStyle={'italic'} fontWeight={'500'}>
+                          wykorzystany{' '}
+                          {ptoDate.toLocaleString('pl-PL', { day: '2-digit', month: 'long', year: 'numeric' })}
+                        </Text>
                       </HStack>
                     )}
                     {!ptoDate && (
-                      <Flex flexBasis={'100%'}>
-                        <Button flexBasis={'100%'} onClick={onUseHolidayOnSaturday}>
+                      <Flex flexBasis={'100%'} justify={'center'}>
+                        <Button onClick={onUseHolidayOnSaturday} colorScheme='blue'>
                           Wykorzystaj
                         </Button>
                       </Flex>

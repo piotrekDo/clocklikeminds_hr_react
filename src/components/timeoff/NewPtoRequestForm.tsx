@@ -1,21 +1,21 @@
 import { Button, HStack, Heading, Select, Text, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
+import { MetaData } from '../../model/MetaData';
 import { HolidayOnSaturday, NewPtoRequest, NewPtoRequestSummary, PtoType } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { calculateBusinessDays } from '../Calendar/holidays';
-import { SimplePtoForm } from './SimplePtoForm';
-import { useQueryClient } from '@tanstack/react-query';
-import { MetaData } from '../../model/MetaData';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
+import { PtoDatesForm } from './PtoDatesForm';
 
 interface Props {
-  unusedSaturdayHolidays: HolidayOnSaturday[];
+  saturdayHolidays: HolidayOnSaturday[];
 }
 
-export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
+export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
   const queryClient = useQueryClient();
   const meta: MetaData | undefined = queryClient.getQueryData(['meta']);
   const { appUser } = useAuthentication();
@@ -27,6 +27,8 @@ export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
   const [summary, setSummary] = useState<NewPtoRequestSummary | undefined>(undefined);
   const { mutate: sendRequest, isSuccess, isError, error, isLoading } = useNewPtoRequest();
   const setHttpError = useHttpErrorState(s => s.setError);
+
+  const hasUnusedSaturdayHolidays: boolean = saturdayHolidays.filter(h => !h.usedDate).length > 0;
 
   useEffect(() => {
     if (isSuccess) {
@@ -59,7 +61,6 @@ export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
     };
     sendRequest(request);
   };
-
   return (
     <VStack
       p={6}
@@ -111,7 +112,7 @@ export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
       )}
       {selectedPtoType === 'on_saturday_pto' && (
         <VStack my={4}>
-          {unusedSaturdayHolidays
+          {saturdayHolidays
             .filter(holiday => !holiday.usedDate)
             .map(holiday => (
               <HStack
@@ -131,7 +132,8 @@ export const PtoRequestSummary = ({ unusedSaturdayHolidays }: Props) => {
             ))}
         </VStack>
       )}
-      <SimplePtoForm isLoading={isLoading} />
+      {(selectedPtoType != 'on_saturday_pto' || hasUnusedSaturdayHolidays)  && <PtoDatesForm isLoading={isLoading} isSimplified={selectedPtoType === 'on_saturday_pto'}/>}
+      {selectedPtoType === 'on_saturday_pto' && !hasUnusedSaturdayHolidays && <Text fontSize={'1.7rem'} fontWeight={'600'} fontStyle={'italic'}>Brak dni do odbioru</Text>}
       {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
       {isEndDateError && <Text>{isEndDateError}</Text>}
       <Button

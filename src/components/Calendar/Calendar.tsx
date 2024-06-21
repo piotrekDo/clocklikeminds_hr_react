@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/md';
 import usePtoRequestsForSelectedYear from '../../hooks/usePtoRequestsForSelectedyear';
@@ -32,9 +32,6 @@ export const Calendar = () => {
       boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       color={'whiteAlpha.900'}
     >
-      {/* <Flex position={'absolute'} top={0} w={'100%'} bg={'#385898'} justifyContent={'center'} pt={1} alignContent={'center'}>
-        <PtoCard pto={ptos[0]}/>
-      </Flex> */}
       <HStack
         w={'100%'}
         justifyContent={'center'}

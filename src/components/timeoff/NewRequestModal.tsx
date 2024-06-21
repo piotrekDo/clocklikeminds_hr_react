@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import usePtoRequestState from '../../state/usePtoRequestState';
-import { SimplePtoForm } from './SimplePtoForm';
+import { PtoDatesForm } from './PtoDatesForm';
 import useAuthentication from '../../state/useAuthentication';
 import { NewPtoRequest, NewPtoRequestSummary } from '../../model/Pto';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
@@ -78,7 +78,7 @@ export const NewRequestModal = () => {
               </optgroup>
             </>
           </Select>
-          <SimplePtoForm isLoading={isLoading} />
+          <PtoDatesForm isLoading={isLoading} />
           {!isEndDateError && summary && <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>}
           {isEndDateError && <Text>{isEndDateError}</Text>}
         </ModalBody>
