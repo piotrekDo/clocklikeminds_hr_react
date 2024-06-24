@@ -1,4 +1,5 @@
 import { Box, Flex, HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { GoPeople } from 'react-icons/go';
 import { EmployeePtoHistory } from '../components/supervisor/EmployeePtoHistory';
@@ -8,7 +9,6 @@ import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useHttpErrorState from '../state/useHttpErrorState';
 import usePtoComparationStore from '../state/usePtoComparationState';
-import { AnimatePresence, motion } from 'framer-motion';
 
 export const SupervisorPage = () => {
   const appUser = useAuthentication(s => s.appUser);

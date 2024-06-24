@@ -10,13 +10,16 @@ import {
   Text,
   Tooltip,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
-import { FaBusinessTime, FaCalendarAlt } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+import { FaBusinessTime, FaCalendarAlt, FaExclamationCircle, FaUserTie } from 'react-icons/fa';
 import { FaCircleCheck, FaCircleMinus } from 'react-icons/fa6';
+import { GiPalmTree } from 'react-icons/gi';
+import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
 import useResolvePto from '../../hooks/useResolvePto';
 import { PtoRequestFormatted, ResolvePtoRequest } from '../../model/Pto';
-import useAuthentication from '../../state/useAuthentication';
+import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoComparationStore from '../../state/usePtoComparationState';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
 
@@ -25,11 +28,28 @@ interface Props {
 }
 
 export const UnresolvedPtoCard = ({ p }: Props) => {
-  const user = useAuthentication(s => s.appUser);
   const inputRef = useRef<HTMLInputElement>(null);
   const setPtoToCompare = usePtoComparationStore(s => s.setPto);
   const [isRejecting, setIsRejecting] = useState(false);
-  const { mutate: sendRequest, isError, error, isLoading } = useResolvePto();
+  const setError = useHttpErrorState(s => s.setError);
+  const { mutate: sendRequest, isError, error, isLoading, isSuccess } = useResolvePto();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: 'Wniosek rozpatrzony poprawnie',
+        position: 'top-left',
+        isClosable: true,
+        status: 'success',
+        duration: 10000,
+      });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    isError && setError(error);
+  }, [isError]);
 
   const handleAcceptPto = () => {
     const request: ResolvePtoRequest = {
@@ -60,6 +80,13 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
       boxShadow={'4px 4px 14px 0px rgba(66, 68, 90, 1)'}
       mb={3}
     >
+      {p.notes && (
+        <Tooltip label={p.notes}>
+          <Flex position={'absolute'} top={'-10px'} right={'-20px'} cursor={'help'}>
+            <FaExclamationCircle size={'40px'} color='wheat' />
+          </Flex>
+        </Tooltip>
+      )}
       <Flex
         position={'absolute'}
         justifyContent={'center'}
@@ -129,11 +156,56 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
               w={'50%'}
               onClick={() => setPtoToCompare(p)}
             >
-              <HStack>
-                <CalendarPageIcon date={p.ptoStart} />
-                <CalendarPageIcon date={p.ptoEnd} />
-              </HStack>
+              <Tooltip
+                label={`${p.ptoStart.toLocaleString('pl-PL', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })} - ${p.ptoEnd.toLocaleString('pl-PL', { day: '2-digit', month: 'long', year: 'numeric' })}`}
+              >
+                <HStack>
+                  <CalendarPageIcon date={p.ptoStart} />
+                  <CalendarPageIcon date={p.ptoEnd} />
+                </HStack>
+              </Tooltip>
             </VStack>
+            <Box cursor={'help'} color={'whiteAlpha.800'}>
+              {p.leaveType === 'pto' && (
+                <Tooltip label='Wypoczynkowy'>
+                  <Box>
+                    <GiPalmTree size={'40px'} />
+                  </Box>
+                </Tooltip>
+              )}
+              {p.leaveType === 'pto_on_demand' && (
+                <Tooltip label='Na żądanie'>
+                  <Box>
+                    <MdTimer size={'40px'} />
+                  </Box>
+                </Tooltip>
+              )}
+              {p.leaveType === 'on_saturday_pto' && (
+                <Tooltip label={`Odbiór za święto w sobotę: ${p.saturday_holiday_date}`}>
+                  <Box>
+                    <MdEventRepeat size={'40px'} />
+                  </Box>
+                </Tooltip>
+              )}
+              {p.leaveType === 'occasional_leave' && (
+                <Tooltip label={`Okolicznościowy: ${p.occasional_descriptionPolish}`}>
+                  <Box>
+                    <FaUserTie size={'40px'} />
+                  </Box>
+                </Tooltip>
+              )}
+              {p.leaveType === 'child_care' && (
+                <Tooltip label='Opieka nad dzieckiem'>
+                  <Box>
+                    <MdChildFriendly size={'40px'} />
+                  </Box>
+                </Tooltip>
+              )}
+            </Box>
             <VStack borderRadius={'20px'} color={'whiteAlpha.800'} fontWeight={'700'}>
               <HStack>
                 <FaBusinessTime />
