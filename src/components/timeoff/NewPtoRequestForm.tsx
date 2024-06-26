@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Select, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Heading, Link, ListItem, Select, Text, UnorderedList, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
@@ -70,10 +70,10 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
   };
 
   const isFormCorrect = () => {
-    if(selectedPtoType === 'on_saturday_pto' && !selectedSaturdayHoliday) return false;
-    if(selectedPtoType === 'occasional_leave' && !occasionalType) return false;
-    return !isEndDateError && startDate && endDate
-  }
+    if (selectedPtoType === 'on_saturday_pto' && !selectedSaturdayHoliday) return false;
+    if (selectedPtoType === 'occasional_leave' && !occasionalType) return false;
+    return !isEndDateError && startDate && endDate;
+  };
   return (
     <VStack
       p={6}
@@ -157,6 +157,48 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
         <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>
       )}
       {isEndDateError && <Text>{isEndDateError}</Text>}
+      <VStack w={'100%'} p={3} >
+        {selectedPtoType === 'pto_on_demand' && (
+          <>
+            <Text as={'i'} fontSize={'1.2rem'} fontWeight={'500'}>
+              Pracownik może wykorzystać 4 dni urlopu na swój wniosek, który pracodawca uwzględnia (tzw. „urlop na
+              żądanie”).
+            </Text>
+            <HStack mt={3} w={'90%'} justify={'end'}>
+              <Link textDecor={'underline'} href='https://www.gov.pl/web/rodzina/urlopy-i-zwolnienia-od-pracy' isExternal>
+                Źródło
+              </Link>
+            </HStack>
+          </>
+        )}
+        {selectedPtoType === 'occasional_leave' && (
+          <>
+            <Box w={'100%'} fontSize={'.8rem'}>
+              <Text >Pracownikowi przysługują 2 dni urlopu okolicznościowego w razie:</Text>
+              <UnorderedList >
+                <ListItem>swojego ślubu</ListItem>
+                <ListItem>urodzenia jego dziecka</ListItem>
+                <ListItem>zgonu i pogrzebu jego małżonka, dziecka, ojca, matki, ojczyma lub macochy.</ListItem>
+              </UnorderedList>
+            </Box>
+            <Box w={'100%'} fontSize={'.8rem'}>
+              <Text>Pracownikowi przysługuje 1 dzień urlopu okolicznościowego w razie:</Text>
+              <UnorderedList >
+                <ListItem>ślubu dziecka pracownika</ListItem>
+                <ListItem>
+                  zgonu i pogrzebu jego siostry, brata, teściowej, teścia, babki, dziadka, a także innej osoby
+                  pozostającej na jego utrzymaniu lub pod jego bezpośrednią opieką.
+                </ListItem>
+              </UnorderedList>
+            </Box>
+            <HStack mt={2} w={'90%'} justify={'end'} fontSize={'.8rem'}>
+              <Link textDecor={'underline'} href='https://www.biznes.gov.pl/pl/portal/00135#5' isExternal>
+                Źródło
+              </Link>
+            </HStack>
+          </>
+        )}
+      </VStack>
       <Button
         isDisabled={isLoading}
         isLoading={isLoading}

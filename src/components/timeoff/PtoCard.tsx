@@ -23,6 +23,7 @@ export const PtoCard = ({ pto }: Props) => {
 
   return (
     <VStack
+
       position={'relative'}
       w={'100%'}
       maxW={'800px'}

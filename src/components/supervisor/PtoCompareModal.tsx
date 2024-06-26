@@ -1,39 +1,26 @@
 import {
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
+  Box,
+  GridItem,
+  HStack,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
-  NumberDecrementStepper,
-  ModalFooter,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  useToast,
-  Box,
-  GridItem,
-  HStack,
   SimpleGrid,
+  Text,
   Tooltip,
   VStack,
-  Text,
 } from '@chakra-ui/react';
 
-import React, { useEffect, useState } from 'react';
-import { PtoRequestFormatted } from '../../model/Pto';
-import usePtoComparationStore from '../../state/usePtoComparationState';
+import { useEffect, useState } from 'react';
 import usePtosInTimeFrame from '../../hooks/usePtosInTimeFrame';
 import useAuthentication from '../../state/useAuthentication';
+import usePtoComparationStore from '../../state/usePtoComparationState';
 import { getHolidaysPoland } from '../Calendar/holidays';
 import { Header } from './SupervisorCalendat/Header';
+import { ptoTypeTranslatePl } from '../../model/Pto';
+import { occasionalLeaveTranslatePL } from '../../App';
 
 interface Props {
   isOpen: boolean;
@@ -91,7 +78,6 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
           0
         )
       );
-      console.log(fetchEndDay)
 
       setUserId(user?.userId || -1);
       setFetchStartDate(weeksToDisplay[0].toISOString().slice(0, 10));
@@ -103,7 +89,6 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
     <Modal size={'6xl'} isCentered isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        {/* <ModalHeader>Modal Title</ModalHeader> */}
         <ModalCloseButton />
         <ModalBody>
           <VStack
@@ -147,7 +132,7 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
                     [];
                   return (
                     <VStack key={index} w={'100%'} h={'100%'}>
-                      {sunday.getDate() < 8 && (
+                      {(sunday.getDate() < 8 || index === 0) && (
                         <HStack w={'100%'} h={'50px'}>
                           <Text as={'b'}>{sunday.toLocaleString('pl-PL', { month: 'long', year: 'numeric' })}</Text>
                         </HStack>
@@ -207,7 +192,13 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
                               label={`ID: ${p.id} \n ${p.ptoStart.toLocaleString('pl-PL', {
                                 day: '2-digit',
                                 month: 'short',
-                              })} - ${p.ptoEnd.toLocaleString('pl-PL', { day: '2-digit', month: 'short' })}`}
+                              })} - ${p.ptoEnd.toLocaleString('pl-PL', {
+                                day: '2-digit',
+                                month: 'short',
+                              })} \n ${ptoTypeTranslatePl.get(p.leaveType)} ${
+                                p.leaveType === 'occasional_leave' ?
+                                `- ${p.occasional_leaveType && occasionalLeaveTranslatePL.get(p.occasional_leaveType)}` : ''
+                              }`}
                               whiteSpace='pre-line'
                             >
                               <GridItem
@@ -216,7 +207,15 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
                                 maxH={'30px'}
                                 colStart={start}
                                 colEnd={end + 1}
-                                bg={p.id === highlightedPto ? '#385898' : p.pending ? 'yellow.200' : 'teal.200'}
+                                bg={
+                                  p.id === pto?.id
+                                    ? 'blue.200'
+                                    : p.id === highlightedPto
+                                    ? '#385898'
+                                    : p.pending
+                                    ? 'yellow.200'
+                                    : 'teal.200'
+                                }
                                 opacity={p.pending ? '.5' : 0.9}
                                 px={3}
                                 borderRadius={
