@@ -2,6 +2,14 @@ import { EmployeeBasic } from './User';
 
 export type PtoType = 'pto' | 'pto_on_demand' | 'child_care' | 'on_saturday_pto' | 'occasional_leave';
 
+export const ptoTypeTranslatePl = new Map([
+  ['pto', 'Urlop wypoczynkowy'],
+  ['pto_on_demand', 'Urlop na żądanie'],
+  ['on_saturday_pto', 'Odbiór dnia wolnego za święto w sobotę'],
+  ['occasional_leave', 'Urlop okolicznościowy'],
+  ['child_care', 'Opieka nad dzieckiem'],
+]);
+
 export interface OccasionalLeaveType {
   id: number;
   occasionalType: string;

@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
 import { MetaData } from '../../model/MetaData';
-import { HolidayOnSaturday, NewPtoRequest, NewPtoRequestSummary, PtoType } from '../../model/Pto';
+import { HolidayOnSaturday, NewPtoRequest, NewPtoRequestSummary, PtoType, ptoTypeTranslatePl } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
@@ -97,11 +97,11 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
       >
         <>
           <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
-            <option value={'pto'}>Urlop wypoczynkowy</option>
-            <option value={'pto_on_demand'}>Urlop wypoczynkowy na żądanie</option>
-            <option value={'on_saturday_pto'}>Odbiór dnia wolnego za święto wypadające w sobotę</option>
-            <option value={'occasional_leave'}>Urlop okolicznościowy</option>
-            <option value={'child_care'}>Opieka nad dzieckiem</option>
+            <option value={'pto'}>{ptoTypeTranslatePl.get('pto')}</option>
+            <option value={'pto_on_demand'}>{ptoTypeTranslatePl.get('pto_on_demand')}</option>
+            <option value={'on_saturday_pto'}>{ptoTypeTranslatePl.get('on_saturday_pto')}</option>
+            <option value={'occasional_leave'}>{ptoTypeTranslatePl.get('occasional_leave')}</option>
+            <option value={'child_care'}>{ptoTypeTranslatePl.get('child_care')}</option>
           </optgroup>
         </>
       </Select>

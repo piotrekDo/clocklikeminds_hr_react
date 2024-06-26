@@ -6,7 +6,7 @@ import { fetchEmployeePage } from '../service/UsersHttpService';
 const useEmployees = () => {
   return useQuery<Page<EmployeeBasic>, Error>({
     queryKey: ['employees'],
-    queryFn: () => fetchEmployeePage({ page: 0, pageSize: 20 }).request,
+    queryFn: () => fetchEmployeePage({ page: 0, pageSize: 200 }).request,
   });
 };
 

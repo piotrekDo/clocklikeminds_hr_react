@@ -8,11 +8,22 @@ import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
 import useMetaData from './hooks/useMetaData';
 
+export const occasionalLeaveTranslatePL: Map<string, string> = new Map<string, string>();
+
 function App() {
   const { appUser } = useAuthentication();
   const { error } = useHttpErrorState();
   const toast = useToast();
-  const data = useMetaData();
+  const { isSuccess, data, isError, error: metaDataError } = useMetaData();
+
+  useEffect(() => {
+    if (isSuccess) {
+      data.occasionalLeaveTypes.forEach(type => {
+        occasionalLeaveTranslatePL.set(type.occasionalType, type.descriptionPolish);
+      });
+    }
+  }, [isSuccess]);
+
   useEffect(() => {
     if (error) {
       toast({
@@ -23,7 +34,16 @@ function App() {
         position: 'top-left',
       });
     }
-  }, [error]);
+    if (metaDataError) {
+      toast({
+        title: 'Błąd pobierania meta-danych aplikacji',
+        description: 'Sprawdź połączenie internetowe',
+        status: 'error',
+        isClosable: true,
+        position: 'top-left',
+      });
+    }
+  }, [error, metaDataError]);
 
   return (
     <Flex

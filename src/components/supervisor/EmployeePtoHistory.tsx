@@ -10,6 +10,7 @@ import {
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
   VStack,
 } from '@chakra-ui/react';
@@ -20,10 +21,17 @@ import useEmployeePtoRequestsSimplePagination from '../../hooks/useEmployeePtoRe
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import { PaginationBar } from './PaginationBar';
+import { ptoTypeTranslatePl } from '../../model/Pto';
+import { MetaData } from '../../model/MetaData';
+import { useQueryClient } from '@tanstack/react-query';
+import { occasionalLeaveTranslatePL } from '../../App';
+import { trimText } from '../../utils';
 
 export const EmployeePtoHistory = () => {
   const appUser = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
+  const queryClient = useQueryClient();
+  const meta: MetaData | undefined = queryClient.getQueryData(['meta']);
   const [selectedEmployee, setSelectedEmployee] = useState(-1);
   const [selectedPage, setSelectedPage] = useState(0);
   const pageSize = 10;
@@ -97,10 +105,12 @@ export const EmployeePtoHistory = () => {
                   </TableCaption>
                   <Thead>
                     <Tr>
-                      <Th color={'whiteAlpha.800'}>ID wniosku</Th>
+                      <Th color={'whiteAlpha.800'}>ID</Th>
                       <Th color={'whiteAlpha.800'}>Data wniosku</Th>
                       <Th color={'whiteAlpha.800'}>Początek</Th>
                       <Th color={'whiteAlpha.800'}>Koniec</Th>
+                      <Th color={'whiteAlpha.800'}>Rodzaj</Th>
+                      <Th color={'whiteAlpha.800'}>Uwagi</Th>
                       <Th color={'whiteAlpha.800'} fontSize={'.7rem'}>
                         Dni <br /> roboczych
                       </Th>
@@ -133,9 +143,45 @@ export const EmployeePtoHistory = () => {
                           <Td py={0}>
                             {end.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
                           </Td>
+                          <Td
+                            color={
+                              pto.leaveType === 'on_saturday_pto' || pto.leaveType === 'occasional_leave'
+                                ? 'yellow.300'
+                                : ''
+                            }
+                            cursor={
+                              pto.leaveType === 'on_saturday_pto' || pto.leaveType === 'occasional_leave' ? 'help' : ''
+                            }
+                          >
+                            <Tooltip
+                              label={
+                                pto.occasional_leaveType
+                                  ? `${occasionalLeaveTranslatePL.get(pto.occasional_leaveType)}`
+                                  : pto.leaveType === 'on_saturday_pto'
+                                  ? `Za święto wypadające ${pto.saturday_holiday_date}`
+                                  : ''
+                              }
+                            >
+                              {ptoTypeTranslatePl.get(pto.leaveType)}
+                            </Tooltip>
+                          </Td>
+                          <Td color={pto.notes ? 'yellow.200' : ''}>
+                            <Tooltip label={pto.notes}>{pto.notes ? trimText(pto.notes, 10) : 'Brak'}</Tooltip>
+                          </Td>
                           <Td>{pto.businessDays}</Td>
                           <Td>{pto.totalDays}</Td>
-                          <Td py={0}>{pto.pending ? 'Oczekuje' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}</Td>
+                          <Tooltip
+                            label={
+                              pto.wasAccepted
+                                ? `Zaakceptowany: ${pto.decisionDateTime}`
+                                : !pto.pending && !pto.wasAccepted
+                                ? `Odrzucony: ${pto.decisionDateTime} 
+                          Powód: ${(pto.declineReason && pto.declineReason) || 'brak'}`
+                                : ''
+                            }
+                          >
+                            <Td py={0}>{pto.pending ? 'Oczekuje' : pto.wasAccepted ? 'Zaakceptowany' : 'Odrzucony'}</Td>
+                          </Tooltip>
                         </Tr>
                       );
                     })}
