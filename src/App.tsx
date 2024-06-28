@@ -14,7 +14,7 @@ function App() {
   const { appUser } = useAuthentication();
   const { error } = useHttpErrorState();
   const toast = useToast();
-  const { isSuccess, data, isError, error: metaDataError } = useMetaData();
+  const { isSuccess, data, isError, error: metaDataError } = useMetaData(!!appUser);
 
   useEffect(() => {
     if (isSuccess) {

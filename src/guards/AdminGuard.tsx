@@ -3,7 +3,9 @@ import { Navigate } from 'react-router-dom';
 import useAuthentication from '../state/useAuthentication';
 
 export const AdminGuard = ({ children }: React.PropsWithChildren) => {
-  const isAdmin = useAuthentication(s => s.isAdmin);
+  const { appUser, isAdmin, checkAutologin } = useAuthentication();
+
+  if (!appUser) checkAutologin();
 
   if (!isAdmin) {
     return <Navigate to={'/'} replace />;

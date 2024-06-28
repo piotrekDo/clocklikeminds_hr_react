@@ -65,10 +65,12 @@ const useAuthentication = create<AuthStore>(set => {
         const autologinUser = (token && convertTokenToUser(token)) || undefined;
         const isTokenValid = autologinUser && checkIfTokenIsValid(autologinUser);
         const isAdmin = autologinUser && autologinUser.userRoles.indexOf('admin') > -1;
+        const isSupervisor = autologinUser && autologinUser.userRoles.indexOf('supervisor') > -1;
         return {
           appUser: isTokenValid && autologinUser ? autologinUser : undefined,
           isSessionActive: isTokenValid && autologinUser ? true : false,
           isAdmin: isAdmin,
+          isSupervisor: isSupervisor
         };
       }),
     logout: () =>

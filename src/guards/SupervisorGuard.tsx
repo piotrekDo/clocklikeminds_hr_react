@@ -3,9 +3,10 @@ import useAuthentication from '../state/useAuthentication';
 import { Navigate } from 'react-router-dom';
 
 export const SupervisorGuard = ({ children }: React.PropsWithChildren) => {
-  const isAdmin = useAuthentication(s => s.isAdmin);
-  const isSupervisor = useAuthentication(s => s.isSupervisor);
-  
+  const { appUser, isAdmin, isSupervisor, checkAutologin } = useAuthentication();
+
+  if (!appUser) checkAutologin();
+
   if (!isAdmin && !isSupervisor) {
     return <Navigate to={'/'} replace />;
   }

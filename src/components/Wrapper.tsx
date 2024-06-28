@@ -5,6 +5,7 @@ import useAuthentication from '../state/useAuthentication';
 
 export const Wrapper = () => {
   const { appUser, checkAutologin } = useAuthentication();
+  console.log('hello wrapper')
 
   useEffect(() => {
     checkAutologin();
