@@ -20,6 +20,7 @@ import { MdEventRepeat } from 'react-icons/md';
 import { UserPtoSummary } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
+import useAuthentication from '../../state/useAuthentication';
 
 interface Props {
   isUserActive: boolean;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Props) => {
+  const appUser = useAuthentication(s => s.appUser);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const setIsRequestingPto = usePtoRequestState(s => s.setIsRequestingPto);
   const setSelectedPtoType = usePtoRequestState(s => s.setSelectedPtoType);
@@ -121,14 +123,16 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
       </Modal>
 
       <VStack position={'relative'} w={'100%'} p={5}>
-        <Tooltip label='Dni świąteczne w sobotę'>
-          <Box position={'absolute'} onClick={onOpen} top={2} right={2} cursor={'pointer'}>
-            {hasUnusedHolidayOnSaturday && (
-              <Box w={'15px'} h={'15px'} borderRadius={'50%'} bg={'red'} position={'absolute'} top={0} left={0}></Box>
-            )}
-            <MdEventRepeat color={'#385898'} size={'40px'} />
-          </Box>
-        </Tooltip>
+        {appUser?.isActive && !appUser?.freelancer && (
+          <Tooltip label='Dni świąteczne w sobotę'>
+            <Box position={'absolute'} onClick={onOpen} top={2} right={2} cursor={'pointer'}>
+              {hasUnusedHolidayOnSaturday && (
+                <Box w={'15px'} h={'15px'} borderRadius={'50%'} bg={'red'} position={'absolute'} top={0} left={0}></Box>
+              )}
+              <MdEventRepeat color={'#385898'} size={'40px'} />
+            </Box>
+          </Tooltip>
+        )}
         <Text w={'100%'} fontSize={'1.3rem'} textAlign={'center'} as={'b'}>
           Podsumowanie
         </Text>

@@ -1,8 +1,8 @@
-import { Box, HStack, Text, Image } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
 import { FaPowerOff } from 'react-icons/fa';
-import { IoPersonCircleOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import useAuthentication from '../../state/useAuthentication';
+import { Freelancer } from '../badges/Freelancer';
 
 export const Uppernavbar = () => {
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ export const Uppernavbar = () => {
       spacing={10}
       justifyContent={'end'}
     >
+      {user?.freelancer && <Freelancer size='3rem' />}
       <HStack cursor={'pointer'} fontSize={'1.3rem'}>
         {user?.imageUrl && (
           <Box

@@ -35,7 +35,14 @@ export const EmployeeDetails = () => {
                 animate={{ y: '0', opacity: 1 }}
                 exit={{ y: '+100px', opacity: 0 }}
               >
-                <Box mt={'20px'} bg='#385898' color={'whiteAlpha.900'} p={3} boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'} borderRadius={'20px 20px 0 0'}>
+                <Box
+                  mt={'20px'}
+                  bg='#385898'
+                  color={'whiteAlpha.900'}
+                  p={3}
+                  boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+                  borderRadius={'20px 20px 0 0'}
+                >
                   <EmployeeDetailsHeading employee={employee} />
                 </Box>
                 <VStack
@@ -51,13 +58,13 @@ export const EmployeeDetails = () => {
                   <Box w={'100%'} mt={'20px'}>
                     <EmployeeGeneralInformation employee={employee} />
                   </Box>
-                  <Box w={'100%'} >
+                  <Box w={'100%'}>
                     <EmployeeContractinformation employee={employee} />
                   </Box>
-                  <Box w={'100%'} >
+                  <Box w={'100%'}>
                     <EmployeeTimeOffDetails employee={employee} />
                   </Box>
-                  <Box w={'100%'} >
+                  <Box w={'100%'}>
                     <EmployeeHistory employee={employee} />
                   </Box>
                   <Box w={'100%'} mb={'70px'}>

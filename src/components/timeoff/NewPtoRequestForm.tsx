@@ -85,26 +85,28 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
       borderRadius={'30px'}
     >
       <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
-      <Select
-        maxW={'500px'}
-        border={'solid 2px'}
-        backgroundColor={'rgba(56,88,152, .2)'}
-        color={'whiteAlpha.900'}
-        defaultValue={selectedPtoType}
-        onChange={e => {
-          setSelectedPtoType(e.target.value as PtoType), setOccasionalType(undefined);
-        }}
-      >
-        <>
-          <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
-            <option value={'pto'}>{ptoTypeTranslatePl.get('pto')}</option>
-            <option value={'pto_on_demand'}>{ptoTypeTranslatePl.get('pto_on_demand')}</option>
-            <option value={'on_saturday_pto'}>{ptoTypeTranslatePl.get('on_saturday_pto')}</option>
-            <option value={'occasional_leave'}>{ptoTypeTranslatePl.get('occasional_leave')}</option>
-            <option value={'child_care'}>{ptoTypeTranslatePl.get('child_care')}</option>
-          </optgroup>
-        </>
-      </Select>
+      {!appUser?.freelancer && (
+        <Select
+          maxW={'500px'}
+          border={'solid 2px'}
+          backgroundColor={'rgba(56,88,152, .2)'}
+          color={'whiteAlpha.900'}
+          defaultValue={selectedPtoType}
+          onChange={e => {
+            setSelectedPtoType(e.target.value as PtoType), setOccasionalType(undefined);
+          }}
+        >
+          <>
+            <optgroup style={{ color: 'white', backgroundColor: 'rgba(56,88,152, .6)' }}>
+              <option value={'pto'}>{ptoTypeTranslatePl.get('pto')}</option>
+              <option value={'pto_on_demand'}>{ptoTypeTranslatePl.get('pto_on_demand')}</option>
+              <option value={'on_saturday_pto'}>{ptoTypeTranslatePl.get('on_saturday_pto')}</option>
+              <option value={'occasional_leave'}>{ptoTypeTranslatePl.get('occasional_leave')}</option>
+              <option value={'child_care'}>{ptoTypeTranslatePl.get('child_care')}</option>
+            </optgroup>
+          </>
+        </Select>
+      )}
       {selectedPtoType === 'occasional_leave' && meta?.occasionalLeaveTypes && (
         <Select
           backgroundColor={'rgba(56,88,152, .6)'}
@@ -157,7 +159,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
         <Text>Zaznaczony okres zawiera {summary.businessDays} dni roboczych</Text>
       )}
       {isEndDateError && <Text>{isEndDateError}</Text>}
-      <VStack w={'100%'} p={3} >
+      <VStack w={'100%'} p={3}>
         {selectedPtoType === 'pto_on_demand' && (
           <>
             <Text as={'i'} fontSize={'1.2rem'} fontWeight={'500'}>
@@ -165,7 +167,11 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
               żądanie”).
             </Text>
             <HStack mt={3} w={'90%'} justify={'end'}>
-              <Link textDecor={'underline'} href='https://www.gov.pl/web/rodzina/urlopy-i-zwolnienia-od-pracy' isExternal>
+              <Link
+                textDecor={'underline'}
+                href='https://www.gov.pl/web/rodzina/urlopy-i-zwolnienia-od-pracy'
+                isExternal
+              >
                 Źródło
               </Link>
             </HStack>
@@ -174,8 +180,8 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
         {selectedPtoType === 'occasional_leave' && (
           <>
             <Box w={'100%'} fontSize={'.8rem'}>
-              <Text >Pracownikowi przysługują 2 dni urlopu okolicznościowego w razie:</Text>
-              <UnorderedList >
+              <Text>Pracownikowi przysługują 2 dni urlopu okolicznościowego w razie:</Text>
+              <UnorderedList>
                 <ListItem>swojego ślubu</ListItem>
                 <ListItem>urodzenia jego dziecka</ListItem>
                 <ListItem>zgonu i pogrzebu jego małżonka, dziecka, ojca, matki, ojczyma lub macochy.</ListItem>
@@ -183,7 +189,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
             </Box>
             <Box w={'100%'} fontSize={'.8rem'}>
               <Text>Pracownikowi przysługuje 1 dzień urlopu okolicznościowego w razie:</Text>
-              <UnorderedList >
+              <UnorderedList>
                 <ListItem>ślubu dziecka pracownika</ListItem>
                 <ListItem>
                   zgonu i pogrzebu jego siostry, brata, teściowej, teścia, babki, dziadka, a także innej osoby

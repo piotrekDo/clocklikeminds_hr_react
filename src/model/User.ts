@@ -6,6 +6,7 @@ export interface AppUser {
   jwtExpiresAt: number;
   isActive: boolean;
   imageUrl: string;
+  freelancer: boolean;
 }
 
 export interface TokenPayload {
@@ -16,6 +17,7 @@ export interface TokenPayload {
   userId: number;
   active: boolean;
   imageUrl: string;
+  freelancer: boolean;
 }
 
 export interface EmployeeRole {
@@ -42,6 +44,7 @@ export interface EmployeePositionHistory {
 
 export interface EmployeeBasic {
   appUserId: number;
+  freelancer: boolean;
   firstName: string;
   lastName: string;
   userEmail: string;
@@ -56,6 +59,7 @@ export interface EmployeeBasic {
 
 export interface Employee {
   appUserId: number;
+  freelancer: boolean;
   firstName: string;
   lastName: string;
   userEmail: string;
@@ -82,6 +86,7 @@ export interface Employee {
 
 export interface FinishRegistrationRequest {
   appUserId: number;
+  isFreelancer: boolean;
   positionKey: string;
   hireStart: string;
   hireEnd: string | undefined;
@@ -92,6 +97,7 @@ export interface FinishRegistrationRequest {
 
 export interface UpdateHireDataRequest {
   appUserId: number;
+  isFreelancer: boolean;
   positionKey: string | undefined;
   positionChangeDate: string | undefined;
   workStartDate: string | undefined;

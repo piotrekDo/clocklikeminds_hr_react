@@ -3,6 +3,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -15,6 +16,8 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Radio,
+  RadioGroup,
   Select,
   useToast,
 } from '@chakra-ui/react';
@@ -83,6 +86,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
     if (!employee) return;
     const request: FinishRegistrationRequest = {
       appUserId: employee?.appUserId,
+      isFreelancer: data.freelancer,
       positionKey: data.positionKey,
       hireStart: data.hireStart,
       hireEnd: (data.hireEnd && data.hireEnd) || undefined,
@@ -113,6 +117,16 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
             <FormControl mb={5} isInvalid={errors && errors.hireEnd ? true : false}>
               <FormLabel>Data końca umowy</FormLabel>
               <Input type='date' {...register('hireEnd')} />
+            </FormControl>
+            <FormControl mb={5} isInvalid={errors && errors.freelancer ? true : false}>
+              <FormLabel>Freelancer</FormLabel>
+              <RadioGroup >
+                <HStack>
+                  <Radio value='false' {...register('freelancer', { required: true })}>Nie</Radio>
+                  <Radio value='true' {...register('freelancer', { required: true })}>Tak</Radio>
+                </HStack>
+              </RadioGroup>
+              <FormErrorMessage>Wybierz</FormErrorMessage>
             </FormControl>
             <FormControl mb={5} isInvalid={errors && errors.ptoDaysTotal ? true : false}>
               <FormLabel>Dni urlopu</FormLabel>

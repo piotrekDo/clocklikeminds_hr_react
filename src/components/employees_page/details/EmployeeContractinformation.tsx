@@ -38,6 +38,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   const [workStartDate, setWorkStartDate] = useState<undefined | string>(undefined);
   const [workEndDate, setWorkEndDate] = useState<undefined | string>(employee.hireEnd || undefined);
   const [supervisorId, setSupervisorId] = useState<undefined | number>(employee.supervisorId);
+  const [isFreelancer, setIsFreelancer] = useState<boolean>(employee.freelancer);
 
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
@@ -74,6 +75,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   const handleSubmit = () => {
     const request: UpdateHireDataRequest = {
       appUserId: employee?.appUserId,
+      isFreelancer: isFreelancer,
       positionKey: positionKey,
       positionChangeDate: positionChangeDate,
       workStartDate: workStartDate,
@@ -250,10 +252,22 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
               )}
             </FormControl>
             <FormControl>
+              {isUpdatingEmployee !== 'hireDetails' && (
+                <Checkbox cursor={''} isChecked={employee.freelancer} fontWeight={'700'}>
+                  Freelancer
+                </Checkbox>
+              )}
+              {isUpdatingEmployee === 'hireDetails' && (
+                <Checkbox isChecked={isFreelancer} fontWeight={'700'} onChange={e => setIsFreelancer(s => !s)}>
+                  Freelancer
+                </Checkbox>
+              )}
+            </FormControl>
+            {/* <FormControl>
               <Checkbox isChecked={employee.stillHired} fontWeight={'700'}>
                 Nadal zatrudniony
               </Checkbox>
-            </FormControl>
+            </FormControl> */}
           </VStack>
         </VStack>
       </HStack>

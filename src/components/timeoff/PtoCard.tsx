@@ -23,7 +23,6 @@ export const PtoCard = ({ pto }: Props) => {
 
   return (
     <VStack
-
       position={'relative'}
       w={'100%'}
       maxW={'800px'}
@@ -33,6 +32,7 @@ export const PtoCard = ({ pto }: Props) => {
       px={2}
       justifyContent={'start'}
       alignItems={'center'}
+      cursor={'help'}
       borderRadius={'20px'}
       spacing={0}
       bg={
@@ -43,24 +43,26 @@ export const PtoCard = ({ pto }: Props) => {
       transitionProperty={'transform'}
       transitionDuration={'.2s'}
     >
-      <Flex
-        position={'absolute'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        fontSize={'.9rem'}
-        fontWeight={'600'}
-        color={'whiteAlpha.900'}
-        top={'-5px'}
-        left={0}
-        borderRadius={'50px'}
-        bg={'#385898'}
-        w={'40px'}
-        h={'20px'}
-        p={1}
-        boxShadow={'4px 4px 14px 0px rgba(66, 68, 90, 1)'}
-      >
-        ID:{pto.id}
-      </Flex>
+      <Tooltip label='ID wniosku'>
+        <Flex
+          position={'absolute'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          fontSize={'.9rem'}
+          fontWeight={'600'}
+          color={'whiteAlpha.900'}
+          top={'-5px'}
+          left={0}
+          borderRadius={'50px'}
+          bg={'#385898'}
+          w={'40px'}
+          h={'20px'}
+          p={1}
+          boxShadow={'4px 4px 14px 0px rgba(66, 68, 90, 1)'}
+        >
+          ID:{pto.id}
+        </Flex>
+      </Tooltip>
       <Tooltip
         whiteSpace='pre-line'
         label={`Akceptujący:

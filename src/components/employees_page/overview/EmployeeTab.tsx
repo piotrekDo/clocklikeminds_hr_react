@@ -4,6 +4,7 @@ import { EmployeeBasic } from '../../../model/User';
 import { Activebadge } from '../../badges/Activebadge';
 import { InactiveBadge } from '../../badges/InactiveBadge';
 import { UnfinishedRegistrationBadge } from '../../badges/UnfinishedRegistrationBadge';
+import { Freelancer } from '../../badges/Freelancer';
 
 interface Props {
   employee: EmployeeBasic;
@@ -42,22 +43,29 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       onClick={() => onEmployeeChange(employee.appUserId)}
       _hover={{ bg: '#E3EDF2' }}
     >
-      <Box flexBasis={'50%'}>
-        {employee.imageUrl && (
-          <Box
-            w={'30px'}
-            h={'30px'}
-            borderRadius={'30px'}
-            display={'flex'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            overflow={'hidden'}
-          >
-            <img src={employee.imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} referrerPolicy="no-referrer"/>
-          </Box>
-        )}
-        {!employee.imageUrl && <FaRegCircleUser size={'30px'}/>}
-      </Box>
+      <HStack flexBasis={'50%'}>
+        <Box >
+          {employee.imageUrl && (
+            <Box
+              w={'30px'}
+              h={'30px'}
+              borderRadius={'30px'}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              overflow={'hidden'}
+            >
+              <img
+                src={employee.imageUrl}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                referrerPolicy='no-referrer'
+              />
+            </Box>
+          )}
+          {!employee.imageUrl && <FaRegCircleUser size={'30px'} />}
+        </Box>
+        {employee.freelancer && <Freelancer size='2rem'/>}
+      </HStack>
       <Text flexBasis={'100%'}>{employee.firstName}</Text>
       <Text flexBasis={'100%'}>{trimDisplay(employee.lastName)}</Text>
       <Text flexBasis={'100%'}>{employee.position ? trimDisplay(employee.position.displayName) : ''}</Text>

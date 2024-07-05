@@ -3,6 +3,7 @@ import { FaExclamationCircle } from 'react-icons/fa';
 import { IoArrowBack } from 'react-icons/io5';
 import { Employee } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
+import { Freelancer } from '../../badges/Freelancer';
 
 interface Props {
   employee: Employee;
@@ -20,13 +21,7 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
 
   return (
     <HStack justifyContent={'center'} w={'50vw'} position={'relative'}>
-      <Box
-        position={'absolute'}
-        left={0}
-        cursor={'pointer'}
-        borderRadius={'50%'}
-        onClick={e => handleBackArrowClick()}
-      >
+      <Box position={'absolute'} left={0} cursor={'pointer'} borderRadius={'50%'} onClick={e => handleBackArrowClick()}>
         <IoArrowBack size={'40px'} color='' />
       </Box>
       {!employee.registrationFinished && (
@@ -57,6 +52,7 @@ export const EmployeeDetailsHeading = ({ employee }: Props) => {
             />
           </Box>
         )}
+        {employee.freelancer && <Freelancer size='3rem' />}
       </Heading>
     </HStack>
   );
