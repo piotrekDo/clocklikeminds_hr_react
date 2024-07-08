@@ -22,6 +22,7 @@ import { PtoRequestFormatted, ResolvePtoRequest } from '../../model/Pto';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoComparationStore from '../../state/usePtoComparationState';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
+import { Freelancer } from '../badges/Freelancer';
 
 interface Props {
   p: PtoRequestFormatted;
@@ -133,7 +134,12 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
         </Box>
         <HStack w={'100%'}>
           <HStack flexBasis={'100%'} justifyContent={'space-evenly'} ml={10}>
-            <Box color={'whiteAlpha.800'} fontWeight={'700'} fontSize={'1.1rem'}>
+            <Box color={'whiteAlpha.800'} fontWeight={'700'} fontSize={'1.1rem'} position={'relative'}>
+              {p.applierFreelancer && (
+                <Box position={'absolute'} right={'-60px'} top={'-15px'} opacity={.7}>
+                  <Freelancer size='2.5rem' />
+                </Box>
+              )}
               <Text>{p.applierFirstName}</Text>
               <Text>{p.applierLastName}</Text>
             </Box>

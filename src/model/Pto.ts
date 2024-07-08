@@ -34,6 +34,7 @@ export interface PtoRequestResponse {
   applierPtoDaysTotal: number;
   applierPtoDaysTaken: number;
   applierImageUrl: string;
+  applierFreelancer: boolean;
   acceptorId: number;
   acceptorFirstName: string;
   acceptorLastName: string;
@@ -68,6 +69,7 @@ export interface PtoRequestFormatted {
   applierPtoDaysTotal: number;
   applierPtoDaysTaken: number;
   applierImageUrl: string;
+  applierFreelancer: boolean;
   acceptorId: number;
   acceptorFirstName: string;
   acceptorLastName: string;
