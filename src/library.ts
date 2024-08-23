@@ -37,7 +37,7 @@ const BASE_URL_LOCALHOST = 'http://localhost:8080';
 const BASE_URL_AZURE = 'https://holidayapp.politewater-8bb1c971.westeurope.azurecontainerapps.io';
 
 
-export const BASE_URL = BASE_URL_LOCALHOST;
+export const BASE_URL = BASE_URL_AZURE;
 
 export const REACT_APP_REDIRECT_URL = BASE_URL + '/login/oauth2/code/google';
 export const GOOGLE_AUTH_URL = `${BASE_URL}/oauth2/authorize/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;
