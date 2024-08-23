@@ -14,7 +14,7 @@ export const backgroundGradient = `linear-gradient(
     hsl(227deg 91% 47%) 100%
   )`;
 
-  export const loggedBackgorund = `linear-gradient(
+export const loggedBackgorund = `linear-gradient(
     125deg,
     hsl(0deg 0% 100%) 0%,
     hsl(202deg 38% 89%) 9%,
@@ -33,6 +33,11 @@ export const backgroundGradient = `linear-gradient(
 export const adminBackgroundGradient =
   'linear-gradient(144deg, rgba(199,151,151,1) 0%, rgba(219,72,89,1) 35%, rgba(255,0,0,1) 100%)';
 
-export const REACT_APP_API_BASE_URL = 'http://localhost:8080';
-export const REACT_APP_REDIRECT_URL = 'http://localhost:8080/login/oauth2/code/google';
-export const GOOGLE_AUTH_URL = `${REACT_APP_API_BASE_URL}/oauth2/authorize/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;
+const BASE_URL_LOCALHOST = 'http://localhost:8080';
+const BASE_URL_AZURE = 'https://holidayapp.politewater-8bb1c971.westeurope.azurecontainerapps.io';
+
+
+export const BASE_URL = BASE_URL_LOCALHOST;
+
+export const REACT_APP_REDIRECT_URL = BASE_URL + '/login/oauth2/code/google';
+export const GOOGLE_AUTH_URL = `${BASE_URL}/oauth2/authorize/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;

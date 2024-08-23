@@ -43,6 +43,7 @@ export const UpcomingSaturdayHoliday = ({ holiday, inDays }: Props) => {
       id: 0,
       date: holiday.date,
       note: holiday.note,
+      usedDate: ''
     };
     sendRequest(holidayRequest);
   };

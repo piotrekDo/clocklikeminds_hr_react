@@ -17,8 +17,6 @@ export const TimeOffListTab = () => {
     }
   }, [isError]);
 
-  console.log(data);
-
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack w={'100%'} mb={5}>

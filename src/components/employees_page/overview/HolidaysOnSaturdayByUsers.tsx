@@ -26,7 +26,6 @@ export const HolidaysOnSaturdayByUsers = ({ records }: Props) => {
   };
 
   useEffect(() => {
-    console.log(filteredRecords);
   }, [filteredRecords]);
 
   return (

@@ -98,7 +98,7 @@ export const Calendar = () => {
       const container = ref.current;
       container.scrollTo({
         top: container.scrollTop + 512,
-        behavior: 'instant',
+        behavior: 'auto',
       });
     }
   }, [scroll]);
@@ -107,7 +107,7 @@ export const Calendar = () => {
     if (ref.current) {
       const todayElement = ref.current.querySelector(`#week-${4}`);
       if (todayElement) {
-        todayElement.scrollIntoView({ behavior: 'instant', block: 'start' });
+        todayElement.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
     }
   }, []);

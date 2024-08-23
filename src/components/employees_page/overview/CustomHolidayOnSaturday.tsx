@@ -44,6 +44,7 @@ export const CustomHolidayOnSaturday = () => {
       id: 0,
       date: date,
       note: notesRef.current?.value,
+      usedDate: ''
     };
     sendRequest(holidayRequest);
   };

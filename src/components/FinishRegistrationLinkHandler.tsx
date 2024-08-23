@@ -10,7 +10,6 @@ export const FinishRegistrationLinkHandler = () => {
     const split = s.split('=');
     mappedParams.set(split[0], split[1]);
   });
-  console.log(mappedParams);
 
   const id = mappedParams.get('empId');
   if (id) {
