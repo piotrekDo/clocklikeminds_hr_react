@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PtoRequestFormatted } from '../model/Pto';
-import { fetchPtosInTimeFrame } from '../service/PtoHttpService';
+import { fetchPtosInTimeFrame } from '../service/TimeOffHttpService';
 
 const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string, end: string) => {
   const queryClient = useQueryClient();
@@ -12,6 +12,7 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
         res.map(pto => {
           const ptoStartLocal = new Date(pto.ptoStart);
           const ptoEndLocal = new Date(pto.ptoEnd);
+          const withdrawnLocal = pto.withdrawnDateTime ? new Date(pto.withdrawnDateTime) : undefined;
           const ptoStart = new Date(
             Date.UTC(ptoStartLocal.getFullYear(), ptoStartLocal.getMonth(), ptoStartLocal.getDate())
           );
@@ -21,6 +22,7 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
             requestDateTime: new Date(pto.requestDateTime),
             ptoStart: ptoStart,
             ptoEnd: ptoEnd,
+            withdrawnDateTime: withdrawnLocal
           };
         })
       ),

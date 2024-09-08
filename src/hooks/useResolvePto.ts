@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PtoRequestResponse, ResolvePtoRequest } from '../model/Pto';
-import { resolvePto } from '../service/PtoHttpService';
+import { resolvePto } from '../service/TimeOffHttpService';
 
 const useResolvePto = () => {
   const queryClient = useQueryClient();

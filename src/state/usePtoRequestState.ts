@@ -7,11 +7,13 @@ interface PtoRequestState {
   endDate: Date | undefined;
   isEndDateError: string | undefined;
   selectedPtoType: PtoType;
+  applierNotes: string | undefined;
   setIsRequestingPto: (isRequesting: boolean) => void;
   setStartDate: (date: Date | undefined) => void;
   setEndDate: (date: Date | undefined) => void;
   setIsEndDateError: (error: string | undefined) => void;
   setSelectedPtoType: (type: PtoType) => void;
+  setApplierNotes: (notes: string | undefined) => void;
 }
 
 const usePtoRequestState = create<PtoRequestState>(set => ({
@@ -20,6 +22,7 @@ const usePtoRequestState = create<PtoRequestState>(set => ({
   endDate: undefined,
   isEndDateError: undefined,
   selectedPtoType: 'pto',
+  applierNotes: undefined,
   setIsRequestingPto: bol =>
     set(store => ({
       ...store,
@@ -69,6 +72,12 @@ const usePtoRequestState = create<PtoRequestState>(set => ({
     set(store => ({
       ...store,
       selectedPtoType: type,
+    }));
+  },
+  setApplierNotes: notes => {
+    set(store => ({
+      ...store,
+      applierNotes: notes,
     }));
   },
 }));

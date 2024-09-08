@@ -10,6 +10,13 @@ export const ptoTypeTranslatePl = new Map([
   ['child_care', 'Opieka nad dzieckiem'],
 ]);
 
+export interface WithdrawResponse {
+  requestId: number;
+  applierId: number;
+  wasDeleted: boolean;
+  setToDelete: boolean;
+}
+
 export interface OccasionalLeaveType {
   id: number;
   occasionalType: string;
@@ -21,7 +28,9 @@ export interface PtoRequestResponse {
   id: number;
   leaveType: string;
   demand: boolean;
-  notes: string;
+  applierNotes: string;
+  acceptorNotes: string;
+  applicationNotes: string;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: string;
@@ -50,13 +59,18 @@ export interface PtoRequestResponse {
   occasional_descriptionPolish: string;
   occasional_days: string;
   saturday_holiday_date: string;
+  wasMarkedToWithdraw: boolean;
+  wasWithdrawn: boolean;
+  withdrawnDateTime: string;
 }
 
 export interface PtoRequestFormatted {
   id: number;
   leaveType: string;
   demand: boolean;
-  notes: string;
+  applierNotes: string;
+  acceptorNotes: string;
+  applicationNotes: string;
   pending: boolean;
   wasAccepted: boolean;
   requestDateTime: Date;
@@ -85,6 +99,9 @@ export interface PtoRequestFormatted {
   occasional_descriptionPolish: string;
   occasional_days: string;
   saturday_holiday_date: string;
+  wasMarkedToWithdraw: boolean;
+  wasWithdrawn: boolean;
+  withdrawnDateTime: Date | undefined;
 }
 
 export interface NewPtoRequestSummary {
@@ -109,6 +126,7 @@ export interface NewPtoRequest {
   ptoType: PtoType | undefined;
   occasionalType: string | undefined;
   saturdayHolidayDate: string | undefined;
+  applierNotes: string | undefined;
 }
 
 export interface ResolvePtoRequest {

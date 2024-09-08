@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { UserPtoSummary } from '../model/Pto';
-import { fetchUserPtoSummary } from '../service/PtoHttpService';
+import { fetchUserPtoSummary } from '../service/TimeOffHttpService';
 
 const useUserPtoSummary = (userId: number) => {
   return useQuery<UserPtoSummary, Error>({

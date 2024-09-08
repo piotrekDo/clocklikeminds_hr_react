@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from 'react';
 import usePtosInTimeFrame from '../../hooks/usePtosInTimeFrame';
 import useAuthentication from '../../state/useAuthentication';
-import usePtoComparationStore from '../../state/usePtoComparationState';
+import usePtoModalStore from '../../state/usePtoModalStore';
 import { getHolidaysPoland } from '../Calendar/holidays';
 import { Header } from './SupervisorCalendat/Header';
 import { ptoTypeTranslatePl } from '../../model/Pto';
@@ -33,7 +33,7 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
   const [fetchStartDate, setFetchStartDate] = useState('');
   const [fetchEndDate, setFetchEndDate] = useState('');
   const user = useAuthentication(s => s.appUser);
-  const { pto } = usePtoComparationStore();
+  const { ptoToCompareDates: pto } = usePtoModalStore();
   const [highlightedPto, setHighlightedPto] = useState(-1);
   const { data: ptos, isFetching, isError, error, refetch } = usePtosInTimeFrame(userId, fetchStartDate, fetchEndDate);
   const holidays = getHolidaysPoland(pto?.ptoStart.getFullYear() || today.getFullYear());

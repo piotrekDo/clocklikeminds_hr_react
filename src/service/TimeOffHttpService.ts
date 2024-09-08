@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Page } from '../model/Page';
-import { HolidayOnSaturday, HolidayOnSaturdayAdminSummary, NewPtoRequest, PtoRequestResponse, ResolvePtoRequest, UserPtoSummary } from '../model/Pto';
+import { HolidayOnSaturday, HolidayOnSaturdayAdminSummary, NewPtoRequest, PtoRequestResponse, ResolvePtoRequest, UserPtoSummary, WithdrawResponse } from '../model/Pto';
 import APIclient from './APIclient';
 
 export const fetchUserPtoSummary = (userId: number) => {
@@ -99,6 +99,15 @@ export const requestNewHolidayOnSaturday = (request: HolidayOnSaturday) => {
   const controller = new AbortController();
   const httpRequest = APIclient.post<HolidayOnSaturday>('/api/v1/pto/new-saturday-holiday', request).then(
     (res: AxiosResponse<HolidayOnSaturday>) => res.data
+  );
+
+  return { request: httpRequest, cancel: () => controller.abort() };
+}
+
+export const withdrawTimeOffRequest = (requestId: number, applierNotes: string | undefined) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.post(`/api/v1/pto/withdraw?requestId=${requestId}&applierNotes=${applierNotes}`).then(
+    (res: AxiosResponse<WithdrawResponse>) => res.data
   );
 
   return { request: httpRequest, cancel: () => controller.abort() };

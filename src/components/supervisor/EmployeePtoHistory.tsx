@@ -165,8 +165,8 @@ export const EmployeePtoHistory = () => {
                               {ptoTypeTranslatePl.get(pto.leaveType)}
                             </Tooltip>
                           </Td>
-                          <Td color={pto.notes ? 'yellow.200' : ''}>
-                            <Tooltip label={pto.notes}>{pto.notes ? trimText(pto.notes, 10) : 'Brak'}</Tooltip>
+                          <Td color={pto.applicationNotes ? 'yellow.200' : ''}>
+                            <Tooltip label={pto.applicationNotes}>{pto.applicationNotes ? trimText(pto.applicationNotes, 10) : 'Brak'}</Tooltip>
                           </Td>
                           <Td>{pto.businessDays}</Td>
                           <Td>{pto.totalDays}</Td>

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { HolidayOnSaturday } from '../model/Pto';
-import { requestNewHolidayOnSaturday } from '../service/PtoHttpService';
+import { requestNewHolidayOnSaturday } from '../service/TimeOffHttpService';
 
 const useNewHolidayOnSaturday = () => {
     const queryClient = useQueryClient();

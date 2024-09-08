@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Page } from '../model/Page';
 import { PtoRequestResponse } from '../model/Pto';
-import { fetchPtosByAppliersId } from '../service/PtoHttpService';
+import { fetchPtosByAppliersId } from '../service/TimeOffHttpService';
 
 const usePtoByUser = (applierId: number) => {
   return useInfiniteQuery<Page<PtoRequestResponse>, Error>({

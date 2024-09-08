@@ -1,7 +1,6 @@
 import { Input, InputGroup, InputLeftAddon, InputRightAddon } from '@chakra-ui/input';
 import { Box, HStack } from '@chakra-ui/react';
 import usePtoRequestState from '../../state/usePtoRequestState';
-import { date } from 'zod';
 
 interface Props {
   isLoading: boolean;
@@ -18,7 +17,7 @@ export const PtoDatesForm = ({ isLoading, isSimplified }: Props) => {
       <HStack>
         <InputGroup>
           <InputLeftAddon bg={'#385898'} color={'whiteAlpha.900'}>
-            {!isSimplified && 'Od' || 'W dniu'}
+            {(!isSimplified && 'Od') || 'W dniu'}
           </InputLeftAddon>
           <Input
             border={'solid 2px'}
@@ -34,8 +33,8 @@ export const PtoDatesForm = ({ isLoading, isSimplified }: Props) => {
               const newStartDate =
                 localDate && new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
               setStartDate(newStartDate);
-              if(isSimplified){
-                setEndDate(newStartDate)
+              if (isSimplified) {
+                setEndDate(newStartDate);
               }
             }}
           />
