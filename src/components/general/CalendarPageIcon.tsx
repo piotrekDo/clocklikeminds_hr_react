@@ -39,7 +39,7 @@ export const CalendarPageIcon = ({ date, size = 'md', color = '' }: Props) => {
         borderRadius={'0 0 5px 5px'}
       >
         <Box>{date.getDate()}</Box>
-        <Box>{date.toLocaleString('pl-PL', { month: 'long' })}</Box>
+        <Box>{date.toLocaleString('pl-PL', { month: 'short' })}</Box>
       </VStack>
     </VStack>
   );

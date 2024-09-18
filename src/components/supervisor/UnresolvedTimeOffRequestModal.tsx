@@ -29,6 +29,11 @@ import useResolvePto from '../../hooks/useResolvePto';
 import { ResolvePtoRequest } from '../../model/Pto';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoModalStore from '../../state/usePtoModalStore';
+import { FaRobot } from "react-icons/fa";
+import { GrNotes } from 'react-icons/gr';
+import { TimeOffRequestHistory } from '../timeoff/time_off_request_history/TimeOffRequestHistory';
+
+
 
 interface Props {
   isOpen: boolean;
@@ -38,14 +43,14 @@ interface Props {
 export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
   const toast = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isDeclining, setIsDecllining] = useState(false);
+  const [isResolving, setisResolving] = useState<'accepted' | 'rejected' | undefined>(undefined);
   const r = usePtoModalStore(s => s.ptoExtendedModal);
   const setPtoToCompare = usePtoModalStore(s => s.setPtoToCompareDates);
   const setError = useHttpErrorState(s => s.setError);
   const { mutate: sendRequest, isError, error, isLoading, isSuccess } = useResolvePto();
 
   const closeModal = () => {
-    setIsDecllining(false);
+    setisResolving(undefined);
     onClose();
   };
 
@@ -66,20 +71,12 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
     isError && setError(error);
   }, [isError]);
 
-  const handleAcceptRequest = () => {
-    const request: ResolvePtoRequest = {
-      ptoRequestId: r!.id,
-      isAccepted: true,
-      declineReason: undefined,
-    };
-    sendRequest(request);
-  };
 
-  const handleRejectRequest = () => {
+  const handleRequest = () => {
     const request: ResolvePtoRequest = {
       ptoRequestId: r!.id,
-      isAccepted: false,
-      declineReason: (inputRef && inputRef.current?.value) || undefined,
+      isAccepted: (isResolving && isResolving === 'accepted') || false,
+      notes: (inputRef && inputRef.current?.value) || undefined,
     };
     sendRequest(request);
   };
@@ -99,11 +96,17 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
             </Heading>
             <HStack mb={'50px'} as={'em'} fontSize={'1.1rem'} fontWeight={'600'}>
               <Text>łącznie naliczonych dni urlopowych:</Text>
-              <Text fontSize={'1.1rem'} fontWeight={'700'}>{r.applierPtoDaysTaken + r.applierPtoDaysTotal}</Text>
+              <Text fontSize={'1.1rem'} fontWeight={'700'}>
+                {r.applierPtoDaysTaken + r.applierPtoDaysTotal}
+              </Text>
               <Text>wykorzystane łącznie:</Text>
-              <Text fontSize={'1.1rem'} fontWeight={'700'}>{r.applierPtoDaysTaken}</Text>
+              <Text fontSize={'1.1rem'} fontWeight={'700'}>
+                {r.applierPtoDaysTaken}
+              </Text>
               <Text>pozostałe:</Text>
-              <Text fontSize={'1.1rem'} fontWeight={'700'}>{r.applierPtoDaysTotal}</Text>
+              <Text fontSize={'1.1rem'} fontWeight={'700'}>
+                {r.applierPtoDaysTotal}
+              </Text>
             </HStack>
             <HStack w={'100%'} fontWeight={'600'} fontSize={'1.2rem'} align={'end'}>
               <Text>Proszę o udzielenie</Text>
@@ -232,38 +235,32 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
                 <Text>{r.acceptorLastName}</Text>
               </HStack>
             </VStack>
-            <VStack w={'100%'} align={'start'} mt={10}>
+            <VStack w={'100%'} align={'start'} mt={12}>
               <HStack w={'500px'}>
-                <ChatIcon fontSize={'30px'} />
-                <Text>Uwagi wnioskującego</Text>
+                <FaRobot fontSize={'30px'} />
+                <Text>Uwagi aplikacji</Text>
               </HStack>
               <Textarea
                 w={'500px'}
                 isDisabled
-                value={r.applierNotes ? r.applierNotes : 'BRAK UWAG WNIOSKUJĄCEGO'}
+                value={r.applicationNotes ? r.applicationNotes : 'BRAK UWAG APLIKACJI'}
                 resize={'none'}
                 _disabled={{
                   cursor: 'default',
                 }}
               />
             </VStack>
-            {!r.pending && (
-              <VStack w={'100%'} align={'start'} mt={2}>
-                <HStack w={'500px'}>
-                  <ChatIcon fontSize={'30px'} />
-                  <Text>Uwagi akceptującego</Text>
-                </HStack>
-                <Textarea
-                  w={'500px'}
-                  isDisabled
-                  value={r.acceptorNotes ? r.acceptorNotes : 'BRAK UWAG AKCEPTUJĄCEGO'}
-                  resize={'none'}
-                  _disabled={{
-                    cursor: 'default',
-                  }}
-                />
+            <VStack w={'100%'} align={'start'} mt={10}>
+              <HStack w={'500px'}>
+                <GrNotes fontSize={'30px'} />
+                <Text>Historia wniosku</Text>
+              </HStack>
+              <VStack pl={5} spacing={0}>
+                {r.requestHistory.map(history => (
+                  <TimeOffRequestHistory history={history}/>
+                ))}
               </VStack>
-            )}
+            </VStack>
           </VStack>
         </ModalBody>
 
@@ -271,26 +268,26 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
           {!isLoading && (
             <>
               <Button
-                display={!isDeclining ? '' : 'none'}
+                display={!isResolving ? '' : 'none'}
                 borderRadius={0}
                 w={'100%'}
                 colorScheme='green'
-                onClick={handleAcceptRequest}
+                onClick={() => setisResolving('accepted')}
               >
                 {r.wasMarkedToWithdraw ? 'Wycofaj' : 'Zaakceptuj'}
               </Button>
               <HStack w={'100%'}>
-                {!isDeclining && (
-                  <Button borderRadius={0} w={'100%'} colorScheme='red' onClick={() => setIsDecllining(s => true)}>
+                {!isResolving && (
+                  <Button borderRadius={0} w={'100%'} colorScheme='red' onClick={() => setisResolving('rejected')}>
                     Odrzuć
                   </Button>
                 )}
-                {isDeclining && (
+                {isResolving && (
                   <>
                     <Input ref={inputRef} placeholder='Powód odmowy (opcjonalnie)' />
                     <Tooltip label='Wyślij'>
                       <Flex justify={'center'} align={'center'} cursor={'pointer'}>
-                        <FaCircleCheck color='green' size={'2rem'} onClick={handleRejectRequest} />
+                        <FaCircleCheck color='green' size={'2rem'} onClick={handleRequest} />
                       </Flex>
                     </Tooltip>
                     <Tooltip label='Anuluj'>
@@ -299,9 +296,10 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
                         align={'center'}
                         color={'red.400'}
                         cursor={'pointer'}
-                        onClick={() => setIsDecllining(s => false)}
+                        onClick={() => setisResolving(undefined)}
+                       
                       >
-                        <FaCircleMinus size={'2rem'} onClick={() => setIsDecllining(false)} />
+                        <FaCircleMinus size={'2rem'} />
                       </Flex>
                     </Tooltip>
                   </>

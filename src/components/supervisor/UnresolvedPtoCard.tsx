@@ -21,9 +21,8 @@ import useResolvePto from '../../hooks/useResolvePto';
 import { PtoRequestFormatted, ResolvePtoRequest } from '../../model/Pto';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoModalStore from '../../state/usePtoModalStore';
-import { CalendarPageIcon } from '../general/CalendarPageIcon';
 import { Freelancer } from '../badges/Freelancer';
-import { InfoIcon } from '@chakra-ui/icons';
+import { CalendarPageIcon } from '../general/CalendarPageIcon';
 
 interface Props {
   p: PtoRequestFormatted;
@@ -33,7 +32,7 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const setPtoToCompare = usePtoModalStore(s => s.setPtoToCompareDates);
   const setPtoExtendedModal = usePtoModalStore(s => s.setPtoExtendedModal);
-  const [isRejecting, setIsRejecting] = useState(false);
+  const [isResolving, setisResolving] = useState<'accepted' | 'rejected' | undefined>(undefined);
   const setError = useHttpErrorState(s => s.setError);
   const { mutate: sendRequest, isError, error, isLoading, isSuccess } = useResolvePto();
   const toast = useToast();
@@ -54,20 +53,11 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
     isError && setError(error);
   }, [isError]);
 
-  const handleAcceptPto = () => {
+  const handleRequest = () => {
     const request: ResolvePtoRequest = {
       ptoRequestId: p.id,
-      isAccepted: true,
-      declineReason: undefined,
-    };
-    sendRequest(request);
-  };
-
-  const handleRejectPto = () => {
-    const request: ResolvePtoRequest = {
-      ptoRequestId: p.id,
-      isAccepted: false,
-      declineReason: (inputRef && inputRef.current?.value) || undefined,
+      isAccepted: (isResolving && isResolving === 'accepted') || false,
+      notes: (inputRef && inputRef.current?.value) || undefined,
     };
 
     sendRequest(request);
@@ -101,13 +91,6 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
           </Flex>
         </Tooltip>
       )}
-      {p.applierNotes && (
-        <Tooltip label={p.applierNotes}>
-          <Flex zIndex={1} position={'absolute'} bottom={0} right={'-20px'} cursor={'pointer'}>
-            <InfoIcon fontSize={'40px'} color='green.200' />
-          </Flex>
-        </Tooltip>
-      )}
 
       <VStack
         w={'100%'}
@@ -122,7 +105,7 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
         <VStack
           w={'100%'}
           position={'relative'}
-          h={!isRejecting ? '90px' : '180px'}
+          h={!isResolving ? '90px' : '180px'}
           flexGrow={0}
           flexShrink={0}
           transition={'height .2s ease'}
@@ -246,7 +229,12 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
                     _hover={{ w: '70px', boxShadow: '8px 8px 24px 0px rgba(66, 68, 90, 1)' }}
                     transition={'all .25s ease'}
                   >
-                    <FaCircleCheck size={'100%'} color='#00DD00' cursor={'pointer'} onClick={handleAcceptPto} />
+                    <FaCircleCheck
+                      size={'100%'}
+                      color='#00DD00'
+                      cursor={'pointer'}
+                      onClick={e => setisResolving(s => (s ? undefined : 'accepted'))}
+                    />
                   </Box>
                 </Tooltip>
                 <Tooltip label='Odrzuć'>
@@ -260,17 +248,17 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
                       size={'100%'}
                       color='#FFA0A0'
                       cursor={'pointer'}
-                      onClick={e => setIsRejecting(s => !s)}
+                      onClick={e => setisResolving(s => (s ? undefined : 'rejected'))}
                     />
                   </Box>
                 </Tooltip>
               </HStack>
             </Box>
           </HStack>
-          <HStack w={'100%'} h={'80px'} alignItems={'center'} display={!isRejecting ? 'none' : 'flex'} px={5}>
+          <HStack w={'100%'} h={'80px'} alignItems={'center'} display={!isResolving ? 'none' : 'flex'} px={5}>
             <InputGroup border={'transparent'} boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}>
               <InputLeftAddon bg={'transparent'} color={'whiteAlpha.800'} as={'em'} fontWeight={'700'}>
-                Powód odmowy:
+                {isResolving === 'accepted' ? 'Uwagi:' : 'Powód odmowy:'}
               </InputLeftAddon>
               <Input
                 ref={inputRef}
@@ -279,8 +267,9 @@ export const UnresolvedPtoCard = ({ p }: Props) => {
                 _placeholder={{ color: 'whiteAlpha.500' }}
               />
               <InputRightAddon bg={'transparent'} p={0}>
-                <Button colorScheme='red' w={'100%'} onClick={handleRejectPto}>
-                  Odrzuc
+                <Button colorScheme={isResolving === 'accepted' ? 'green' : 'red'} w={'100%'} onClick={handleRequest}>
+                  {isResolving === 'accepted' && 'Zaakceptuj'}
+                  {isResolving === 'rejected' && 'Odrzuć'}
                 </Button>
               </InputRightAddon>
             </InputGroup>

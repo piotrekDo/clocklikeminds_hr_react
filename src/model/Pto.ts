@@ -24,83 +24,74 @@ export interface OccasionalLeaveType {
   days: number;
 }
 
-export interface PtoRequestResponse {
+export type RequestHistoryAction =
+  | 'REGISTER'
+  | 'ACCEPTED'
+  | 'DECLINED'
+  | 'MARKED_WITHDRAW'
+  | 'WITHDRAW'
+  | 'WITHDRAW_DECLINED';
+
+export interface RequestHistoryDto {
+  historyId: number;
+  action: RequestHistoryAction;
+  notes: string;
+  dateTime: string;
+  appUserId: string;
+  firstName: string;
+  lastName: string;
+  userEmail: string;
+  imageUrl: string;
+  timeOffRequestId: number;
+}
+
+interface PtoRequestBase {
   id: number;
   leaveType: string;
   demand: boolean;
-  applierNotes: string;
-  acceptorNotes: string;
   applicationNotes: string;
+  requestHistory: RequestHistoryDto[];
   pending: boolean;
   wasAccepted: boolean;
+  applierId: number;
+  applierFirstName: string;
+  applierLastName: string;
+  applierEmail: string;
+  applierPtoDaysTotal: number;
+  applierPtoDaysTaken: number;
+  applierImageUrl: string;
+  applierFreelancer: boolean;
+  acceptorId: number;
+  acceptorFirstName: string;
+  acceptorLastName: string;
+  acceptorEmail: string;
+  totalDays: number;
+  businessDays: number;
+  includingLastYearPool: number;
+  declineReason: string;
+  occasional_leaveReason: string;
+  occasional_leaveTypeId: string;
+  occasional_leaveType: string;
+  occasional_descriptionPolish: string;
+  occasional_days: string;
+  saturday_holiday_date: string;
+  wasMarkedToWithdraw: boolean;
+  wasWithdrawn: boolean;
+}
+
+export interface PtoRequestResponse extends PtoRequestBase {
   requestDateTime: string;
   ptoStart: string;
   ptoEnd: string;
-  applierId: number;
-  applierFirstName: string;
-  applierLastName: string;
-  applierEmail: string;
-  applierPtoDaysTotal: number;
-  applierPtoDaysTaken: number;
-  applierImageUrl: string;
-  applierFreelancer: boolean;
-  acceptorId: number;
-  acceptorFirstName: string;
-  acceptorLastName: string;
-  acceptorEmail: string;
-  decisionDateTime: Date;
-  totalDays: number;
-  businessDays: number;
-  includingLastYearPool: number;
-  declineReason: string;
-  occasional_leaveReason: string;
-  occasional_leaveTypeId: string;
-  occasional_leaveType: string;
-  occasional_descriptionPolish: string;
-  occasional_days: string;
-  saturday_holiday_date: string;
-  wasMarkedToWithdraw: boolean;
-  wasWithdrawn: boolean;
+  decisionDateTime: string;
   withdrawnDateTime: string;
 }
 
-export interface PtoRequestFormatted {
-  id: number;
-  leaveType: string;
-  demand: boolean;
-  applierNotes: string;
-  acceptorNotes: string;
-  applicationNotes: string;
-  pending: boolean;
-  wasAccepted: boolean;
+export interface PtoRequestFormatted extends PtoRequestBase {
   requestDateTime: Date;
   ptoStart: Date;
   ptoEnd: Date;
-  applierId: number;
-  applierFirstName: string;
-  applierLastName: string;
-  applierEmail: string;
-  applierPtoDaysTotal: number;
-  applierPtoDaysTaken: number;
-  applierImageUrl: string;
-  applierFreelancer: boolean;
-  acceptorId: number;
-  acceptorFirstName: string;
-  acceptorLastName: string;
-  acceptorEmail: string;
   decisionDateTime: Date;
-  totalDays: number;
-  businessDays: number;
-  includingLastYearPool: number;
-  declineReason: string;
-  occasional_leaveReason: string;
-  occasional_leaveTypeId: string;
-  occasional_leaveType: string;
-  occasional_descriptionPolish: string;
-  occasional_days: string;
-  saturday_holiday_date: string;
-  wasMarkedToWithdraw: boolean;
-  wasWithdrawn: boolean;
   withdrawnDateTime: Date | undefined;
 }
 
@@ -132,7 +123,7 @@ export interface NewPtoRequest {
 export interface ResolvePtoRequest {
   ptoRequestId: number;
   isAccepted: boolean;
-  declineReason: string | undefined;
+  notes: string | undefined;
 }
 
 export interface HolidayOnSaturday {

@@ -1,17 +1,20 @@
-import { ChatIcon } from '@chakra-ui/icons';
+import { AttachmentIcon, ChatIcon } from '@chakra-ui/icons';
 import {
-    Heading,
-    HStack,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Text,
-    Textarea,
-    VStack
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
+  Tooltip,
+  VStack,
 } from '@chakra-ui/react';
 
 import { FaUserTie } from 'react-icons/fa';
@@ -19,6 +22,8 @@ import { GiPalmTree } from 'react-icons/gi';
 import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { WithdrawActionButton } from './WithdrawActionButton';
+import { GrNotes } from 'react-icons/gr';
+import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
 
 interface Props {
   isOpen: boolean;
@@ -162,36 +167,15 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
             </VStack>
             <VStack w={'100%'} align={'start'} mt={10}>
               <HStack w={'500px'}>
-                <ChatIcon fontSize={'30px'} />
-                <Text>Uwagi wnioskującego</Text>
+                <GrNotes fontSize={'30px'} />
+                <Text>Historia wniosku</Text>
               </HStack>
-              <Textarea
-                w={'500px'}
-                isDisabled
-                value={r.applierNotes ? r.applierNotes : 'BRAK UWAG WNIOSKUJĄCEGO'}
-                resize={'none'}
-                _disabled={{
-                  cursor: 'default',
-                }}
-              />
-            </VStack>
-            {!r.pending && (
-              <VStack w={'100%'} align={'start'} mt={2}>
-                <HStack w={'500px'}>
-                  <ChatIcon fontSize={'30px'} />
-                  <Text>Uwagi akceptującego</Text>
-                </HStack>
-                <Textarea
-                  w={'500px'}
-                  isDisabled
-                  value={r.acceptorNotes ? r.acceptorNotes : 'BRAK UWAG AKCEPTUJĄCEGO'}
-                  resize={'none'}
-                  _disabled={{
-                    cursor: 'default',
-                  }}
-                />
+              <VStack pl={5} spacing={0}>
+                {r.requestHistory.map(history => (
+                  <TimeOffRequestHistory history={history}/>
+                ))}
               </VStack>
-            )}
+            </VStack>
           </VStack>
         </ModalBody>
 
