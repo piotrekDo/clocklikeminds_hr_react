@@ -17,12 +17,12 @@ import { FaBusinessTime, FaCalendarAlt, FaExclamationCircle, FaUserTie } from 'r
 import { FaCircleCheck, FaCircleMinus } from 'react-icons/fa6';
 import { GiPalmTree } from 'react-icons/gi';
 import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
-import useResolvePto from '../../hooks/useResolvePto';
-import { PtoRequestFormatted, ResolvePtoRequest } from '../../model/Pto';
-import useHttpErrorState from '../../state/useHttpErrorState';
-import usePtoModalStore from '../../state/usePtoModalStore';
-import { Freelancer } from '../badges/Freelancer';
-import { CalendarPageIcon } from '../general/CalendarPageIcon';
+import useResolvePto from '../../../hooks/useResolvePto';
+import { PtoRequestFormatted, ResolvePtoRequest } from '../../../model/Pto';
+import useHttpErrorState from '../../../state/useHttpErrorState';
+import usePtoModalStore from '../../../state/usePtoModalStore';
+import { Freelancer } from '../../badges/Freelancer';
+import { CalendarPageIcon } from '../../general/CalendarPageIcon';
 
 interface Props {
   p: PtoRequestFormatted;

@@ -1,7 +1,8 @@
 import { Flex, HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 import { GoPeople } from 'react-icons/go';
-import { PtoRequestFormatted } from '../../model/Pto';
+import { PtoRequestFormatted } from '../../../model/Pto';
 import { UnresolvedPtoCard } from './UnresolvedPtoCard';
+import { RiTeamLine } from 'react-icons/ri';
 
 interface Props {
   unresolvedPtos: PtoRequestFormatted[] | undefined;
@@ -17,7 +18,7 @@ export const TimeOffRequestsSetToWithdraw = ({
   return (
     <VStack w={'100%'}>
       <VStack w={'80%'} alignItems={'start'} justifyContent={'center'}>
-        <GoPeople size={'3rem'} color='#385898' />
+        <RiTeamLine size={'3rem'} color='#385898' />
         <HStack>
           <Heading>Urlopy do wycofania</Heading>
           {isUnresolvedPtosFetching && (

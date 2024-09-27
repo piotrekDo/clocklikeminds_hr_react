@@ -77,6 +77,7 @@ interface PtoRequestBase {
   saturday_holiday_date: string;
   wasMarkedToWithdraw: boolean;
   wasWithdrawn: boolean;
+  
 }
 
 export interface PtoRequestResponse extends PtoRequestBase {

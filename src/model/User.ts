@@ -20,6 +20,26 @@ export interface TokenPayload {
   freelancer: boolean;
 }
 
+export interface EmployeeInfo {
+  appUserId: number;
+  freelancer: boolean;
+  isActive: boolean;
+  firstName: string;
+  lastName: string;
+  userEmail: string;
+  imageUrl: string;
+  position: EmployeePosition;
+  hireStart: string;
+  hireEnd: string;
+  ptoDaysAccruedLastYear: number;
+  ptoDaysAccruedCurrentYear: number;
+  ptoDaysLeftFromLastYear: number;
+  ptoDaysLeftCurrentYear: number;
+  ptoDaysTaken: number;
+  onTimeOff: boolean;
+  incomingTimeOff: boolean;
+}
+
 export interface EmployeeRole {
   userRoleId: number;
   roleName: string;
@@ -55,6 +75,11 @@ export interface EmployeeBasic {
   position: EmployeePosition;
   seniorityInMonths: number;
   status: number;
+  ptoDaysAccruedLastYear: number;
+  ptoDaysAccruedCurrentYear: number;
+  ptoDaysLeftFromLastYear: number;
+  ptoDaysLeftTotal: number;
+  ptoDaysTaken: number;
 }
 
 export interface Employee {

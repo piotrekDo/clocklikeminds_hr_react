@@ -1,8 +1,7 @@
-import { VStack, HStack, Heading, Spinner, Flex, Text } from '@chakra-ui/react';
-import React from 'react';
-import { GoPeople } from 'react-icons/go';
+import { Flex, HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
+import { RiTeamLine } from 'react-icons/ri';
+import { PtoRequestFormatted } from '../../../model/Pto';
 import { UnresolvedPtoCard } from './UnresolvedPtoCard';
-import { PtoRequestFormatted } from '../../model/Pto';
 
 interface Props {
   unresolvedPtos: PtoRequestFormatted[] | undefined;
@@ -18,7 +17,7 @@ export const TimeOffRequestsToResolve = ({
   return (
     <VStack w={'100%'}>
       <VStack w={'80%'} alignItems={'start'} justifyContent={'center'}>
-        <GoPeople size={'3rem'} color='#385898' />
+        <RiTeamLine size={'3rem'} color='#385898' />
         <HStack>
           <Heading>Urlopy do akceptacji</Heading>
           {isUnresolvedPtosFetching && (

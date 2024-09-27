@@ -18,6 +18,7 @@ const usePtosByAcceptor = (acceptorId: number) => {
             requestDateTime: new Date(pto.requestDateTime),
             ptoStart: ptoStart,
             ptoEnd: ptoEnd,
+            decisionDateTime: new Date(pto.decisionDateTime),
             withdrawnDateTime: withdrawnLocal
           };
         })

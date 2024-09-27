@@ -14,13 +14,13 @@ import {
 } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
-import usePtosInTimeFrame from '../../hooks/usePtosInTimeFrame';
-import useAuthentication from '../../state/useAuthentication';
-import usePtoModalStore from '../../state/usePtoModalStore';
-import { getHolidaysPoland } from '../Calendar/holidays';
-import { Header } from './SupervisorCalendat/Header';
-import { ptoTypeTranslatePl } from '../../model/Pto';
-import { occasionalLeaveTranslatePL } from '../../App';
+import usePtosInTimeFrame from '../../../hooks/usePtosInTimeFrame';
+import useAuthentication from '../../../state/useAuthentication';
+import usePtoModalStore from '../../../state/usePtoModalStore';
+import { getHolidaysPoland } from '../../Calendar/holidays';
+import { Header } from '../SupervisorCalendat/Header';
+import { ptoTypeTranslatePl } from '../../../model/Pto';
+import { occasionalLeaveTranslatePL } from '../../../App';
 
 interface Props {
   isOpen: boolean;

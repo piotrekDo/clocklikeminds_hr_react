@@ -3,6 +3,7 @@ import { Page, PageQuery } from '../model/Page';
 import {
   Employee,
   EmployeeBasic,
+  EmployeeInfo,
   FinishRegistrationRequest,
   UpdateHireDataRequest,
   UpdateHolidayDataRequest,
@@ -17,7 +18,17 @@ export const fetchSupervisors = () => {
     (res: AxiosResponse<EmployeeBasic[]>) => res.data
   );
   return { request: httpRequest, cancel: () => controller.abort() };
-}
+};
+
+export const fetchEmployeesForSupervisor = (supervisorId: number) => {
+  const controller = new AbortController();
+  const httpRequest = APIclient.get<EmployeeInfo[]>('/api/v1/users/employees-by-supervisor', {
+    params: {
+      supervisorId: supervisorId,
+    },
+  }).then((res: AxiosResponse<EmployeeInfo[]>) => res.data);
+  return { request: httpRequest, cancel: () => controller.abort() };
+};
 
 export const fetchEmployeePage = (page: PageQuery) => {
   const controller = new AbortController();

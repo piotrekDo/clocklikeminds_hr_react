@@ -5,7 +5,7 @@ import { FaRegCalendarAlt } from 'react-icons/fa';
 import { GoPeople } from 'react-icons/go';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuPalmtree } from 'react-icons/lu';
-import { VscGitPullRequestNewChanges } from 'react-icons/vsc';
+import { RiTeamLine } from 'react-icons/ri';
 import logo from '../../assets/CM-logo-color.png';
 import useAuthentication from '../../state/useAuthentication';
 import { NavbarLink } from './NavbarLink';
@@ -50,8 +50,8 @@ export const SideNavbar = () => {
           <LuPalmtree size={'40px'} />
         </NavbarLink>
         {(isAdmin || isSupervisor) && (
-          <NavbarLink to='/supervisor' text='Wnioski Pracowników'>
-            <VscGitPullRequestNewChanges size={'40px'} />
+          <NavbarLink to='/supervisor' text='Mój zespół'>
+            <RiTeamLine size={'40px'} />
           </NavbarLink>
         )}
         {(isAdmin || isSupervisor) && (

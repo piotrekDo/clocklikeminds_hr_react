@@ -25,13 +25,13 @@ import { FaUserTie } from 'react-icons/fa';
 import { FaCircleCheck, FaCircleMinus } from 'react-icons/fa6';
 import { GiPalmTree } from 'react-icons/gi';
 import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
-import useResolvePto from '../../hooks/useResolvePto';
-import { ResolvePtoRequest } from '../../model/Pto';
-import useHttpErrorState from '../../state/useHttpErrorState';
-import usePtoModalStore from '../../state/usePtoModalStore';
+import useResolvePto from '../../../hooks/useResolvePto';
+import { ResolvePtoRequest } from '../../../model/Pto';
+import useHttpErrorState from '../../../state/useHttpErrorState';
+import usePtoModalStore from '../../../state/usePtoModalStore';
 import { FaRobot } from "react-icons/fa";
 import { GrNotes } from 'react-icons/gr';
-import { TimeOffRequestHistory } from '../timeoff/time_off_request_history/TimeOffRequestHistory';
+import { TimeOffRequestHistory } from '../../timeoff/time_off_request_history/TimeOffRequestHistory';
 
 
 

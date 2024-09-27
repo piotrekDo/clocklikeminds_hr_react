@@ -1,6 +1,6 @@
 import { VStack } from '@chakra-ui/react';
+import { Calendar } from '../components/supervisor/time_off_calendar/Calendar';
 
-import { Calendar } from '../components/supervisor/SupervisorCalendat/Calendar';
 
 export const PtoCalendar = () => {
   return (
