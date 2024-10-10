@@ -1,10 +1,9 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { Box, Button, HStack, VStack } from '@chakra-ui/react';
 import { CalendarViews, SelectedWeek } from './Calendar';
+import { MonthPreview } from './MonthPreview';
 import { NavSelectedMonth } from './NavSelectedMonth';
 import { NavSelectedYear } from './NavSelectedYear';
-import { CalendarMonth } from '../../Calendar/CalendarMonth';
-import { MonthPreview } from './MonthPreview';
 
 interface Props {
   selectedDate: Date;
@@ -32,8 +31,8 @@ export const CalendarNavigation = ({
 }: Props) => {
   const today = new Date();
   return (
-    <VStack align={'start'} w={'180px'} h={'100%'} spacing={0} pt={'10px'}>
-      <HStack justify={'center'} spacing={1} color={'blackAlpha.800'} fontWeight={'700'} fontSize={'1.2rem'} w={'100%'}>
+    <VStack align={'center'} w={'250px'} h={'100%'} spacing={0} pt={'10px'}>
+      <HStack justify={'center'} spacing={1} color={'blackAlpha.800'} fontWeight={'700'} fontSize={'1.2rem'}>
         <NavSelectedMonth selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
         <NavSelectedYear selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
       </HStack>

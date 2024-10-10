@@ -7,7 +7,7 @@ const useCalendarCalculations = (selectedDate: Date) => {
   const firstRowLength = (firstDayOfSelectedMonth.getDay() === 0 ? 6 : firstDayOfSelectedMonth.getDay() - 1);
   const lastRowLength = (lastDayOfSelectedMonth.getDay() === 0 ? 0 : 7 - lastDayOfSelectedMonth.getDay());
 
-  return { firstRowLength, lastDayOfPreviousMonth, lastDayOfSelectedMonth, lastRowLength };
+  return {firstDayOfSelectedMonth,  firstRowLength, lastDayOfPreviousMonth, lastDayOfSelectedMonth, lastRowLength };
 };
 
 export default useCalendarCalculations;

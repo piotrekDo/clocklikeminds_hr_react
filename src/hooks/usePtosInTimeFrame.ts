@@ -20,7 +20,7 @@ const usePtosInTimeFrame = (acceptorId: number, start: string, end: string) => {
             requestDateTime: new Date(pto.requestDateTime),
             ptoStart: ptoStart,
             ptoEnd: ptoEnd,
-            decisionDateTime: new Date(pto.decisionDateTime),
+            decisionDateTime: pto.decisionDateTime ? new Date(pto.decisionDateTime) : undefined,
             withdrawnDateTime: withdrawnLocal
           };
         })

@@ -1,9 +1,6 @@
-import { AttachmentIcon, ChatIcon } from '@chakra-ui/icons';
 import {
-  Flex,
   Heading,
   HStack,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,18 +9,16 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  Textarea,
-  Tooltip,
-  VStack,
+  VStack
 } from '@chakra-ui/react';
 
 import { FaUserTie } from 'react-icons/fa';
 import { GiPalmTree } from 'react-icons/gi';
+import { GrNotes } from 'react-icons/gr';
 import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
 import usePtoModalStore from '../../state/usePtoModalStore';
-import { WithdrawActionButton } from './WithdrawActionButton';
-import { GrNotes } from 'react-icons/gr';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
+import { WithdrawActionButton } from './WithdrawActionButton';
 
 interface Props {
   isOpen: boolean;
@@ -34,7 +29,6 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
   const r = usePtoModalStore(s => s.ptoExtendedForUser);
 
   if (!r) return null;
-  console.log(r);
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'4xl'}>
       <ModalOverlay />
@@ -172,7 +166,7 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
               </HStack>
               <VStack pl={5} spacing={0}>
                 {r.requestHistory.map(history => (
-                  <TimeOffRequestHistory history={history}/>
+                  <TimeOffRequestHistory key={history.historyId} history={history} />
                 ))}
               </VStack>
             </VStack>

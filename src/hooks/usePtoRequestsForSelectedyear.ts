@@ -13,7 +13,7 @@ const usePtoRequestsForSelectedYear = (userId: number, year: number) => {
           requestDateTime: new Date(pto.requestDateTime),
           ptoStart: new Date(pto.ptoStart),
           ptoEnd: new Date(pto.ptoEnd),
-          decisionDateTime: new Date(pto.decisionDateTime),
+          decisionDateTime: pto.decisionDateTime ? new Date(pto.decisionDateTime) : undefined,
           withdrawnDateTime: pto.withdrawnDateTime ? new Date(pto.withdrawnDateTime) : undefined,
         };
       });

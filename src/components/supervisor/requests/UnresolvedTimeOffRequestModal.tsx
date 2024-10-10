@@ -196,7 +196,7 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
                   <HStack w={'100%'}>
                     <Text>Data decyzji: </Text>{' '}
                     <Text>
-                      {new Date(r.decisionDateTime).toLocaleString('pl-PL', {
+                      {r.decisionDateTime && new Date(r.decisionDateTime).toLocaleString('pl-PL', {
                         day: '2-digit',
                         month: 'long',
                         year: '2-digit',
@@ -257,7 +257,7 @@ export const UnresolvedTimeOffRequestModal = ({ isOpen, onClose }: Props) => {
               </HStack>
               <VStack pl={5} spacing={0}>
                 {r.requestHistory.map(history => (
-                  <TimeOffRequestHistory history={history}/>
+                  <TimeOffRequestHistory key={history.historyId} history={history}/>
                 ))}
               </VStack>
             </VStack>

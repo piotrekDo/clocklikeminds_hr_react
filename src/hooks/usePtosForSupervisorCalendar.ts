@@ -22,7 +22,7 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
             requestDateTime: new Date(pto.requestDateTime),
             ptoStart: ptoStart,
             ptoEnd: ptoEnd,
-            decisionDateTime: new Date(pto.decisionDateTime),
+            decisionDateTime: pto.decisionDateTime ? new Date(pto.decisionDateTime) : undefined,
             withdrawnDateTime: withdrawnLocal
           };
         })
@@ -31,7 +31,9 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
       let existingData = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']) ?? [];
 
       data.forEach(newData => {
+        console.log(newData)
         const found = existingData.find(existing => existing.id === newData.id);
+        console.log(found)
         if (found) {
           if (newData.decisionDateTime && !newData.wasAccepted) {
             existingData = existingData.filter(x => x.id !== newData.id);

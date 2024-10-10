@@ -92,7 +92,7 @@ export interface PtoRequestFormatted extends PtoRequestBase {
   requestDateTime: Date;
   ptoStart: Date;
   ptoEnd: Date;
-  decisionDateTime: Date;
+  decisionDateTime: Date | undefined;
   withdrawnDateTime: Date | undefined;
 }
 
