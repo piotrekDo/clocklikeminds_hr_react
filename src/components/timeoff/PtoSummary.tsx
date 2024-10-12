@@ -53,7 +53,7 @@ export const PtoSummary = () => {
             fetchNextPage={fetchNextPage}
           />
         )}
-        {isRequestingPto && <PtoRequestForm saturdayHolidays={summary?.saturdayHolidaysCurrentYear || []}/>}
+        {isRequestingPto && <PtoRequestForm saturdayHolidays={summary?.saturdayHolidaysCurrentYear || []} />}
       </VStack>
     </VStack>
   );

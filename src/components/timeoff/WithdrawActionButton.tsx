@@ -2,11 +2,11 @@ import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, HStack, Input, Spinner, Text, useToast, VStack } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import useHttpErrorState from '../../state/useHttpErrorState';
-import { PtoRequestResponse } from '../../model/Pto';
+import { PtoRequestFormatted, PtoRequestResponse } from '../../model/Pto';
 import useWithdrawTimeOffRequest, { WithdrawParams } from '../../hooks/useEithdrawTimeOffRequest';
 
 interface Props {
-  request: PtoRequestResponse;
+  request: PtoRequestResponse | PtoRequestFormatted;
   closeModal: () => void;
 }
 
@@ -45,7 +45,7 @@ export const WithdrawActionButton = ({ request, closeModal }: Props) => {
         <>
           {!wasWithdrawClicked && (
             <Button
-              isDisabled={!request.wasAccepted && request.decisionDateTime != undefined}
+              isDisabled={(!request.wasAccepted && request.decisionDateTime != undefined) || request.wasMarkedToWithdraw}
               colorScheme='red'
               onClick={() => setWasWithdrawClicked(true)}
             >

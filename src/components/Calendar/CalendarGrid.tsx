@@ -7,15 +7,16 @@ import { getHolidaysPoland } from './holidays';
 interface Props {
   selectedYear: Date;
   daysOff: PtoRequestFormatted[];
+  setShowPto: React.Dispatch<React.SetStateAction<PtoRequestFormatted | undefined>>
 }
 
-export const CalendarGrid = ({ selectedYear, daysOff }: Props) => {
+export const CalendarGrid = ({ selectedYear, daysOff, setShowPto }: Props) => {
   const holidays = useMemo(() => getHolidaysPoland(selectedYear.getFullYear()), [selectedYear.getFullYear()]);
   const months = Array.from({ length: 12 }).map((_, index) => new Date(Date.UTC(selectedYear.getFullYear(), index, 1)));
   return (
     <Grid templateColumns={'repeat(3, 1fr)'} gap={5} w={'100%'}>
       {months.map((month, index) => (
-        <CalendarMonth key={index} month={month} holidays={holidays} daysOff={daysOff} />
+        <CalendarMonth key={index} month={month} holidays={holidays} daysOff={daysOff} setShowPto={setShowPto}/>
       ))}
     </Grid>
   );

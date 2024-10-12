@@ -6,9 +6,10 @@ interface Props {
   month: Date;
   holidays: Map<string, string>;
   daysOff: PtoRequestFormatted[];
+  setShowPto: React.Dispatch<React.SetStateAction<PtoRequestFormatted | undefined>>;
 }
 
-export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
+export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) => {
   const { isRequestingPto, startDate, selectedPtoType, setStartDate, setEndDate } = usePtoRequestState();
   const newPtoStartDate = usePtoRequestState(s => s.startDate);
   const newPtoEndDate = usePtoRequestState(s => s.endDate);
@@ -20,13 +21,20 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
     return date;
   });
 
-  const handleOnClick = (day: Date) => {
-    if (!isRequestingPto) return;
+  const handleOnRequestingPtoClick = (day: Date) => {
     if (selectedPtoType === 'on_saturday_pto') {
       setStartDate(day);
       setEndDate(day);
     } else {
       (!startDate && setStartDate(day)) || setEndDate(day);
+    }
+  };
+
+  const handleOnPtoClick = (dayOff: PtoRequestFormatted) => {
+    if (!dayOff) {
+      setShowPto(undefined);
+    } else {
+      setShowPto(s => (s?.id === dayOff.id ? undefined : dayOff));
     }
   };
 
@@ -61,7 +69,6 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
             day.getFullYear() === today.getFullYear() &&
             day.getMonth() === today.getMonth() &&
             day.getDate() === today.getDate();
-
           return (
             <GridItem
               key={index}
@@ -69,6 +76,17 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
               display={'flex'}
               justifyContent={'center'}
               alignItems={'center'}
+              borderRadius={
+                isDayOff
+                  ? isDayOff.ptoStart.getDate() === day.getDate() && isDayOff.ptoEnd.getDate() === day.getDate()
+                    ? '10px'
+                    : isDayOff.ptoStart.getDate() === day.getDate()
+                    ? '10px 0 0 10px'
+                    : isDayOff.ptoEnd.getDate() === day.getDate()
+                    ? '0 10px 10px 0'
+                    : ''
+                  : ''
+              }
               bgColor={
                 (newPtoStartDate && dayTimestamp === startTimestamp) ||
                 (newPtoStartDate && newPtoEndDate && dayTimestamp >= startTimestamp! && dayTimestamp <= endTimestamp!)
@@ -79,8 +97,10 @@ export const CalendarMonth = ({ month, holidays, daysOff }: Props) => {
                     : 'rgba(20, 255, 120, .6)'
                   : ''
               }
-              cursor={isRequestingPto ? 'pointer' : ''}
-              onClick={e => handleOnClick(day)}
+              cursor={isRequestingPto || isDayOff ? 'pointer' : ''}
+              onClick={e => {
+                isRequestingPto ? handleOnRequestingPtoClick(day) : handleOnPtoClick(isDayOff);
+              }}
             >
               <Flex
                 p={2}

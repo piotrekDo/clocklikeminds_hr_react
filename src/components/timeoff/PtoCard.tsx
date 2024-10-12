@@ -4,10 +4,9 @@ import { FaBusinessTime, FaCalendarAlt, FaUserTie } from 'react-icons/fa';
 import { GiPalmTree } from 'react-icons/gi';
 import { MdChildFriendly, MdEventRepeat, MdSupervisorAccount, MdTimer } from 'react-icons/md';
 import { PtoRequestResponse } from '../../model/Pto';
+import usePtoModalStore from '../../state/usePtoModalStore';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
 import { PtoCardStatus } from './PtoCardStatus';
-import { WithdrawActionButton } from './WithdrawActionButton';
-import usePtoModalStore from '../../state/usePtoModalStore';
 
 interface Props {
   pto: PtoRequestResponse;
@@ -24,11 +23,7 @@ export const PtoCard = ({ pto }: Props) => {
   const ptoEnd = new Date(Date.UTC(ptoEndLocal.getFullYear(), ptoEndLocal.getMonth(), ptoEndLocal.getDate()));
 
   return (
-    <Box
-      w={'100%'}
-      maxW={'800px'}
-      position={'relative'}
-    >
+    <Box w={'100%'} maxW={'800px'} position={'relative'}>
       <Tooltip label='ID wniosku'>
         <Flex
           opacity={pto.wasMarkedToWithdraw ? 0.6 : 1}
@@ -68,8 +63,7 @@ export const PtoCard = ({ pto }: Props) => {
         borderRadius={'20px'}
         spacing={0}
         bg={
-
-          (pto.pending || (pto.wasMarkedToWithdraw && !pto.wasWithdrawn))
+          pto.pending || (pto.wasMarkedToWithdraw && !pto.wasWithdrawn)
             ? 'rgba(255, 255, 120, .4)'
             : pto.wasAccepted
             ? 'rgba(20, 255, 120, .4)'

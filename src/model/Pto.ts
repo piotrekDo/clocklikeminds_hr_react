@@ -75,6 +75,7 @@ interface PtoRequestBase {
   occasional_descriptionPolish: string;
   occasional_days: string;
   saturday_holiday_date: string;
+  saturday_holiday_desc: string;
   wasMarkedToWithdraw: boolean;
   wasWithdrawn: boolean;
   

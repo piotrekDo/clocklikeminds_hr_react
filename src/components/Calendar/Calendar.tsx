@@ -4,9 +4,12 @@ import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/
 import usePtoRequestsForSelectedYear from '../../hooks/usePtoRequestsForSelectedyear';
 import useAuthentication from '../../state/useAuthentication';
 import { CalendarGrid } from './CalendarGrid';
+import { PtoRequestFormatted } from '../../model/Pto';
+import { CalendarPtoDetails } from './CalendarPtoDetails';
 
 export const Calendar = () => {
   const { appUser } = useAuthentication();
+  const [showPto, setShowPto] = useState<PtoRequestFormatted | undefined>(undefined);
   const [selectedYear, setSelectedYear] = useState<Date>(new Date());
   const { data: ptos, isFetching } = usePtoRequestsForSelectedYear(appUser?.userId || -1, selectedYear.getFullYear());
 
@@ -19,40 +22,51 @@ export const Calendar = () => {
   };
 
   return (
-    <VStack
-      position={'relative'}
-      overflow={'hidden'}
-      bg={'#385898'}
-      opacity={'.9'}
-      py={1}
-      w={'100%'}
-      maxH={'calc(100vh - 100px)'}
-      borderRadius={'20px'}
-      px={{ base: 2, monitorM: 5 }}
-      boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
-      color={'whiteAlpha.900'}
-    >
-      <HStack
+    <Box w={'100%'} h={'100%'} position={'relative'}>
+      <VStack
+        position={'relative'}
+        bg={'#385898'}
+        py={1}
         w={'100%'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        spacing={3}
-        _hover={{ transform: 'scale(1.4)' }}
-        transition={'transform .15s ease-in'}
+        maxH={'calc(100vh - 100px)'}
+        borderRadius={'20px'}
+        px={{ base: 2, monitorM: 5 }}
+        boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+        color={'whiteAlpha.900'}
+        zIndex={10}
       >
-        <MdOutlineArrowBackIosNew cursor={'pointer'} onClick={onArrowLeftClickHandler} />
-        <Text as={'b'}>{selectedYear.getFullYear()}</Text>
-        <MdOutlineArrowForwardIos cursor={'pointer'} onClick={onArrowRightClickHandler} />
-        {isFetching && (
-          <HStack position={'absolute'} right={150}>
-            <Text fontSize={'.7rem'}>odświeżam...</Text>
-            <Box>
-              <Spinner size={'sm'} />
-            </Box>
-          </HStack>
-        )}
-      </HStack>
-      <CalendarGrid selectedYear={selectedYear} daysOff={ptos || []} />
-    </VStack>
+        <HStack
+          w={'100%'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          spacing={3}
+          _hover={{ transform: 'scale(1.4)' }}
+          transition={'transform .15s ease-in'}
+        >
+          <MdOutlineArrowBackIosNew cursor={'pointer'} onClick={onArrowLeftClickHandler} />
+          <Text as={'b'}>{selectedYear.getFullYear()}</Text>
+          <MdOutlineArrowForwardIos cursor={'pointer'} onClick={onArrowRightClickHandler} />
+          {isFetching && (
+            <HStack position={'absolute'} right={150}>
+              <Text fontSize={'.7rem'}>odświeżam...</Text>
+              <Box>
+                <Spinner size={'sm'} />
+              </Box>
+            </HStack>
+          )}
+        </HStack>
+        <CalendarGrid selectedYear={selectedYear} daysOff={ptos || []} setShowPto={setShowPto} />
+      </VStack>
+      <Box
+        borderRadius={'20px'}
+        pos={'absolute'}
+        top={'15px'}
+        left={!showPto ? '10px' : '-400px'}
+        transitionProperty={'left'}
+        transitionDuration={'.2s'}
+      >
+        <CalendarPtoDetails timeOff={showPto} onClosePtoDetailshandler={() => setShowPto(undefined)} />
+      </Box>
+    </Box>
   );
 };

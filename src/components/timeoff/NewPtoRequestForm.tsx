@@ -12,8 +12,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { LegacyRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import holiday_summer from '../../assets/holiday_summer.jpeg';
+import on_request_holiday from '../../assets/pto_on_request.jpg';
+import saturday_holiday from '../../assets/saturday_holiday.jpg';
+import occasional_leave from '../../assets/occasional_leave.jpg';
 import useNewPtoRequest from '../../hooks/useNewPtoRequest';
+import child_care from '../../assets/child_care_leave.jpeg';
 import { MetaData } from '../../model/MetaData';
 import { HolidayOnSaturday, NewPtoRequest, NewPtoRequestSummary, PtoType, ptoTypeTranslatePl } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
@@ -43,6 +48,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
     setSelectedPtoType,
     setApplierNotes,
   } = usePtoRequestState();
+  const [bg, setBg] = useState<string>(holiday_summer);
   const applierNotesRef = useRef<HTMLTextAreaElement>(null);
   const [occasionalType, setOccasionalType] = useState<string | undefined>(undefined);
   const [selectedSaturdayHoliday, setSelectedSaturdayHoliday] = useState<string | undefined>(undefined);
@@ -51,6 +57,22 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
   const setHttpError = useHttpErrorState(s => s.setError);
 
   const hasUnusedSaturdayHolidays: boolean = saturdayHolidays.filter(h => !h.usedDate).length > 0;
+
+  useEffect(() => {
+    if (selectedPtoType === 'pto') {
+      setBg(holiday_summer);
+    } else if (selectedPtoType === 'pto_on_demand') {
+      setBg(on_request_holiday);
+    } else if (selectedPtoType === 'on_saturday_pto') {
+      setBg(saturday_holiday);
+    } else if (selectedPtoType === 'occasional_leave') {
+      setBg(occasional_leave);
+    } else if (selectedPtoType === 'child_care') {
+      setBg(child_care)
+    } else {
+      setBg('');
+    }
+  }, [selectedPtoType]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -80,7 +102,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
       ptoType: selectedPtoType,
       occasionalType: occasionalType,
       saturdayHolidayDate: selectedSaturdayHoliday,
-      applierNotes: applierNotesRef.current && applierNotesRef.current.value || undefined,
+      applierNotes: (applierNotesRef.current && applierNotesRef.current.value) || undefined,
     };
     sendRequest(request);
   };
@@ -91,21 +113,32 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
     return !isEndDateError && startDate && endDate;
   };
   return (
-    <VStack position={'relative'} h={'80%'} w={'100%'}>
+    <VStack position={'relative'} h={'80%'} w={'100%'} borderRadius={'30px'}>
+      <Box
+        borderRadius={'30px'}
+        pos={'absolute'}
+        w={'100%'}
+        h={'100%'}
+        opacity={'.25'}
+        bgImage={bg}
+        bgRepeat={'no-repeat'}
+        bgSize={'cover'}
+        transition='background-image .5s ease-in-out'
+      />
       <VStack
+        borderRadius={'30px'}
         p={6}
         h={'100%'}
         w={'100%'}
         position={'relative'}
         backgroundColor={'rgba(56,88,152, .2)'}
         color={'whiteAlpha.900'}
-        borderRadius={'30px'}
         overflowY={'scroll'}
         css={{
           '&::-webkit-scrollbar': {
             display: 'none',
           },
-          scrollbarWidth: 'none', // Firefox
+          scrollbarWidth: 'none',
         }}
       >
         <Heading fontSize={'1rem'}>Nowy wniosek urlopowy</Heading>
@@ -157,7 +190,6 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
                 <HStack
                   key={holiday.id}
                   w={'100%'}
-                  borderRadius={'10px'}
                   px={4}
                   py={1}
                   boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
@@ -176,7 +208,7 @@ export const PtoRequestForm = ({ saturdayHolidays }: Props) => {
         )}
         {(selectedPtoType != 'on_saturday_pto' || hasUnusedSaturdayHolidays) && (
           <HStack w={'100%'}>
-            <Textarea placeholder='Uwagi opcjonalnie' ref={applierNotesRef}  />
+            <Textarea placeholder='Uwagi opcjonalnie' ref={applierNotesRef} />
           </HStack>
         )}
 

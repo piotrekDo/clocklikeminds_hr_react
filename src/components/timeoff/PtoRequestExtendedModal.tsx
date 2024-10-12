@@ -1,4 +1,5 @@
 import {
+  Box,
   Heading,
   HStack,
   Modal,
@@ -9,7 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 
 import { FaUserTie } from 'react-icons/fa';
@@ -19,6 +20,11 @@ import { MdChildFriendly, MdEventRepeat, MdTimer } from 'react-icons/md';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
 import { WithdrawActionButton } from './WithdrawActionButton';
+import holiday_summer from '../../assets/holiday_summer.jpeg';
+import on_request_holiday from '../../assets/pto_on_request.jpg';
+import saturday_holiday from '../../assets/saturday_holiday.jpg';
+import occasional_leave from '../../assets/occasional_leave.jpg';
+import child_care from '../../assets/child_care_leave.jpeg';
 
 interface Props {
   isOpen: boolean;
@@ -32,95 +38,97 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'4xl'}>
       <ModalOverlay />
-      <ModalContent p={10}>
-        <ModalHeader textAlign={'center'}>WNIOSEK URLOPOWY</ModalHeader>
+      <ModalContent p={10} pos={'relative'}>
+        <Box
+          pos={'absolute'}
+          top={0}
+          left={0}
+          w={'100%'}
+          h={'100%'}
+          bgImage={
+            r.leaveType === 'pto'
+              ? holiday_summer
+              : r.leaveType === 'pto_on_demand'
+              ? on_request_holiday
+              : r.leaveType === 'on_saturday_pto'
+              ? saturday_holiday
+              : r.leaveType === 'occasional_leave'
+              ? occasional_leave
+              : r.leaveType === 'child_care'
+              ? child_care
+              : ''
+          }
+          bgPos={'center'}
+          bgRepeat={'no-repeat'}
+          bgSize={'cover'}
+          filter={'blur(3px)'}
+          opacity={(r.leaveType === 'on_saturday_pto' || r.leaveType === 'child_care') ? 0.4 : 0.7}
+        />
+        <ModalHeader zIndex={100} textAlign={'center'} fontWeight={700} color={'black'} fontSize={'1.4rem'}>
+          WNIOSEK URLOPOWY
+        </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody zIndex={100} color={'black'}>
           <VStack>
             <Heading mb={'50px'} borderBottom={'solid'} w={'100%'} textAlign={'center'}>
               {r.applierFirstName} {r.applierLastName}
             </Heading>
-            <HStack w={'100%'} fontWeight={'600'} fontSize={'1.2rem'} align={'end'}>
+            <HStack w={'100%'} fontWeight={'600'} fontStyle={'italic'} fontSize={'1.2rem'} align={'end'}>
               <Text>Proszę o udzielenie</Text>
               <Text textDecor={'underline'} fontSize={'1.5rem'}>
                 {r.businessDays}
               </Text>
-              <Text>{r.businessDays === 1 ? 'dnia.' : 'dni.'}</Text>
+              <Text>{r.businessDays === 1 ? 'dnia' : 'dni'}</Text>
+              {r.leaveType === 'pto' && <Text>urlopu wypoczynkowego</Text>}
+              {r.leaveType === 'pto_on_demand' && <Text>urlopu wypoczynkowego na żądanie</Text>}
+              {r.leaveType === 'on_saturday_pto' && <Text>- odbiór dnia wolnego za święto wypadające w sobotę </Text>}
+              {r.leaveType === 'occasional_leave' && <Text>- zwolnienie okolicznościowe z tytułu</Text>}
+              {r.leaveType === 'child_care' && <Text>- zwolnienie okolicznościowe z tytułu opieki nad dzieckiem</Text>}
             </HStack>
-            <HStack w={'100%'} fontWeight={'600'} fontSize={'1.2rem'}>
-              {r.leaveType === 'pto' && (
-                <HStack>
-                  <GiPalmTree size={'30px'} />
-                  <Text>urlopu wypoczynkowego</Text>
-                </HStack>
-              )}
-              {r.leaveType === 'pto_on_demand' && (
-                <HStack>
-                  <MdTimer size={'30px'} />
-                  <Text>urlopu wypoczynkowego na żądanie</Text>
-                </HStack>
-              )}
-              {r.leaveType === 'on_saturday_pto' && (
-                <HStack>
-                  <MdEventRepeat size={'30px'} />
-                  <Text>odbiór dnia wolnego za święto wypadające w sobotę- </Text>
-                  <Text>{r.saturday_holiday_date}</Text>
-                </HStack>
-              )}
-              {r.leaveType === 'occasional_leave' && (
-                <HStack>
-                  <FaUserTie size={'30px'} />
-                  <Text>zwolnienie okolicznościowe- </Text>
-                  <Text>{r.occasional_descriptionPolish}</Text>
-                </HStack>
-              )}
-              {r.leaveType === 'child_care' && (
-                <HStack>
-                  <MdChildFriendly size={'30px'} />
-                  <Text>zwolnienie okolicznościowe z tytułu opieki nad dzieckiem</Text>
-                </HStack>
-              )}
-            </HStack>
-            <HStack w={'100%'} fontWeight={'600'} fontSize={'1.6rem'}>
+            {r.leaveType === 'on_saturday_pto' && (
+              <HStack w={'100%'} fontWeight={'600'} fontStyle={'italic'} fontSize={'1.3rem'} justify={'center'}>
+                <Text>{r.saturday_holiday_date}</Text>
+                <Text>{r.saturday_holiday_desc}</Text>
+              </HStack>
+            )}
+            {r.leaveType === 'occasional_leave' && (
+              <Text w={'100%'} fontWeight={'600'} fontStyle={'italic'} fontSize={'1.2rem'}>
+                {r.occasional_descriptionPolish}
+              </Text>
+            )}
+
+            <HStack w={'100%'} fontWeight={'600'} fontSize={'1.6rem'} fontStyle={'italic'}>
               <Text>{r.businessDays == 1 ? 'w dniu:' : 'w dniach:'} </Text>
               <Text fontWeight={'700'}>{r.ptoStart}</Text>
               {r.businessDays > 1 && <Text fontWeight={'700'}>- {r.ptoEnd}</Text>}
             </HStack>
             <VStack w={'100%'} mt={'50px'}>
-              <VStack w={'100%'} mb={10}>
-                <HStack w={'100%'}>
-                  <Text fontWeight={'600'} fontSize={'1.3rem'}>
-                    STATUS:{' '}
-                  </Text>
+              <VStack w={'100%'} mb={10} alignItems={'start'}>
+                <HStack
+                  p={1}
+                  borderRadius={'10px'}
+                  backgroundColor={'rgba(255,255,255,.5)'}
+                  boxShadow={'4px 4px 14px 0px rgba(60, 70, 90, 1)'}
+                  fontWeight={'600'}
+                  fontSize={'2rem'}
+                >
                   {r.wasMarkedToWithdraw && !r.wasWithdrawn && (
-                    <Text fontWeight={'600'} fontSize={'2rem'} color={'orange.500'}>
-                      ZAAKCEPTOWANY, ZGŁOSZONY DO WYCOFANIA
-                    </Text>
+                    <Text color={'orange.500'}>ZAAKCEPTOWANY, ZGŁOSZONY DO WYCOFANIA</Text>
                   )}
-                  {r.wasWithdrawn && (
-                    <Text fontWeight={'600'} fontSize={'2rem'} color={'orange.500'}>
-                      ZAAKCEPTOWANY I WYCOFANY
-                    </Text>
-                  )}
-                  {r.pending && (
-                    <Text fontWeight={'600'} fontSize={'2rem'} color={'yellow.500'}>
-                      OCZEKUJE
-                    </Text>
-                  )}
+                  {r.wasWithdrawn && <Text color={'orange.500'}>ZAAKCEPTOWANY I WYCOFANY</Text>}
+                  {r.pending && <Text color={'yellow.500'}>OCZEKUJE</Text>}
                   {!r.wasMarkedToWithdraw && !r.wasWithdrawn && !r.pending && r.wasAccepted && (
-                    <Text fontWeight={'600'} fontSize={'2rem'} color={'green.400'}>
-                      ZAAKCEPTOWANY
-                    </Text>
+                    <Text color={'green.500'}>ZAAKCEPTOWANY</Text>
                   )}
                   {!r.wasWithdrawn && !r.pending && !r.wasAccepted && (
-                    <Text fontWeight={'600'} fontSize={'2rem'} color={'red.500'}>
+                    <Text color={'red.500'}>
                       ODRZUCONY {(r.declineReason && `- ${r.declineReason}`) || ' -brak podanego powodu'}
                     </Text>
                   )}
                 </HStack>
                 {!r.pending && (
-                  <HStack w={'100%'}>
-                    <Text>Data decyzji: </Text>{' '}
+                  <HStack w={'100%'} fontWeight={500}>
+                    <Text>Data decyzji: </Text>
                     <Text>
                       {new Date(r.decisionDateTime).toLocaleString('pl-PL', {
                         day: '2-digit',
@@ -134,8 +142,8 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
                   </HStack>
                 )}
                 {!r.pending && r.wasWithdrawn && (
-                  <HStack w={'100%'}>
-                    <Text>Data wycofania: </Text>{' '}
+                  <HStack w={'100%'} fontWeight={500}>
+                    <Text>Data wycofania: </Text>
                     <Text>
                       {new Date(r.withdrawnDateTime).toLocaleString('pl-PL', {
                         day: '2-digit',
@@ -149,17 +157,17 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
                   </HStack>
                 )}
               </VStack>
-              <HStack w={'100%'}>
+              <HStack w={'100%'} fontWeight={500}>
                 <Text>Data i godzina wniosku</Text>
                 <Text>{new Date(r.requestDateTime).toLocaleString('pl-PL')}</Text>
               </HStack>
-              <HStack w={'100%'}>
+              <HStack w={'100%'} fontWeight={500}>
                 <Text>Rozpatrujący:</Text>
                 <Text>{r.acceptorFirstName}</Text>
                 <Text>{r.acceptorLastName}</Text>
               </HStack>
             </VStack>
-            <VStack w={'100%'} align={'start'} mt={10}>
+            <VStack w={'100%'} align={'start'} mt={10} fontWeight={600}>
               <HStack w={'500px'}>
                 <GrNotes fontSize={'30px'} />
                 <Text>Historia wniosku</Text>
@@ -173,7 +181,7 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
           </VStack>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter zIndex={100}>
           <WithdrawActionButton request={r} closeModal={onClose} />
         </ModalFooter>
       </ModalContent>
