@@ -3,17 +3,17 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import useEmployees from '../../../hooks/useEmployees';
 import useJobPostitions from '../../../hooks/useJobPositions';
-import useAuthentication from '../../../state/useAuthentication';
 import useHttpErrorState from '../../../state/useHttpErrorState';
 import { EmployeeListTab } from './EmployeeListTab';
 import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsListTab } from './PositionsListTab';
 import { TimeOffListTab } from './TimeOffListTab';
+import useThemeState from '../../../state/useThemeState';
 
 type Tabs = 'timeoff' | 'employees' | 'positions';
 
 export const EmployeesOverview = () => {
-  const user = useAuthentication(s => s.appUser);
+  const theme = useThemeState(s => s.themeConfig);
   const [selectedTab, setSelectedTab] = useState<Tabs>('employees');
   const setError = useHttpErrorState(s => s.setError);
   const {
@@ -54,7 +54,7 @@ export const EmployeesOverview = () => {
           height: '90%',
         }}
       >
-        <VStack w={'100%'} h={'100%'}>
+        <VStack w={'100%'} h={'100%'} color={theme.fontColor}>
           <HStack
             justifyContent={'center'}
             w={'100%'}
@@ -65,30 +65,34 @@ export const EmployeesOverview = () => {
           >
             <Box
               cursor={'pointer'}
-              fontWeight={selectedTab === 'timeoff' ? 'bold' : ''}
+              fontWeight={selectedTab === 'timeoff' ? '800' : '600'}
               onClick={() => setSelectedTab('timeoff')}
+              transform={selectedTab === 'timeoff' ? `translateY(-5px)` : ''}
+              transition={'transform 200ms'}
             >
               Urlopy
             </Box>
             <Box
               cursor={'pointer'}
-              fontWeight={selectedTab === 'employees' ? 'bold' : ''}
+              fontWeight={selectedTab === 'employees' ? '800' : '600'}
               onClick={() => setSelectedTab('employees')}
+              transform={selectedTab === 'employees' ? `translateY(-5px)` : ''}
+              transition={'transform 200ms'}
             >
               Pracownicy
             </Box>
             <Box
               cursor={'pointer'}
-              fontWeight={selectedTab === 'positions' ? 'bold' : ''}
+              fontWeight={selectedTab === 'positions' ? '800' : '600'}
               onClick={() => setSelectedTab('positions')}
+              transform={selectedTab === 'positions' ? `translateY(-5px)` : ''}
+              transition={'transform 200ms'}
             >
               Stanowiska
             </Box>
           </HStack>
           <Box w={'100%'} h={'100%'} maxH={'90vh'}>
-            {selectedTab === 'timeoff' && (
-              <TimeOffListTab />
-            )}
+            {selectedTab === 'timeoff' && <TimeOffListTab />}
             {selectedTab === 'employees' && (
               <EmployeeListTab
                 employees={employees}

@@ -17,10 +17,10 @@ export const PtoCardStatus = ({ pto }: Props) => {
       alignItems={'center'}
       top={0}
       right={0}
-      bg={'#385898'}
+      bg={'#008AFF'}
       w={'100px'}
       h={'20px'}
-      color={'whiteAlpha.700'}
+      color={'whiteAlpha.900'}
       fontSize={'.9rem'}
       borderRadius={'0 50px 0 50px'}
       boxShadow={'4px 4px 14px 0px rgba(66, 68, 90, 1)'}

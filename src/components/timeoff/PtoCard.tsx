@@ -7,12 +7,14 @@ import { PtoRequestResponse } from '../../model/Pto';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
 import { PtoCardStatus } from './PtoCardStatus';
+import useThemeState from '../../state/useThemeState';
 
 interface Props {
   pto: PtoRequestResponse;
 }
 
 export const PtoCard = ({ pto }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const setPtoExtendedForUser = usePtoModalStore(s => s.setPtoExtendedForUser);
   const [daysTotalHovering, setDaysTotalhovering] = useState(false);
   const [daysBusinessHovering, setDaysBusinesshovering] = useState(false);
@@ -26,7 +28,7 @@ export const PtoCard = ({ pto }: Props) => {
     <Box w={'100%'} maxW={'800px'} position={'relative'}>
       <Tooltip label='ID wniosku'>
         <Flex
-          opacity={pto.wasMarkedToWithdraw ? 0.6 : 1}
+          opacity={pto.wasMarkedToWithdraw ? 0.8 : 1}
           zIndex={1}
           position={'absolute'}
           justifyContent={'center'}
@@ -37,7 +39,7 @@ export const PtoCard = ({ pto }: Props) => {
           top={'-5px'}
           left={0}
           borderRadius={'50px'}
-          bg={'#385898'}
+          bg={'#008AFF'}
           w={'40px'}
           h={'20px'}
           p={1}
@@ -49,7 +51,7 @@ export const PtoCard = ({ pto }: Props) => {
         </Flex>
       </Tooltip>
       <VStack
-        opacity={pto.wasMarkedToWithdraw ? 0.6 : 1}
+        opacity={pto.wasMarkedToWithdraw ? 0.8 : 1}
         position={'relative'}
         overflow={'hidden'}
         w={'100%'}
@@ -64,13 +66,12 @@ export const PtoCard = ({ pto }: Props) => {
         spacing={0}
         bg={
           pto.pending || (pto.wasMarkedToWithdraw && !pto.wasWithdrawn)
-            ? 'rgba(255, 255, 120, .4)'
+            ? 'rgba(255, 255, 120, .6)'
             : pto.wasAccepted
-            ? 'rgba(20, 255, 120, .4)'
-            : 'rgba(255, 120, 120, .4)'
+            ? 'rgba(20, 255, 120, .6)'
+            : 'rgba(255, 120, 120, .6)'
         }
-        boxShadow={'6px 4px 4px 0px rgba(66, 68, 90, 1)'}
-        color={'blackAlpha.800'}
+        boxShadow={'2xl'}
         transitionProperty={'transform'}
         transitionDuration={'.2s'}
       >
@@ -80,7 +81,14 @@ export const PtoCard = ({ pto }: Props) => {
         ${pto.acceptorFirstName} ${pto.acceptorLastName}
         ${pto.acceptorEmail}`}
         >
-          <Flex cursor={'help'} position={'absolute'} fontSize={'2rem'} color={'#385898'} bottom={0} left={2}>
+          <Flex
+            cursor={'help'}
+            position={'absolute'}
+            fontSize={'2rem'}
+            color={theme.secondColor}
+            bottom={0}
+            left={2}
+          >
             <MdSupervisorAccount />
           </Flex>
         </Tooltip>
@@ -93,7 +101,7 @@ export const PtoCard = ({ pto }: Props) => {
         ${request.toLocaleString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`}
             >
               <Box cursor={'help'}>
-                <CalendarPageIcon date={request} size='sm' />
+                <CalendarPageIcon date={request} size='sm' color='black'/>
               </Box>
             </Tooltip>
             <Tooltip
@@ -112,11 +120,11 @@ export const PtoCard = ({ pto }: Props) => {
               }
             >
               <HStack w={'100px'} justifyContent={'space-between'} cursor={'help'}>
-                <CalendarPageIcon date={ptoStart} size='sm' />
-                <CalendarPageIcon date={ptoEnd} size='sm' />
+                <CalendarPageIcon date={ptoStart} size='sm' color='black'/>
+                <CalendarPageIcon date={ptoEnd} size='sm'color='black' />
               </HStack>
             </Tooltip>
-            <VStack borderRadius={'20px'} color={'#385898'} fontWeight={'500'} gap={0} spacing={0}>
+            <VStack borderRadius={'20px'} color={theme.secondColor} fontWeight={'500'} gap={0} spacing={0}>
               <HStack
                 position={'relative'}
                 onMouseEnter={e => setDaysBusinesshovering(true)}
@@ -168,35 +176,35 @@ export const PtoCard = ({ pto }: Props) => {
               {pto.leaveType === 'pto' && (
                 <Tooltip label='Wypoczynkowy'>
                   <Box>
-                    <GiPalmTree color={'#385898'} size={'40px'} />
+                    <GiPalmTree color={theme.secondColor} size={'40px'} />
                   </Box>
                 </Tooltip>
               )}
               {pto.leaveType === 'pto_on_demand' && (
                 <Tooltip label='Na żądanie'>
                   <Box>
-                    <MdTimer color={'#385898'} size={'40px'} />
+                    <MdTimer color={theme.secondColor} size={'40px'} />
                   </Box>
                 </Tooltip>
               )}
               {pto.leaveType === 'on_saturday_pto' && (
                 <Tooltip label={`Odbiór za święto w sobotę: ${pto.saturday_holiday_date}`}>
                   <Box>
-                    <MdEventRepeat color={'#385898'} size={'40px'} />
+                    <MdEventRepeat color={theme.secondColor} size={'40px'} />
                   </Box>
                 </Tooltip>
               )}
               {pto.leaveType === 'occasional_leave' && (
                 <Tooltip label={`Okolicznościowy: ${pto.occasional_descriptionPolish}`}>
                   <Box>
-                    <FaUserTie color={'#385898'} size={'40px'} />
+                    <FaUserTie color={theme.secondColor} size={'40px'} />
                   </Box>
                 </Tooltip>
               )}
               {pto.leaveType === 'child_care' && (
                 <Tooltip label='Opieka nad dzieckiem'>
                   <Box>
-                    <MdChildFriendly color={'#385898'} size={'40px'} />
+                    <MdChildFriendly color={theme.secondColor} size={'40px'} />
                   </Box>
                 </Tooltip>
               )}

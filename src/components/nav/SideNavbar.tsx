@@ -1,4 +1,4 @@
-import { Box, Flex, Image, VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { CgHome } from 'react-icons/cg';
 import { FaRegCalendarAlt } from 'react-icons/fa';
@@ -6,11 +6,12 @@ import { GoPeople } from 'react-icons/go';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuPalmtree } from 'react-icons/lu';
 import { RiTeamLine } from 'react-icons/ri';
-import logo from '../../assets/CM-logo-color.png';
 import useAuthentication from '../../state/useAuthentication';
 import { NavbarLink } from './NavbarLink';
+import useThemeState from '../../state/useThemeState';
 
 export const SideNavbar = () => {
+  const theme = useThemeState(s => s.themeConfig);
   const isAdmin = useAuthentication(s => s.isAdmin);
   const isSupervisor = useAuthentication(s => s.isSupervisor);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -29,6 +30,7 @@ export const SideNavbar = () => {
       transition={'width .25s'}
       overflow={'hidden'}
       zIndex={10}
+      color={theme.fontColor}
     >
       <Flex
         h={'100px'}
@@ -38,13 +40,13 @@ export const SideNavbar = () => {
         mb={'20px'}
         onClick={onLogoClickhandler}
       >
-        <Box maxW={'80px'} p={2}>
+        {/* <Box maxW={'80px'} p={2} color={'white'}>
           <Image src={logo} />
-        </Box>
+        </Box> */}
       </Flex>
       <VStack w={'100%'} h={'100%'} alignItems={'start'} spacing={5}>
         <NavbarLink to='/home' text='Home'>
-          <CgHome size={'40px'} color='' />
+          <CgHome size={'40px'} />
         </NavbarLink>
         <NavbarLink to='/timeoff' text='Urlopy'>
           <LuPalmtree size={'40px'} />

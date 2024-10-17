@@ -21,6 +21,7 @@ import { UserPtoSummary } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { CalendarPageIcon } from '../general/CalendarPageIcon';
 import useAuthentication from '../../state/useAuthentication';
+import useThemeState from '../../state/useThemeState';
 
 interface Props {
   isUserActive: boolean;
@@ -30,6 +31,7 @@ interface Props {
 
 export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Props) => {
   const appUser = useAuthentication(s => s.appUser);
+  const theme = useThemeState(s => s.themeConfig);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const setIsRequestingPto = usePtoRequestState(s => s.setIsRequestingPto);
   const setSelectedPtoType = usePtoRequestState(s => s.setSelectedPtoType);
@@ -46,7 +48,7 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={'3xl'}>
         <ModalOverlay />
-        <ModalContent color={'#385898'} bgColor={'rgba(255, 255, 255, .9)'}>
+        <ModalContent color={theme.fontColor} bg={theme.elementBg}>
           <ModalHeader fontSize={'1.5rem'} fontWeight={'600'} fontStyle={'italic'} w={'100%'} textAlign={'center'}>
             Naliczone dni wolne za święta w sobotę w bieżącym roku
           </ModalHeader>
@@ -89,9 +91,10 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
                     p={2}
                     borderRadius={'15px'}
                     boxShadow={'8px 8px 20px 0px rgba(66, 68, 90, .8)'}
+                    shadow={'xl'}
                   >
                     <Box w={'200px'}>
-                      <CalendarPageIcon date={holidayDate} size='md' />
+                      <CalendarPageIcon date={holidayDate} size='md' color='blackAlpha.900' />
                     </Box>
                     <Flex flexBasis={'100%'} justifyContent={'center'} alignItems={'center'}>
                       <Text ml={4} fontSize={'1.4rem'} as={'i'} fontWeight={'600'}>
@@ -122,14 +125,29 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
         </ModalContent>
       </Modal>
 
-      <VStack position={'relative'} w={'100%'} p={5}>
+      <VStack
+        position={'relative'}
+        w={'100%'}
+        p={5}
+        borderRadius={'15px'}
+        boxShadow='2xl'
+        bg={theme.elementBg}
+      >
         {appUser?.isActive && !appUser?.freelancer && (
           <Tooltip label='Dni świąteczne w sobotę'>
             <Box position={'absolute'} onClick={onOpen} top={2} right={2} cursor={'pointer'}>
               {hasUnusedHolidayOnSaturday && (
-                <Box w={'15px'} h={'15px'} borderRadius={'50%'} bg={'red'} position={'absolute'} top={0} left={0}></Box>
+                <Box
+                  w={'15px'}
+                  h={'15px'}
+                  borderRadius={'50%'}
+                  bg={'rgba(250, 70, 70, .9)'}
+                  position={'absolute'}
+                  top={0}
+                  left={0}
+                ></Box>
               )}
-              <MdEventRepeat color={'#385898'} size={'40px'} />
+              <MdEventRepeat color={theme.secondColor} size={'40px'} />
             </Box>
           </Tooltip>
         )}

@@ -5,6 +5,7 @@ import useUserPtoSummary from '../../hooks/useUserPtoSummary';
 import useAuthentication from '../../state/useAuthentication';
 import useHttpErrorState from '../../state/useHttpErrorState';
 import usePtoRequestState from '../../state/usePtoRequestState';
+import useThemeState from '../../state/useThemeState';
 import { NewPtoButton } from './NewPtoButton';
 import { PtoRequestForm } from './NewPtoRequestForm';
 import { PtoDaysLeftUsedSummary } from './PtoDaysLeftUsedSummary';
@@ -12,7 +13,8 @@ import { PtoRequestHistory } from './PtoRequestHistory';
 
 export const PtoSummary = () => {
   const appuser = useAuthentication(s => s.appUser);
-  const { isRequestingPto, setIsRequestingPto } = usePtoRequestState();
+  const theme = useThemeState(s => s.themeConfig);
+  const isRequestingPto = usePtoRequestState(s => s.isRequestingPto);
   const { data: summary, error: summaryError, isFetching } = useUserPtoSummary(appuser?.userId || -1);
   const {
     data: ptos,
@@ -30,7 +32,7 @@ export const PtoSummary = () => {
   }, [summaryError, ptoError]);
 
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} color={theme.fontColor}>
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
         <VStack
           w={'100%'}

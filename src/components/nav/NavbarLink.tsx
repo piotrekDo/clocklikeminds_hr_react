@@ -23,9 +23,8 @@ export const NavbarLink = ({ to, text, children }: Props) => {
             cursor={'pointer'}
             w={'80px'}
             justifyContent={'center'}
-            color={isActive ? 'blue.400' : ''}
-            transitionProperty={'color'}
-            transitionDuration={'.5s'}
+            transform={isActive ? 'translateX(10px)' : ''}
+            transition={'transform 200ms'}
           >
             {children}
           </Flex>

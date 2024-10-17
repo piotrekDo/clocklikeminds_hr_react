@@ -3,15 +3,17 @@ import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { SideNavbar } from './components/nav/SideNavbar';
 import { Uppernavbar } from './components/nav/UpperNavbar';
-import { backgroundGradient, loggedBackgorund } from './library';
+import useMetaData from './hooks/useMetaData';
 import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
-import useMetaData from './hooks/useMetaData';
+import useThemeState from './state/useThemeState';
+import { lightBackground } from './library';
 
 export const occasionalLeaveTranslatePL: Map<string, string> = new Map<string, string>();
 
 function App() {
   const { appUser } = useAuthentication();
+  const theme = useThemeState(s => s.themeConfig);
   const { error } = useHttpErrorState();
   const toast = useToast();
   const { isSuccess, data, isError, error: metaDataError } = useMetaData(!!appUser);
@@ -51,10 +53,9 @@ function App() {
       minH={'100vh'}
       maxH={'100vh'}
       h={'100vh'}
-      bg={loggedBackgorund}
+      backgroundImage={appUser ? theme.bg : lightBackground}
       justifyContent={'end'}
       alignItems={'end'}
-      transition={'background-color .5s ease-in, color .5s ease-in'}
     >
       {appUser && (
         <>
@@ -68,7 +69,6 @@ function App() {
         px={{ base: 0, '4K': '250px' }}
         py={{ base: 0, '4K': '50px' }}
         borderRadius={'50px 0 0 0'}
-        // bg={'white'}
         overflowY={'scroll'}
         style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
       >

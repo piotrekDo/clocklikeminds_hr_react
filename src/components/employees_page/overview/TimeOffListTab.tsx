@@ -1,11 +1,10 @@
-import { Flex, HStack, Heading, VStack, Text, Spinner, Box } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import { Box, Flex, HStack, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import useHolidaysOnSaturdaySummaryForAdmin from '../../../hooks/useHolidaysOnSaturdaySummaryForAdmin';
-import { CalendarPageIcon } from '../../general/CalendarPageIcon';
 import useHttpErrorState from '../../../state/useHttpErrorState';
-import { UpcomingSaturdayHoliday } from './UpcomingSaturdayHoliday';
 import { CustomHolidayOnSaturday } from './CustomHolidayOnSaturday';
 import { HolidaysOnSaturdayByUsers } from './HolidaysOnSaturdayByUsers';
+import { UpcomingSaturdayHoliday } from './UpcomingSaturdayHoliday';
 
 export const TimeOffListTab = () => {
   const { data, isFetching, error, isError, isLoading } = useHolidaysOnSaturdaySummaryForAdmin();
@@ -18,7 +17,7 @@ export const TimeOffListTab = () => {
   }, [isError]);
 
   return (
-    <VStack w={'100%'} h={'100%'}>
+    <VStack w={'100%'} h={'100%'} >
       <HStack w={'100%'} mb={5}>
         <Heading textAlign={'left'}>Dni świąteczne w sobotę</Heading>
         {isFetching && !isLoading && (

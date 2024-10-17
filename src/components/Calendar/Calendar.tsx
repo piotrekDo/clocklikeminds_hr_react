@@ -31,7 +31,7 @@ export const Calendar = () => {
         maxH={'calc(100vh - 100px)'}
         borderRadius={'20px'}
         px={{ base: 2, monitorM: 5 }}
-        boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+        shadow={'2xl'}
         color={'whiteAlpha.900'}
         zIndex={10}
       >

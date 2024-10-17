@@ -2,9 +2,10 @@ import { Box, HStack, Text } from '@chakra-ui/react';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { EmployeeBasic } from '../../../model/User';
 import { Activebadge } from '../../badges/Activebadge';
+import { Freelancer } from '../../badges/Freelancer';
 import { InactiveBadge } from '../../badges/InactiveBadge';
 import { UnfinishedRegistrationBadge } from '../../badges/UnfinishedRegistrationBadge';
-import { Freelancer } from '../../badges/Freelancer';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   employee: EmployeeBasic;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const determineSeniority = () => {
     const years = Math.floor(employee.seniorityInMonths / 12);
     const months = (employee.seniorityInMonths - years * 12) % 12;
@@ -34,17 +36,16 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
   return (
     <HStack
       w={'100%'}
-      color={'blackAlpha.900'}
       fontWeight={'500'}
       borderRadius={'30px'}
       py={1}
       px={3}
       cursor={'pointer'}
       onClick={() => onEmployeeChange(employee.appUserId)}
-      _hover={{ bg: '#E3EDF2' }}
+      _hover={{ bg: theme.elementBg,}}
     >
       <HStack flexBasis={'50%'}>
-        <Box >
+        <Box>
           {employee.imageUrl && (
             <Box
               w={'30px'}
@@ -64,7 +65,7 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
           )}
           {!employee.imageUrl && <FaRegCircleUser size={'30px'} />}
         </Box>
-        {employee.freelancer && <Freelancer size='2rem'/>}
+        {employee.freelancer && <Freelancer size='2rem' />}
       </HStack>
       <Text flexBasis={'100%'}>{employee.firstName}</Text>
       <Text flexBasis={'100%'}>{trimDisplay(employee.lastName)}</Text>
