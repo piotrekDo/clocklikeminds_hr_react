@@ -9,8 +9,10 @@ import { StatusWithdrawnDeclined } from './StatusWithdrawnDeclined';
 
 interface Props {
   history: RequestHistoryDto;
-  size?: string;
+  size?: Size;
 }
+
+type Size = 'normal' | 'sm' | 'xs';
 
 export const TimeOffRequestHistory = ({ history, size = 'normal' }: Props) => {
   return (
@@ -18,8 +20,9 @@ export const TimeOffRequestHistory = ({ history, size = 'normal' }: Props) => {
       key={history.historyId}
       align={'start'}
       borderRadius={'20px'}
-      p={size === 'small' ? 1 : 2}
-      fontSize={size === 'small' ? '.9rem' : '1rem'}
+      p={size === 'normal' ? 2 : 1}
+      fontSize={size === 'normal' ? '1rem' : '.9rem'}
+      w={'100%'}
     >
       <HStack>
         <Box color={'black'}>
@@ -31,25 +34,22 @@ export const TimeOffRequestHistory = ({ history, size = 'normal' }: Props) => {
           {history.action === 'WITHDRAW_DECLINED' && <StatusWithdrawnDeclined />}
         </Box>
         <Flex>
-          <Text>{new Date(history.dateTime).toLocaleString('pl-PL')}</Text>
+          <Text fontSize={size === 'xs' ? '.7rem' : ''}>{new Date(history.dateTime).toLocaleString('pl-PL')}</Text>
         </Flex>
         <Flex>
-          <Text>
+          <Text fontSize={size === 'xs' ? '.7rem' : ''}>
             {history.firstName} {history.lastName}
           </Text>
         </Flex>
       </HStack>
-      {/* <Input
-        w={size === 'small' ? '300px' : '500px'}
-        h={'fit-content'}
-        isDisabled
-        value={history.notes ? history.notes : 'Brak uwag'}
-        resize={'vertical'}
-        _disabled={{
-          cursor: 'default',
-        }}
-      /> */}
-      <Text w={size === 'small' ? '300px' : '500px'} border={'1px solid'} borderRadius={'5px'} px={1} as={'em'}>
+      <Text
+        w={size === 'normal' ? '500px' : size === 'sm' ? '300px' : '100%'}
+        border={'1px solid'}
+        borderRadius={'5px'}
+        px={1}
+        as={'em'}
+        fontSize={size === 'xs' ? '.8rem' : ''}
+      >
         {history.notes ? history.notes : 'Brak uwag'}
       </Text>
     </VStack>

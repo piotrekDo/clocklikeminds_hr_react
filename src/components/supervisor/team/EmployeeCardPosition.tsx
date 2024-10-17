@@ -1,5 +1,5 @@
+import { Box, keyframes, Text } from '@chakra-ui/react';
 import { EmployeePosition } from '../../../model/User';
-import { Flex, Box, keyframes, Text, VStack } from '@chakra-ui/react';
 
 interface Props {
   position: EmployeePosition;

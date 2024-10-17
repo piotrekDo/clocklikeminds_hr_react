@@ -1,11 +1,9 @@
-import { Box, HStack, Spinner, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { TimeOffRequestsShelf } from '../components/supervisor/TimeOffRequestsShelf';
 import { PtoCompareModal } from '../components/supervisor/requests/PtoCompareModal';
-import { TimeOffRequestsSetToWithdraw } from '../components/supervisor/requests/TimeOffRequestsSetToWithdraw';
-import { TimeOffRequestsToResolve } from '../components/supervisor/requests/TimeOffRequestsToResolve';
-import { UnresolvedTimeOffRequestModal } from '../components/supervisor/requests/UnresolvedTimeOffRequestModal';
-import { SupervisorTeamView } from '../components/supervisor/team/SupervisorTeamView';
+import { TeamShelf } from '../components/supervisor/team/TeamShelf';
 import useEmployeesForSupervisor from '../hooks/useEmployeesForSupervisor';
 import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
@@ -59,56 +57,25 @@ export const SupervisorPage = () => {
         }}
       >
         <PtoCompareModal isOpen={!!ptoToCompareDates} onClose={onCloseCompareModal} />
-        <UnresolvedTimeOffRequestModal isOpen={!!ptoExtendedModal} onClose={onClosePtoExtendedModal} />
-        <HStack
-          justifyContent={'center'}
-          w={'100%'}
-          fontSize={'1.1rem'}
-          spacing={10}
-          mt={2}
-          borderBottom={'2px solid lightgrey'}
-        >
-          <Box
-            cursor={'pointer'}
-            fontWeight={selectedTab === 'requests' ? 'bold' : ''}
-            onClick={() => setSelectedTab('requests')}
-          >
-            Wnioski
-          </Box>
-          <Box
-            cursor={'pointer'}
-            fontWeight={selectedTab === 'employees' ? 'bold' : ''}
-            onClick={() => setSelectedTab('employees')}
-          >
-            Zespół
-          </Box>
-        </HStack>
-
-        {selectedTab === 'requests' && (
-          <VStack pt={5}>
-            <VStack w={'100%'} spacing={'100px'}>
-              {unresolvedPtos && unresolvedPtos.filter(p => p.wasMarkedToWithdraw).length > 0 && (
-                <TimeOffRequestsSetToWithdraw
-                  unresolvedPtos={unresolvedPtos?.filter(p => p.wasMarkedToWithdraw)}
-                  isUnresolvedPtosFetching={isUnresolvedPtosFetching}
-                  isUnresolvedPtosLoading={isUnresolvedPtosLoading}
-                />
-              )}
-              <TimeOffRequestsToResolve
-                unresolvedPtos={unresolvedPtos?.filter(p => !p.wasMarkedToWithdraw)}
-                isUnresolvedPtosFetching={isUnresolvedPtosFetching}
-                isUnresolvedPtosLoading={isUnresolvedPtosLoading}
-              />
-            </VStack>
-          </VStack>
-        )}
-
-        {selectedTab === 'employees' && (
-          <VStack pt={5}>
-            {isEmployeesFetching && <Spinner />}
-            {employees && <SupervisorTeamView employees={employees} />}
-          </VStack>
-        )}
+        <VStack w={'100%'} pt={'50px'} px={'15px'} >
+          {unresolvedPtos && (
+            <TimeOffRequestsShelf
+              title='Wnioski urlopowe do rozpatrzenia'
+              requests={unresolvedPtos?.filter(p => !p.wasMarkedToWithdraw)}
+            />
+          )}
+        </VStack>
+        <VStack w={'100%'} pt={'50px'} px={'15px'}>
+          {unresolvedPtos && (
+            <TimeOffRequestsShelf
+              title='Wnioski zgłoszone do wycofania'
+              requests={unresolvedPtos?.filter(p => p.wasMarkedToWithdraw)}
+            />
+          )}
+        </VStack>
+        <VStack w={'100%'} pt={'50px'} px={'15px'}>
+          {employees && <TeamShelf employees={employees} />}
+        </VStack>
       </motion.div>
     </AnimatePresence>
   );

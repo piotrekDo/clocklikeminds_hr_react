@@ -143,11 +143,11 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
           </HStack>
           <VStack spacing={0}>
             {timeOff.requestHistory.map(history => (
-              <TimeOffRequestHistory key={history.historyId} history={history} size='small' />
+              <TimeOffRequestHistory key={history.historyId} history={history} size='sm' />
             ))}
           </VStack>
         </VStack>
-        <WithdrawActionButton request={timeOff} closeModal={onClosePtoDetailshandler}/>
+        <WithdrawActionButton request={timeOff} closeModal={onClosePtoDetailshandler} />
       </VStack>
     </Box>
   );

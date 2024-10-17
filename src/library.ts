@@ -30,6 +30,8 @@ export const loggedBackgorund = `linear-gradient(
     hsl(227deg 91% 47%) 100%
   )`;
 
+// export const loggedBackgorund = `linear-gradient(135deg, #0b3d91, #8b0000, #000000)`;
+
 export const adminBackgroundGradient =
   'linear-gradient(144deg, rgba(199,151,151,1) 0%, rgba(219,72,89,1) 35%, rgba(255,0,0,1) 100%)';
 

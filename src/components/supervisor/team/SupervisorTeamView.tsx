@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import {  EmployeeInfo } from '../../../model/User';
+import { EmployeeInfo } from '../../../model/User';
 import { EmployeeCard } from './EmployeeCard';
 
 interface Props {

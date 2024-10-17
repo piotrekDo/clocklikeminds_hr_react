@@ -51,7 +51,7 @@ function App() {
       minH={'100vh'}
       maxH={'100vh'}
       h={'100vh'}
-      bg={!appUser ? backgroundGradient : loggedBackgorund}
+      bg={loggedBackgorund}
       justifyContent={'end'}
       alignItems={'end'}
       transition={'background-color .5s ease-in, color .5s ease-in'}
