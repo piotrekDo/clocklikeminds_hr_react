@@ -46,17 +46,17 @@ export const getHolidaysPoland = (year: number): Map<string, string> => {
 export const calculateBusinessDays = (from: Date, to: Date): NewPtoRequestSummary => {
   let year = from.getFullYear();
   let holidays = getHolidaysPoland(year);
-  let checkedDate = new Date(Date.UTC(from.getFullYear(), from.getMonth(), from.getDate()));
+  let checkedDate = new Date(from.getFullYear(), from.getMonth(), from.getDate());
   let businessDays = 0;
   const holidayDays: { desc: string; isWeekend: boolean }[] = [];
 
+  console.log(checkedDate)
   while (checkedDate <= to) {
     if (checkedDate.getFullYear() !== year) {
       holidays = getHolidaysPoland(checkedDate.getFullYear());
     }
     const holiday = holidays.get(checkedDate.getMonth() + ',' + checkedDate.getDate());
     const isWeekend = checkedDate.getDay() === 0 || checkedDate.getDay() === 6;
-
     if (!holiday && !isWeekend) {
       businessDays++;
     } else if (holiday) {

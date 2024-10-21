@@ -1,6 +1,7 @@
-import { Flex, Grid, GridItem, Text } from '@chakra-ui/react';
+import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import { PtoRequestFormatted } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
+import { useState } from 'react';
 
 interface Props {
   month: Date;
@@ -20,6 +21,7 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
     const date = new Date(Date.UTC(month.getFullYear(), month.getMonth(), index + 1));
     return date;
   });
+  const [isHovering, setIshovering] = useState<boolean>(false);
 
   const handleOnRequestingPtoClick = (day: Date) => {
     if (selectedPtoType === 'on_saturday_pto') {
@@ -41,17 +43,41 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
   return (
     <GridItem
       w={'100%'}
-      p={1}
+      p={{ base: 0, monitorM: 1 }}
       borderRadius={'10px'}
       display={'flex'}
       flexDirection={'column'}
-      _hover={{ transform: 'scale(1.05)' }}
+      _hover={{ transform: 'scale(1.03)' }}
       transition={'transform .1s ease-in'}
+      onMouseEnter={e => setIshovering(true)}
+      onMouseLeave={e => setIshovering(false)}
     >
-      <Text as={'b'} fontSize={{ base: '1rem', monitorM: '1.1rem' }}>
-        {month.toLocaleString('pl-PL', { month: 'long' })}
-      </Text>
-      <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={2} columnGap={0}>
+      <VStack align='start' spacing={1}>
+        <Text
+          as='b'
+          fontSize={{ base: '1rem', monitorM: '1.1rem' }}
+          transform={isHovering ? 'none' : 'translateY(20px)'}
+          transition='transform 0.2s'
+        >
+          {month.toLocaleString('pl-PL', { month: 'long' })}
+        </Text>
+        <HStack w='100%' px={1} opacity={isHovering ? 1 : 0} transition='opacity 0.4s'>
+          {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'NI'].map((day, index) => (
+            <Flex
+              key={day}
+              flexBasis='100%'
+              justify='center'
+              transform={isHovering ? 'none' : `translateY(20px)`}
+              transition={`transform 0.2s ${25 * (index + 1)}ms`}
+            >
+              <Text fontSize='0.8rem' fontWeight={600}>
+                {day}
+              </Text>
+            </Flex>
+          ))}
+        </HStack>
+      </VStack>
+      <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={{base: 1, monitorM: 2}} columnGap={0}>
         {Array.from({ length: leftPadding }).map((_, index) => (
           <GridItem key={index} w={'100%'} />
         ))}
@@ -114,7 +140,7 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
                 title={isHoliday}
                 outline={isToday ? 'solid' : ''}
               >
-                <Text>{day.getDate()}</Text>
+                <Text >{day.getDate()}</Text>
               </Flex>
             </GridItem>
           );

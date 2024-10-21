@@ -26,7 +26,7 @@ export const Calendar = () => {
       <VStack
         position={'relative'}
         bg={'#385898'}
-        py={1}
+        py={{base: 0, monitorM: 5}}
         w={'100%'}
         maxH={'calc(100vh - 100px)'}
         borderRadius={'20px'}
@@ -34,6 +34,7 @@ export const Calendar = () => {
         shadow={'2xl'}
         color={'whiteAlpha.900'}
         zIndex={10}
+        spacing={1}
       >
         <HStack
           w={'100%'}
