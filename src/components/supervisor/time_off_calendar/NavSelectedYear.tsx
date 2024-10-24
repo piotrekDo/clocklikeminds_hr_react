@@ -1,5 +1,5 @@
 import { Flex, Input } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Props {
   selectedDate: Date;
@@ -34,6 +34,11 @@ export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
   const handleYearChange = () => {
     setSelectedDate(new Date(yearInput, selectedDate.getMonth(), 1));
   };
+
+  useEffect(() => {
+    setYearInput(selectedDate.getFullYear());
+  }, [selectedDate]);
+
   return (
     <Flex pos={'relative'} onMouseEnter={e => setIsYearHovering(true)} onMouseLeave={e => setIsYearHovering(false)}>
       <Input

@@ -1,5 +1,6 @@
 import {
   Box,
+  Flex,
   GridItem,
   HStack,
   Modal,
@@ -14,13 +15,12 @@ import {
 } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
+import { occasionalLeaveTranslatePL } from '../../../App';
 import usePtosInTimeFrame from '../../../hooks/usePtosInTimeFrame';
+import { ptoTypeTranslatePl } from '../../../model/Pto';
 import useAuthentication from '../../../state/useAuthentication';
 import usePtoModalStore from '../../../state/usePtoModalStore';
 import { getHolidaysPoland } from '../../Calendar/holidays';
-import { Header } from '../SupervisorCalendat/Header';
-import { ptoTypeTranslatePl } from '../../../model/Pto';
-import { occasionalLeaveTranslatePL } from '../../../App';
 
 interface Props {
   isOpen: boolean;
@@ -102,7 +102,13 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
             borderRadius={'20px 20px 0 0'}
             boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
           >
-            <Header />
+            <SimpleGrid columns={7} bg={'#385898'} color={'whiteAlpha.900'} w={'100%'} borderRadius={'20px 20px 0 0'}>
+              {['PON', 'WTO', 'SRO', 'CZW', 'PTĄ', 'SOB', 'NIE'].map((day, index) => (
+                <Flex key={index} justifyContent={'center'} alignItems={'center'}>
+                  {day}
+                </Flex>
+              ))}
+            </SimpleGrid>
             <VStack
               p={2}
               w={'100%'}
@@ -196,8 +202,11 @@ export const PtoCompareModal = ({ isOpen, onClose }: Props) => {
                                 day: '2-digit',
                                 month: 'short',
                               })} \n ${ptoTypeTranslatePl.get(p.leaveType)} ${
-                                p.leaveType === 'occasional_leave' ?
-                                `- ${p.occasional_leaveType && occasionalLeaveTranslatePL.get(p.occasional_leaveType)}` : ''
+                                p.leaveType === 'occasional_leave'
+                                  ? `- ${
+                                      p.occasional_leaveType && occasionalLeaveTranslatePL.get(p.occasional_leaveType)
+                                    }`
+                                  : ''
                               }`}
                               whiteSpace='pre-line'
                             >

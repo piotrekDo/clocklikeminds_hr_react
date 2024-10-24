@@ -21,7 +21,7 @@ const monthNames = [
   'Grudzień',
 ];
 
-export const NavSelectedMonth = ({ selectedDate,  setSelectedDate }: Props) => {
+export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
   const [isMonthHovering, setIsMonthHovering] = useState<boolean>(false);
 
   return (
@@ -30,11 +30,13 @@ export const NavSelectedMonth = ({ selectedDate,  setSelectedDate }: Props) => {
       onMouseEnter={e => setIsMonthHovering(true)}
       onMouseLeave={e => setIsMonthHovering(false)}
       p={1}
+      minW={'135px'}
       w={'100%'}
       color={isMonthHovering ? 'whiteAlpha.900' : ''}
       borderRadius={'10px 10px 0 0'}
       background={isMonthHovering ? '#385898' : 'transparent'}
       transition={'color .25s'}
+      justify={'center'}
     >
       {selectedDate.toLocaleString('pl-PL', { month: 'long' }).toLocaleUpperCase('pl-PL')}
       <VStack

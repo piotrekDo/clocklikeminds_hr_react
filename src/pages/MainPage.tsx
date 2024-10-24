@@ -1,10 +1,19 @@
 import { Navigate } from 'react-router-dom';
+import useAuthentication from '../state/useAuthentication';
+import { SupervisorDashboard } from './SupervisorDashboard';
+import { EmployeeDashboard } from './EmployeeDashboard';
 
 export const MainPage = () => {
-  return (
-    <Navigate to={'/timeoff'} />
-    // <Box w={'100%'} h={'100%'}>
+  const isSupervisor = useAuthentication(s => s.isSupervisor);
+  const isAdmin = useAuthentication(s => s.isAdmin);
 
-    // </Box>
+  return (
+    <>
+      {isAdmin || isSupervisor ? (
+        <SupervisorDashboard />
+      ) : (
+        <EmployeeDashboard />
+      )}
+    </>
   );
 };

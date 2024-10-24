@@ -1,12 +1,13 @@
 import { Box, GridItem, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
-import { PtoRequestFormatted } from '../../../model/Pto';
 import { useQueryClient } from '@tanstack/react-query';
-import { Calendar } from '../SupervisorCalendat/Calendar';
+import { useState } from 'react';
+import { FaRegCircleUser } from 'react-icons/fa6';
+import { PtoRequestFormatted } from '../../../model/Pto';
 
 interface Props {
   selectedDate: Date;
   holidays: Map<string, string>;
-  isPtosFetching: boolean
+  isPtosFetching: boolean;
 }
 
 export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => {
@@ -41,6 +42,8 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
     weeks.push(currentWeek);
   }
 
+  const [highlightedPto, setHighlightedPto] = useState(-1);
+
   return (
     <VStack
       w={'100%'}
@@ -50,6 +53,7 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
       boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       p={2}
       bg={'whiteAlpha.400'}
+      position={'relative'}
     >
       {weeks.map((week, weekIndex) => {
         const monday = week[0];
@@ -64,7 +68,68 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
                   const endingThisWeek = pto.ptoEnd.getTime() <= sunday.getTime();
                   const start = startingThisWeek ? (pto.ptoStart.getDay() === 0 ? 7 : pto.ptoStart.getDay()) : 1;
                   const end = endingThisWeek ? (pto.ptoEnd.getDay() === 0 ? 7 : pto.ptoEnd.getDay()) : 7;
-                  return <GridItem key={index} colStart={start} colEnd={end + 1} h={'30px'} zIndex={1000} bg={'red'}></GridItem>;
+                  return (
+                    <GridItem
+                      onMouseEnter={() => setHighlightedPto(pto.id)}
+                      onMouseLeave={() => setHighlightedPto(-1)}
+                      display={'flex'}
+                      justifyContent={'start'}
+                      alignItems={'center'}
+                      key={index}
+                      colStart={start}
+                      colEnd={end + 1}
+                      h={'30px'}
+                      zIndex={1000}
+                      border={'solid 1px'}
+                      borderRadius={
+                        startingThisWeek && endingThisWeek
+                          ? '40px'
+                          : startingThisWeek
+                          ? '40px 0 0 40px'
+                          : endingThisWeek
+                          ? '0 40px 40px 0'
+                          : ''
+                      }
+                      outline={pto.id === highlightedPto ? 'solid' : ''}
+                      bg={pto.wasAccepted ? 'rgba(10, 210, 10, .8)' : ''}
+                    >
+                      {pto.applierImageUrl ? (
+                        <img
+                          src={pto.applierImageUrl}
+                          style={{
+                            height: '100%',
+                            objectFit: 'contain',
+                            borderRadius: '50px',
+                          }}
+                          referrerPolicy='no-referrer'
+                        />
+                      ) : (
+                        <FaRegCircleUser filter='blur(2px)' opacity={0.4} size={'100%'} />
+                      )}
+                      <HStack w={'100%'} ml={1} fontWeight={'600'}>
+                        <Text
+                          sx={{
+                            fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {pto.applierFirstName}
+                        </Text>
+                        <Text
+                          sx={{
+                            fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {pto.applierLastName}
+                        </Text>
+                      </HStack>
+                    </GridItem>
+                  );
                 })}
 
               <HStack position={'absolute'} spacing={0} top={0} left={0} w={'100%'} h={'100%'}>

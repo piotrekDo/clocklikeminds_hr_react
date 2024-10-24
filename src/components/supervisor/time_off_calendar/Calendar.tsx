@@ -1,13 +1,13 @@
-import { HStack, useToast, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
+import usePtosRequestsForSupervisorCalendar from '../../../hooks/usePtosForSupervisorCalendar';
+import useAuthentication from '../../../state/useAuthentication';
+import useHttpErrorState from '../../../state/useHttpErrorState';
 import { getHolidaysPoland } from '../../Calendar/holidays';
 import { CalendarNavigation } from './CalendarNavigation';
 import { Header } from './Header';
 import { MonthView } from './MonthView';
 import { WeekView } from './WeekView';
-import usePtosRequestsForSupervisorCalendar from '../../../hooks/usePtosForSupervisorCalendar';
-import useAuthentication from '../../../state/useAuthentication';
-import useHttpErrorState from '../../../state/useHttpErrorState';
 
 export type CalendarViews = 'month' | 'week';
 export type SelectedWeek = { index: number; days: number[] };
@@ -58,7 +58,7 @@ export const Calendar = () => {
       <VStack w={'100%'} maxW={'1500px'} h={'100%'} spacing={0} ml={10}>
         <Header selectedDate={selectedDate} selectedView={selectedView} selectedWeek={selectedWeek} />
         {selectedView === 'month' && (
-          <MonthView selectedDate={selectedDate} holidays={holidays} isPtosFetching={isPtosFetching}/>
+          <MonthView selectedDate={selectedDate} holidays={holidays} isPtosFetching={isPtosFetching} />
         )}
         {selectedView === 'week' && <WeekView />}
       </VStack>
