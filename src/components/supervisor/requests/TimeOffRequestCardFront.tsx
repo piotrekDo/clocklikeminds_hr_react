@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Input, Text, Tooltip, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Input, Spinner, Text, Tooltip, useToast, VStack } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { LuCalendarClock, LuCalendarOff } from 'react-icons/lu';
@@ -39,7 +39,7 @@ export const TimeOffRequestCardFront = ({ request }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const setPtoToCompare = usePtoModalStore(s => s.setPtoToCompareDates);
   const setError = useHttpErrorState(s => s.setError);
-  const { mutate: sendRequest, isError, error, isLoading, isSuccess } = useResolvePto();
+  const { mutate: sendRequest, isError, error, isLoading: isSendingResolveRequest, isSuccess } = useResolvePto();
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [isResolvig, setIsResolving] = useState<Resolve>(undefined);
 
@@ -130,34 +130,44 @@ export const TimeOffRequestCardFront = ({ request }: Props) => {
               color={'whiteAlpha.900'}
               placeholder='Uwagi (opcjonalnie)'
               _placeholder={{ color: 'whiteAlpha.500' }}
+              disabled={isSendingResolveRequest}
             />
           </Box>
-          <HStack w={'100%'} spacing={0}>
-            <Button
-              w={'100%'}
-              borderRadius={0}
-              colorScheme={isResolvig === 'accept' ? 'green' : 'red'}
-              zIndex={1000}
-              onClick={e => {
-                e.stopPropagation();
-                handleResolveRequest();
-              }}
-            >
-              {isResolvig === 'accept' ? 'Zaakceptuj' : 'Odrzuć'}
-            </Button>
-            <Button
-              w={'100%'}
-              borderRadius={0}
-              colorScheme='yellow'
-              zIndex={1000}
-              onClick={e => {
-                e.stopPropagation();
-                setIsResolving(undefined);
-              }}
-            >
-              Anuluj
-            </Button>
-          </HStack>
+          {!isSendingResolveRequest ? (
+            <HStack w={'100%'} spacing={0}>
+              <Button
+                w={'100%'}
+                borderRadius={0}
+                colorScheme={isResolvig === 'accept' ? 'green' : 'red'}
+                zIndex={1000}
+                onClick={e => {
+                  e.stopPropagation();
+                  handleResolveRequest();
+                }}
+              >
+                {isResolvig === 'accept' ? 'Zaakceptuj' : 'Odrzuć'}
+              </Button>
+              <Button
+                w={'100%'}
+                borderRadius={0}
+                colorScheme='yellow'
+                zIndex={1000}
+                onClick={e => {
+                  e.stopPropagation();
+                  setIsResolving(undefined);
+                }}
+              >
+                Anuluj
+              </Button>
+            </HStack>
+          ) : (
+            <HStack w={'100%'} justify={'center'} align={'center'}>
+              <Button colorScheme='yellow' w={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} disabled>
+                <Text>WYSYŁAM</Text>
+                <Spinner />
+              </Button>
+            </HStack>
+          )}
         </VStack>
       )}
       <VStack zIndex={100} w={'100%'} h={'100%'} color={'whiteAlpha.800'} fontWeight={'600'} fontSize={'1.2rem'}>
