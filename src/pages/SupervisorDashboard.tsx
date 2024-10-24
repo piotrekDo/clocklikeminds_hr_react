@@ -1,14 +1,17 @@
-import { Box, GridItem, Heading, HStack, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, HStack, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { getHolidaysPoland } from '../components/Calendar/holidays';
-import useSupervisorDashboardCalculations from '../components/supervisor_ddashboard/useSupervisorDashboardCalculations';
+import { SupervisorCallendarCell } from '../components/supervisor/time_off_calendar/SupervisorCallendarCell';
+import { SupervisorCallendarDisplayTimeOff } from '../components/supervisor/time_off_calendar/SupervisorCallendarDisplayTimeOff';
+import useSupervisorDashboardCalculations from '../components/supervisor_dashboard/useSupervisorDashboardCalculations';
 import usePtosRequestsForSupervisorCalendar from '../hooks/usePtosForSupervisorCalendar';
 import { PtoRequestFormatted } from '../model/Pto';
 import useAuthentication from '../state/useAuthentication';
+import useThemeState from '../state/useThemeState';
 
 export const SupervisorDashboard = () => {
+  const theme = useThemeState(s => s.themeConfig);
   const user = useAuthentication(s => s.appUser);
   const [highlightedPto, setHighlightedPto] = useState(-1);
   const { today, currWeekMonday, weeks } = useSupervisorDashboardCalculations();
@@ -35,8 +38,8 @@ export const SupervisorDashboard = () => {
   });
 
   return (
-    <VStack w={'100%'} h={'100%'} justify={'center'} align={'center'} border={'solid'} p={5}>
-      <HStack spacing={20} w={'100%'}>
+    <VStack w={'100%'} h={'100%'} justify={'center'} align={'center'} p={10}  justifyContent={'start'}>
+      <HStack spacing={20} w={'100%'} color={theme.fontColor}>
         <Heading>{today.toLocaleString('pl-pl', { dateStyle: 'full' })}</Heading>
         {isPtosFetching && (
           <HStack>
@@ -64,71 +67,15 @@ export const SupervisorDashboard = () => {
                 {ptos &&
                   ptos.map((pto, index) => {
                     if (pto.ptoStart > sunday || pto.ptoEnd < monday) return;
-                    const startingThisWeek = pto.ptoStart.getTime() >= monday.getTime();
-                    const endingThisWeek = pto.ptoEnd.getTime() <= sunday.getTime();
-                    const start = startingThisWeek ? (pto.ptoStart.getDay() === 0 ? 7 : pto.ptoStart.getDay()) : 1;
-                    const end = endingThisWeek ? (pto.ptoEnd.getDay() === 0 ? 7 : pto.ptoEnd.getDay()) : 7;
                     return (
-                      <GridItem
-                        onMouseEnter={() => setHighlightedPto(pto.id)}
-                        onMouseLeave={() => setHighlightedPto(-1)}
-                        display={'flex'}
-                        justifyContent={'start'}
-                        alignItems={'center'}
+                      <SupervisorCallendarDisplayTimeOff
                         key={index}
-                        colStart={start}
-                        colEnd={end + 1}
-                        h={'30px'}
-                        zIndex={1000}
-                        border={'solid 1px'}
-                        borderRadius={
-                          startingThisWeek && endingThisWeek
-                            ? '40px'
-                            : startingThisWeek
-                            ? '40px 0 0 40px'
-                            : endingThisWeek
-                            ? '0 40px 40px 0'
-                            : ''
-                        }
-                        outline={pto.id === highlightedPto ? 'solid' : ''}
-                        bg={pto.wasAccepted ? 'rgba(10, 210, 10, .8)' : ''}
-                      >
-                        {pto.applierImageUrl ? (
-                          <img
-                            src={pto.applierImageUrl}
-                            style={{
-                              height: '100%',
-                              objectFit: 'contain',
-                              borderRadius: '50px',
-                            }}
-                            referrerPolicy='no-referrer'
-                          />
-                        ) : (
-                          <FaRegCircleUser filter='blur(2px)' opacity={0.4} size={'100%'} />
-                        )}
-                        <HStack w={'100%'} ml={1} fontWeight={'600'}>
-                          <Text
-                            sx={{
-                              fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {pto.applierFirstName}
-                          </Text>
-                          <Text
-                            sx={{
-                              fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                            }}
-                          >
-                            {pto.applierLastName}
-                          </Text>
-                        </HStack>
-                      </GridItem>
+                        pto={pto}
+                        monday={monday}
+                        sunday={sunday}
+                        highlightedPto={highlightedPto}
+                        setHighlightedPto={setHighlightedPto}
+                      />
                     );
                   })}
 
@@ -137,17 +84,7 @@ export const SupervisorDashboard = () => {
                     const isSunday = day.getDay() === 0;
                     const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
                     return (
-                      <HStack key={dayIndex} spacing={0} w={'100%'} align={'start'} h={'100%'} fontWeight={600}>
-                        {day.getDate() != 1 && (
-                          <Text color={isSunday || isHoliday ? 'red.200' : ''}>{day.getDate()}</Text>
-                        )}
-                        {day.getDate() === 1 && (
-                          <Text color={isSunday || isHoliday ? 'red.200' : ''}>
-                            {day.toLocaleString('pl-PL', { day: 'numeric', month: 'short' })}
-                          </Text>
-                        )}
-                        {isHoliday && <Text fontSize={'.6rem'}>{isHoliday}</Text>}
-                      </HStack>
+                      <SupervisorCallendarCell key={dayIndex} day={day} isSunday={isSunday} isHoliday={isHoliday} />
                     );
                   })}
                 </HStack>
