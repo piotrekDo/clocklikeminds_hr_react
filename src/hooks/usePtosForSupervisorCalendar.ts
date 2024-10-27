@@ -2,7 +2,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PtoRequestFormatted } from '../model/Pto';
 import { fetchPtosInTimeFrame } from '../service/TimeOffHttpService';
 
-const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string, end: string) => {
+
+const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string, end: string, type: string[]) => {
   const queryClient = useQueryClient();
 
   return useQuery<PtoRequestFormatted[], Error>({
@@ -14,49 +15,26 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
           const ptoEndLocal = new Date(pto.ptoEnd);
           const withdrawnLocal = pto.withdrawnDateTime ? new Date(pto.withdrawnDateTime) : undefined;
           const ptoStart = new Date(
-            Date.UTC(ptoStartLocal.getFullYear(), ptoStartLocal.getMonth(), ptoStartLocal.getDate())
+            ptoStartLocal.getFullYear(),
+            ptoStartLocal.getMonth(),
+            ptoStartLocal.getDate(),
+            0,
+            0,
+            0,
+            0
           );
-          const ptoEnd = new Date(Date.UTC(ptoEndLocal.getFullYear(), ptoEndLocal.getMonth(), ptoEndLocal.getDate()));
+          const ptoEnd = new Date(ptoEndLocal.getFullYear(), ptoEndLocal.getMonth(), ptoEndLocal.getDate(), 0, 0, 0, 0);
           return {
             ...pto,
             requestDateTime: new Date(pto.requestDateTime),
             ptoStart: ptoStart,
             ptoEnd: ptoEnd,
             decisionDateTime: pto.decisionDateTime ? new Date(pto.decisionDateTime) : undefined,
-            withdrawnDateTime: withdrawnLocal
+            withdrawnDateTime: withdrawnLocal,
           };
         })
       ),
     onSuccess: data => {
-      // let existingData = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']) ?? [];
-
-      // data.forEach(newData => {
-      //   const found = existingData.find(existing => existing.id === newData.id);
-      //   if (found) {
-      //     if (newData.decisionDateTime && !newData.wasAccepted) {
-      //       existingData = existingData.filter(x => x.id !== newData.id);
-      //     } else {
-      //       const index = existingData.indexOf(found);
-      //       existingData[index] = newData;
-      //     }
-      //   } else {
-      //     if (!newData.decisionDateTime || (newData.decisionDateTime && newData.wasAccepted)) {
-      //       existingData.push(newData);
-      //     }
-      //   }
-      // });
-
-      // existingData.sort((a, b) => {
-      //   const aStart = a.ptoStart.getTime();
-      //   const bStart = b.ptoStart.getTime();
-      //   const aEnd = a.ptoEnd.getTime();
-      //   const bEnd = b.ptoEnd.getTime();
-      //   if (bStart <= aEnd && bEnd >= aStart) {
-      //     return 0;
-      //   }
-      //   return aStart - bStart;
-      // });
-
       data.sort((a, b) => {
         const aStart = a.ptoStart.getTime();
         const bStart = b.ptoStart.getTime();
@@ -66,9 +44,9 @@ const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string,
           return 0;
         }
         return aStart - bStart;
-      })
+      });
 
-      queryClient.setQueryData(['ptosForSupervisorCalendar'], data);
+      queryClient.setQueryData(type, data);
     },
     enabled: acceptorId > 0,
   });

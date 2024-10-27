@@ -12,7 +12,7 @@ export const NewPtoButton = () => {
       h={'140px'}
       borderRadius={'20px'}
       bg={theme.elementBg}
-      boxShadow={'8px 8px 20px 0px rgba(66, 68, 90, .8)'}
+      filter={'drop-shadow(8px 5px 10px black)'}
       color={theme.fontColor}
       fontWeight={700}
       _hover={{ transform: 'scale(1.1)' }}

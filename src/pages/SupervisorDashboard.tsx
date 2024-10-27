@@ -26,19 +26,20 @@ export const SupervisorDashboard = () => {
     new Date(currWeekMonday.getFullYear(), currWeekMonday.getMonth(), currWeekMonday.getDate())
       .toISOString()
       .slice(0, 10),
-    new Date(currWeekMonday.getFullYear(), currWeekMonday.getMonth(), currWeekMonday.getDate() + 7)
+    new Date(currWeekMonday.getFullYear(), currWeekMonday.getMonth(), currWeekMonday.getDate() + 27)
       .toISOString()
-      .slice(0, 10)
+      .slice(0, 10),
+    ['dashboard']
   );
   const queryClient = useQueryClient();
-  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']);
+  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>(['dashboard']);
 
   useEffect(() => {
     refetchPtos;
   });
 
   return (
-    <VStack w={'100%'} h={'100%'} justify={'center'} align={'center'} p={10}  justifyContent={'start'}>
+    <VStack w={'100%'} h={'100%'} justify={'center'} align={'center'} p={10} justifyContent={'start'}>
       <HStack spacing={20} w={'100%'} color={theme.fontColor}>
         <Heading>{today.toLocaleString('pl-pl', { dateStyle: 'full' })}</Heading>
         {isPtosFetching && (
@@ -63,7 +64,7 @@ export const SupervisorDashboard = () => {
           const sunday = week[6];
           return (
             <Box key={weekIndex} position={'relative'} w={'100%'} minH={'100px'}>
-              <SimpleGrid w={'100%'} columns={7} pt={'30px'} spacing={0}>
+              <SimpleGrid w={'100%'} columns={7} pt={'30px'} spacing={0} >
                 {ptos &&
                   ptos.map((pto, index) => {
                     if (pto.ptoStart > sunday || pto.ptoEnd < monday) return;
@@ -78,6 +79,8 @@ export const SupervisorDashboard = () => {
                       />
                     );
                   })}
+
+               
 
                 <HStack position={'absolute'} spacing={0} top={0} left={0} w={'100%'} h={'100%'}>
                   {week.map((day, dayIndex) => {

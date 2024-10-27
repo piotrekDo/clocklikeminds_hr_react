@@ -45,7 +45,7 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
 
   if (!timeOff) return null;
   return (
-    <Box position={'relative'} w={'400px'} borderRadius={'20px'} bg={'white'} fontSize={'1.2rem'}>
+    <Box position={'relative'} w={'400px'} borderRadius={'20px'} bg={'white'} fontSize={'1.2rem'} >
       <CloseIcon
         pos={'absolute'}
         right={'15px'}
@@ -63,7 +63,7 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
         bgPos={'center'}
         w={'400px'}
         h={'700px'}
-        filter={'blur(3px)'}
+        filter={'blur(1px)'}
         opacity={timeOff.leaveType === 'on_saturday_pto' || timeOff.leaveType === 'child_care' ? 0.4 : 0.7}
       ></Box>
       <VStack

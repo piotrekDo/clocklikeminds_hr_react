@@ -14,7 +14,10 @@ interface Props {
 
 export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => {
   const queryClient = useQueryClient();
-  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosForSupervisorCalendar']);
+  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>([
+    'supervisorCalendar',
+    selectedDate.getMonth().toString(),
+  ]);
 
   const firstDayOfSelectedMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   const lastDayOfSelectedMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
@@ -49,7 +52,6 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
   return (
     <VStack
       w={'100%'}
-      h={'100%'}
       borderRadius={'20px'}
       spacing={0}
       boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
@@ -61,7 +63,7 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
         const monday = week[0];
         const sunday = week[6];
         return (
-          <Box key={weekIndex} position={'relative'} w={'100%'} h={'100%'}>
+          <Box key={weekIndex} position={'relative'} w={'100%'} h={'auto'} minH={'110px'}>
             <SimpleGrid w={'100%'} columns={7} pt={'30px'} spacing={0}>
               {ptos &&
                 ptos.map((pto, index) => {

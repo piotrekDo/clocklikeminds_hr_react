@@ -48,7 +48,7 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={'3xl'}>
         <ModalOverlay />
-        <ModalContent color={theme.fontColor} bg={theme.elementBg}>
+        <ModalContent color={theme.fontColor} bg={theme.elementBg} filter={'drop-shadow(10px 7px 10px black)'}>
           <ModalHeader fontSize={'1.5rem'} fontWeight={'600'} fontStyle={'italic'} w={'100%'} textAlign={'center'}>
             Naliczone dni wolne za święta w sobotę w bieżącym roku
           </ModalHeader>
@@ -125,14 +125,7 @@ export const PtoDaysLeftUsedSummary = ({ isUserActive, summary, isFetching }: Pr
         </ModalContent>
       </Modal>
 
-      <VStack
-        position={'relative'}
-        w={'100%'}
-        p={5}
-        borderRadius={'15px'}
-        boxShadow='2xl'
-        bg={theme.elementBg}
-      >
+      <VStack position={'relative'} w={'100%'} p={5} borderRadius={'15px'} boxShadow='2xl' bg={theme.elementBg}>
         {appUser?.isActive && !appUser?.freelancer && (
           <Tooltip label='Dni świąteczne w sobotę'>
             <Box position={'absolute'} onClick={onOpen} top={2} right={2} cursor={'pointer'}>

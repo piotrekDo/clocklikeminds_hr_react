@@ -36,7 +36,7 @@ export const PtoSummary = () => {
       <HStack justifyContent={'center'} alignItems={'start'} fontWeight={'600'} w={'100%'} gap={5}>
         <VStack
           w={'100%'}
-          boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+          filter={'drop-shadow(8px 5px 10px black)'}
           borderRadius={'20px'}
           transition={'background .25s ease-in'}
         >

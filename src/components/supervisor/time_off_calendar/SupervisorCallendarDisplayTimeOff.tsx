@@ -22,6 +22,7 @@ export const SupervisorCallendarDisplayTimeOff = ({
   const endingThisWeek = pto.ptoEnd.getTime() <= sunday.getTime();
   const start = startingThisWeek ? (pto.ptoStart.getDay() === 0 ? 7 : pto.ptoStart.getDay()) : 1;
   const end = endingThisWeek ? (pto.ptoEnd.getDay() === 0 ? 7 : pto.ptoEnd.getDay()) : 7;
+
   return (
     <Tooltip
       whiteSpace={'pre-line'}
@@ -41,7 +42,6 @@ export const SupervisorCallendarDisplayTimeOff = ({
         colEnd={end + 1}
         h={'30px'}
         zIndex={1000}
-        border={'solid 1px'}
         borderRadius={
           startingThisWeek && endingThisWeek
             ? '40px'
@@ -51,7 +51,7 @@ export const SupervisorCallendarDisplayTimeOff = ({
             ? '0 40px 40px 0'
             : ''
         }
-        // outline={pto.id === highlightedPto ? 'solid' : ''}
+        outline={pto.id === highlightedPto ? 'solid' : ''}
         bg={
           pto.id === highlightedPto ? 'teal.300' : pto.wasAccepted ? 'rgba(10, 210, 10, .4)' : 'rgba(250, 230, 180, .4)'
         }

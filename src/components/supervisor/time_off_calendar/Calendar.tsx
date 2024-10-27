@@ -28,7 +28,8 @@ export const Calendar = () => {
   } = usePtosRequestsForSupervisorCalendar(
     user?.userId || -1,
     new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1 - 7).toISOString().slice(0, 10),
-    new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1 + 40).toISOString().slice(0, 10)
+    new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1 + 40).toISOString().slice(0, 10),
+    ['supervisorCalendar', selectedDate.getMonth().toString()]
   );
 
   const handleSelectView = (view: CalendarViews) => {
