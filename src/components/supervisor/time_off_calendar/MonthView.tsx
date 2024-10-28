@@ -1,7 +1,6 @@
-import { Box, GridItem, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Badge, Box, HStack, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { FaRegCircleUser } from 'react-icons/fa6';
 import { PtoRequestFormatted } from '../../../model/Pto';
 import { SupervisorCallendarCell } from './SupervisorCallendarCell';
 import { SupervisorCallendarDisplayTimeOff } from './SupervisorCallendarDisplayTimeOff';
@@ -59,11 +58,35 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
       bg={'whiteAlpha.400'}
       position={'relative'}
     >
+      {isPtosFetching && (
+        <Badge
+          pos={'absolute'}
+          display={'flex'}
+          w={'120px'}
+          borderRadius={'5px'}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          variant={'solid'}
+          colorScheme='teal'
+          p={2}
+        >
+          <Text>Odświeżam</Text>
+          <Spinner />
+        </Badge>
+      )}
       {weeks.map((week, weekIndex) => {
         const monday = week[0];
         const sunday = week[6];
         return (
-          <Box key={weekIndex} position={'relative'} w={'100%'} h={'auto'} minH={'110px'}>
+          <Box
+            key={weekIndex}
+            position={'relative'}
+            w={'100%'}
+            h={'auto'}
+            minH={'110px'}
+            opacity={isPtosFetching ? 0.7 : 1}
+            filter={isPtosFetching ? 'blur(.3px)' : 'none'}
+          >
             <SimpleGrid w={'100%'} columns={7} pt={'30px'} spacing={0}>
               {ptos &&
                 ptos.map((pto, index) => {

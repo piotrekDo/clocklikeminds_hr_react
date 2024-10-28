@@ -9,6 +9,9 @@ import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsListTab } from './PositionsListTab';
 import { TimeOffListTab } from './TimeOffListTab';
 import useThemeState from '../../../state/useThemeState';
+import { useQueryClient } from '@tanstack/react-query';
+import { Page } from '../../../model/Page';
+import { EmployeeBasic } from '../../../model/User';
 
 type Tabs = 'timeoff' | 'employees' | 'positions';
 
@@ -16,8 +19,10 @@ export const EmployeesOverview = () => {
   const theme = useThemeState(s => s.themeConfig);
   const [selectedTab, setSelectedTab] = useState<Tabs>('employees');
   const setError = useHttpErrorState(s => s.setError);
+  const queryClient = useQueryClient();
+  let employees = queryClient.getQueryData<Page<EmployeeBasic>>(['employees']);
   const {
-    data: employees,
+    // data: employees,
     isError: employeesIsError,
     error: employeesError,
     isFetching: isEmployeesFetching,

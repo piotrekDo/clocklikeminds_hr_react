@@ -48,9 +48,6 @@ export const SideNavbar = () => {
         <NavbarLink to='/home' text='Home'>
           <CgHome size={'40px'} />
         </NavbarLink>
-        <NavbarLink to='/timeoff' text='Urlopy'>
-          <LuPalmtree size={'40px'} />
-        </NavbarLink>
         {(isAdmin || isSupervisor) && (
           <NavbarLink to='/supervisor' text='Mój zespół'>
             <RiTeamLine size={'40px'} />
@@ -66,6 +63,9 @@ export const SideNavbar = () => {
             <GoPeople size={'40px'} />
           </NavbarLink>
         )}
+        <NavbarLink to='/timeoff' text='Urlopy'>
+          <LuPalmtree size={'40px'} />
+        </NavbarLink>
         <NavbarLink to='/profile' text='Profil'>
           <IoSettingsOutline size={'40px'} />
         </NavbarLink>

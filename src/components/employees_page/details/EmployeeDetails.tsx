@@ -26,55 +26,50 @@ export const EmployeeDetails = () => {
   return (
     <>
       <VStack w={'100%'} h={'100%'}>
-        {isFetching && <Spinner size={'xl'} />}
-        {!isFetching && employee && (
-          <>
-            <AnimatePresence>
-              <motion.div
-                initial={{ y: '+100px', opacity: 0 }}
-                animate={{ y: '0', opacity: 1 }}
-                exit={{ y: '+100px', opacity: 0 }}
-              >
-                <Box
-                  mt={'20px'}
-                  bg='#385898'
-                  color={'whiteAlpha.900'}
-                  p={3}
-                  boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
-                  borderRadius={'20px 20px 0 0'}
-                >
-                  <EmployeeDetailsHeading employee={employee} />
-                </Box>
-                <VStack
-                  maxW={'1000px'}
-                  margin={'0 auto'}
-                  opacity={employee.registrationFinished ? 1 : 0.4}
-                  position={'relative'}
-                  gap={'50px'}
-                >
-                  {!employee.registrationFinished && (
-                    <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>
-                  )}
-                  <Box w={'100%'} mt={'20px'}>
-                    <EmployeeGeneralInformation employee={employee} />
-                  </Box>
-                  <Box w={'100%'}>
-                    <EmployeeContractinformation employee={employee} />
-                  </Box>
-                  <Box w={'100%'}>
-                    <EmployeeTimeOffDetails employee={employee} />
-                  </Box>
-                  <Box w={'100%'}>
-                    <EmployeeHistory employee={employee} />
-                  </Box>
-                  <Box w={'100%'} mb={'70px'}>
-                    <EmployeeAccountInfo employee={employee} />
-                  </Box>
-                </VStack>
-              </motion.div>
-            </AnimatePresence>
-          </>
-        )}
+        <AnimatePresence>
+          <motion.div
+            initial={{ y: '+100px', opacity: 0 }}
+            animate={{ y: '0', opacity: 1 }}
+            exit={{ y: '+100px', opacity: 0 }}
+          >
+            <Box
+              mt={'20px'}
+              bg='#385898'
+              color={'whiteAlpha.900'}
+              p={3}
+              boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
+              borderRadius={'20px 20px 0 0'}
+            >
+              <EmployeeDetailsHeading employee={employee} />
+            </Box>
+            <VStack
+              maxW={'1000px'}
+              margin={'0 auto'}
+              opacity={!isFetching && employee && employee.registrationFinished ? 1 : 0.4}
+              position={'relative'}
+              gap={'50px'}
+            >
+              {!isFetching && employee && !employee.registrationFinished && (
+                <Box position={'absolute'} left={0} top={0} w={'100%'} h={'100%'} zIndex={10}></Box>
+              )}
+              <Box w={'100%'} mt={'20px'}>
+                <EmployeeGeneralInformation employee={employee} />
+              </Box>
+              <Box w={'100%'}>
+                {employee && <EmployeeContractinformation employee={employee} />}
+              </Box>
+              <Box w={'100%'}>
+                {employee && <EmployeeTimeOffDetails employee={employee} />}
+              </Box>
+              <Box w={'100%'}>
+                {employee && <EmployeeHistory employee={employee} />}
+              </Box>
+              <Box w={'100%'} mb={'70px'}>
+                {employee && <EmployeeAccountInfo employee={employee} />}
+              </Box>
+            </VStack>
+          </motion.div>
+        </AnimatePresence>
       </VStack>
 
       <RegistrationFinishModal isOpen={isFinishingRegistration} onClose={setIsFinisshingRegistration} />

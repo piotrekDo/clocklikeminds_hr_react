@@ -26,8 +26,7 @@ export const EmployeeListTab = ({ employees, isEmployeesFetching, pendingRegistr
             <Text>oczekujących na dokończenie rejestracji</Text>
           </HStack>
         </HStack>
-        {!isEmployeesFetching && employees && <EmployeeTable employees={employees.content || []} />}
-        {isEmployeesFetching && <Spinner />}
+        { employees && <EmployeeTable employees={employees.content || []} isEmployeesFetching={isEmployeesFetching} />}
       </VStack>
     </VStack>
   );

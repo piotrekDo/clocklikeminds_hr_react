@@ -1,9 +1,9 @@
-import { FormControl, FormLabel, HStack, Text, VStack, Box } from '@chakra-ui/react';
+import { FormControl, FormLabel, HStack, Text, VStack, Box, Skeleton } from '@chakra-ui/react';
 import { MdOutlinePersonOutline } from 'react-icons/md';
 import { Employee } from '../../../model/User';
 
 interface Props {
-  employee: Employee;
+  employee: Employee | undefined;
 }
 
 export const EmployeeGeneralInformation = ({ employee }: Props) => {
@@ -49,15 +49,23 @@ export const EmployeeGeneralInformation = ({ employee }: Props) => {
         <VStack w={'100%'} p={5} maxW={'400px'}>
           <FormControl>
             <FormLabel>Imię</FormLabel>
-            <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1} fontStyle={'italic'}>
-              {employee.firstName}
-            </Text>
+            {employee ? (
+              <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1} fontStyle={'italic'}>
+                {employee.firstName}
+              </Text>
+            ) : (
+              <Skeleton flex='1' height='5' variant='pulse' />
+            )}
           </FormControl>
           <FormControl>
             <FormLabel>Nazwisko</FormLabel>
-            <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1} fontStyle={'italic'}>
-              {employee.lastName}
-            </Text>
+            {employee ? (
+              <Text border={'2px solid lightgray'} borderRadius={'5px'} p={1} fontStyle={'italic'}>
+                {employee.lastName}
+              </Text>
+            ) : (
+              <Skeleton flex='1' height='5' variant='pulse' />
+            )}
           </FormControl>
         </VStack>
       </VStack>

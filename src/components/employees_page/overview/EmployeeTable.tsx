@@ -1,4 +1,4 @@
-import { Text, VStack } from '@chakra-ui/react';
+import { HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { EmployeeBasic } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useSortState from '../../../state/useSortState';
@@ -7,9 +7,10 @@ import { EmployeeTableHeader } from './EmployeeTableHeader';
 
 interface Props {
   employees: EmployeeBasic[];
+  isEmployeesFetching: boolean;
 }
 
-export const EmployeeTable = ({ employees }: Props) => {
+export const EmployeeTable = ({ employees, isEmployeesFetching }: Props) => {
   const setEmployee = useEmployeeState(s => s.setSelectedEmployee);
   const { employeeTableSortType: sortOrder, firstNameFilter, lastNameFilter, positionFilter } = useSortState();
 
@@ -71,15 +72,23 @@ export const EmployeeTable = ({ employees }: Props) => {
 
   return (
     <VStack w={'100%'} maxW={'1300px'} h={'100%'}>
-      <Text w={'100%'} as={'b'}>
-        {`Wyświetlam ${filterResult.length} wyników z ${employees.length}`}
-      </Text>
+      {isEmployeesFetching ? (
+        <HStack w={'100%'} pl={5}>
+          <Text>Odświeżam</Text>
+          <Spinner />
+        </HStack>
+      ) : (
+        <Text w={'100%'} as={'b'}>
+          {`Wyświetlam ${filterResult.length} wyników z ${employees.length}`}
+        </Text>
+      )}
       <EmployeeTableHeader />
       <VStack
         w={'100%'}
         h={'100%'}
         overflowY={'scroll'}
         style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
+        opacity={isEmployeesFetching ? .4: 1}
       >
         {employees &&
           filterResult.map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
