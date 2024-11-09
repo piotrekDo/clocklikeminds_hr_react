@@ -17,6 +17,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useNewJobPosition from '../../../hooks/useNewJobPosition';
 import { EmployePositionRequest } from '../../../model/User';
 import useHttpErrorState from '../../../state/useHttpErrorState';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export const NewJobPositionModal = ({ isOpen, onClose }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
   const { mutate: sendRequest, isSuccess, isError, error, isLoading } = useNewJobPosition();
@@ -62,7 +64,7 @@ export const NewJobPositionModal = ({ isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={theme.bg} color={theme.fontColor}>
         <ModalHeader>Wprowadź nowe stanowisko</ModalHeader>
         <ModalCloseButton />
 

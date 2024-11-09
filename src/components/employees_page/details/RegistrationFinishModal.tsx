@@ -30,6 +30,7 @@ import { FinishRegistrationRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
 import useSupervisors from '../../../hooks/useSupervisors';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   isOpen: boolean;
@@ -37,10 +38,11 @@ interface Props {
 }
 
 export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const toast = useToast();
   const setError = useHttpErrorState(s => s.setError);
   const { data: positions, refetch: refetchPositions } = useJobPostitions();
-  const {data: supervisors, refetch: refetchSupervisors} = useSupervisors();
+  const { data: supervisors, refetch: refetchSupervisors } = useSupervisors();
   const { selectedEmloyee } = useEmployeeState();
   const { data: employee, isError: isUseEmplError, error: useEmpError } = useEmployeeDetails(selectedEmloyee || -1);
   const {
@@ -66,7 +68,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
     if (isOpen) {
       refetchPositions();
       refetchSupervisors();
-    };
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -92,7 +94,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
       hireEnd: (data.hireEnd && data.hireEnd) || undefined,
       ptoDaysTotal: data.ptoDaysTotal,
       stillHired: true,
-      supervisorId: data.supervisorId
+      supervisorId: data.supervisorId,
     };
 
     sendRequest(request);
@@ -101,7 +103,7 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={theme.bg} color={theme.fontColor}>
         <ModalHeader>
           {employee?.firstName} {employee?.lastName}
         </ModalHeader>
@@ -120,10 +122,14 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
             </FormControl>
             <FormControl mb={5} isInvalid={errors && errors.freelancer ? true : false}>
               <FormLabel>Freelancer</FormLabel>
-              <RadioGroup >
+              <RadioGroup>
                 <HStack>
-                  <Radio value='false' {...register('freelancer', { required: true })}>Nie</Radio>
-                  <Radio value='true' {...register('freelancer', { required: true })}>Tak</Radio>
+                  <Radio value='false' {...register('freelancer', { required: true })}>
+                    Nie
+                  </Radio>
+                  <Radio value='true' {...register('freelancer', { required: true })}>
+                    Tak
+                  </Radio>
                 </HStack>
               </RadioGroup>
               <FormErrorMessage>Wybierz</FormErrorMessage>
@@ -140,28 +146,56 @@ export const RegistrationFinishModal = ({ isOpen, onClose }: Props) => {
               <FormErrorMessage>Podaj pozostałe dni urlopu</FormErrorMessage>
             </FormControl>
             <FormControl mb={5} isInvalid={errors && errors.positionKey ? true : false}>
-              <Select placeholder='Stanowisko' {...register('positionKey', { required: true })}>
+              <Select
+                placeholder='Stanowisko'
+                {...register('positionKey', { required: true })}
+                sx={{
+                  '> option': {
+                    background: theme.elementBg,
+                    color: theme.fontColor,
+                  },
+                }}
+              >
                 {positions?.map(p => (
-                  <option key={p.positionKey} value={p.positionKey}>
+                  <option
+                    key={p.positionKey}
+                    value={p.positionKey}
+                    style={{
+                      backgroundColor: theme.elementBg,
+                    }}
+                  >
                     {p.displayName}
                   </option>
                 ))}
               </Select>
               <FormErrorMessage>Uzupełnij stanowisko</FormErrorMessage>
             </FormControl>
-            
 
             <FormControl mb={10} isInvalid={errors && errors.supervisorId ? true : false}>
-              <Select placeholder='Przełożony' {...register('supervisorId', { required: true })}>
+              <Select
+                placeholder='Przełożony'
+                {...register('supervisorId', { required: true })}
+                sx={{
+                  '> option': {
+                    background: theme.elementBg,
+                    color: theme.fontColor,
+                  },
+                }}
+              >
                 {supervisors?.map(s => (
-                  <option key={s.appUserId} value={s.appUserId}>
+                  <option
+                    key={s.appUserId}
+                    value={s.appUserId}
+                    style={{
+                      backgroundColor: theme.elementBg,
+                    }}
+                  >
                     {`${s.firstName} ${s.lastName}`}
                   </option>
                 ))}
               </Select>
               <FormErrorMessage>Wybierz przełożonego</FormErrorMessage>
             </FormControl>
-
 
             <Button isLoading={isLoading} mb={10} type='submit' w={'100%'} colorScheme='green'>
               Wyślij
