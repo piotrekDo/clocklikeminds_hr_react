@@ -61,8 +61,10 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
         >
           {month.toLocaleString('pl-PL', { month: 'long' })}
         </Text>
-        <HStack w='100%' px={1} opacity={isHovering ? 1 : 0} transition='opacity 0.4s'>
-          {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'NI'].map((day, index) => (
+        <HStack w='100%' px={1} 
+        opacity={isHovering ? 1 : 0} 
+        transition='opacity 0.4s'>
+          {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'ND'].map((day, index) => (
             <Flex
               key={day}
               flexBasis='100%'
