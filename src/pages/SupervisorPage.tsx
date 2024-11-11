@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { TimeOffRequestsShelf } from '../components/supervisor/TimeOffRequestsShelf';
@@ -9,6 +9,7 @@ import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useHttpErrorState from '../state/useHttpErrorState';
 import usePtoModalStore from '../state/usePtoModalStore';
+import { QueryShelf } from '../components/supervisor/QueryShelf';
 
 type Tabs = 'requests' | 'employees';
 
@@ -57,11 +58,17 @@ export const SupervisorPage = () => {
         }}
       >
         <PtoCompareModal isOpen={!!ptoToCompareDates} onClose={onCloseCompareModal} />
-        <VStack w={'100%'} pt={'50px'} px={'15px'} >
+
+        {/* <VStack w={'100%'} pt={'50px'} px={'15px'}>
+          <QueryShelf />
+        </VStack> */}
+
+        <VStack w={'100%'} pt={'50px'} px={'15px'}>
           {unresolvedPtos && (
             <TimeOffRequestsShelf
               title='Wnioski urlopowe do rozpatrzenia'
               requests={unresolvedPtos?.filter(p => !p.wasMarkedToWithdraw)}
+              isFetching={isUnresolvedPtosFetching}
             />
           )}
         </VStack>
@@ -70,11 +77,12 @@ export const SupervisorPage = () => {
             <TimeOffRequestsShelf
               title='Wnioski zgłoszone do wycofania'
               requests={unresolvedPtos?.filter(p => p.wasMarkedToWithdraw)}
+              isFetching={isUnresolvedPtosFetching}
             />
           )}
         </VStack>
         <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          {employees && <TeamShelf employees={employees} />}
+          {employees && <TeamShelf employees={employees} isFetching={isEmployeesFetching}/>}
         </VStack>
       </motion.div>
     </AnimatePresence>
