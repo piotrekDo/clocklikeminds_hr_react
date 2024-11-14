@@ -18,6 +18,7 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
     selectedDate.getMonth().toString(),
   ]);
 
+  const today = new Date();
   const firstDayOfSelectedMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   const lastDayOfSelectedMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
   const firstRowLength = firstDayOfSelectedMonth.getDay() === 0 ? 6 : firstDayOfSelectedMonth.getDay() - 1;
@@ -50,6 +51,7 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
 
   return (
     <VStack
+      mt={2}
       w={'100%'}
       borderRadius={'20px'}
       spacing={0}
@@ -107,7 +109,19 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
                 {week.map((day, dayIndex) => {
                   const isSunday = day.getDay() === 0;
                   const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
-                  return <SupervisorCallendarCell key={dayIndex} day={day} isSunday={isSunday} isHoliday={isHoliday} />;
+                  const isToday =
+                    day.getDate() === today.getDate() &&
+                    day.getMonth() === today.getMonth() &&
+                    day.getFullYear() === today.getFullYear();
+                  return (
+                    <SupervisorCallendarCell
+                      key={dayIndex}
+                      day={day}
+                      isToday={isToday}
+                      isSunday={isSunday}
+                      isHoliday={isHoliday}
+                    />
+                  );
                 })}
               </HStack>
             </SimpleGrid>

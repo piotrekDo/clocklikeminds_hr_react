@@ -1,35 +1,21 @@
 import { HStack, Text, VStack } from '@chakra-ui/react';
 import { CalendarViews, SelectedWeek } from './Calendar';
+import useThemeState from '../../../state/useThemeState';
 interface Props {
   selectedDate: Date;
   selectedView: CalendarViews;
   selectedWeek: SelectedWeek;
 }
 export const Header = ({ selectedDate, selectedView, selectedWeek: { days } }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   return (
-    <VStack w={'100%'}>
-      <HStack w={'100%'} fontSize={'1rem'} fontWeight={'600'}>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          PON
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          WTO
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          ŚRO
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          CZW
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          PIĄ
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          SOB
-        </Text>
-        <Text flexBasis={'100%'} textAlign={'center'}>
-          NIE
-        </Text>
+    <VStack w={'100%'} color={theme.fontColor}>
+      <HStack w={'100%'}>
+        {['PON', 'WTO', 'ŚRO', 'CZW', 'PIĄ', 'SOB', 'NIE'].map((day, index) => (
+          <Text key={index} flexBasis={'100%'} textAlign={'center'} fontSize={'1.3rem'} fontWeight={'600'} as={'em'}>
+            {day}
+          </Text>
+        ))}
       </HStack>
       {selectedView === 'week' && (
         <HStack w={'100%'}>

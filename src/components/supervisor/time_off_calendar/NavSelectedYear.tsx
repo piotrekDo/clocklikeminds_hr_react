@@ -1,5 +1,6 @@
 import { Flex, Input } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   selectedDate: Date;
@@ -28,6 +29,7 @@ linear-gradient(
 `;
 
 export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const [isYearHovering, setIsYearHovering] = useState<boolean>(false);
   const [yearInput, setYearInput] = useState<number>(selectedDate.getFullYear());
 
@@ -51,7 +53,7 @@ export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
         bg={isYearHovering ? '#385898' : 'transparent'}
         border={''}
         borderRadius={0}
-        color={isYearHovering ? 'whiteAlpha.900' : ''}
+        color={isYearHovering ? 'whiteAlpha.900' : theme.fontColor}
         value={yearInput}
         onChange={e => setYearInput(+e.target.value)}
         transition={'color .25s'}

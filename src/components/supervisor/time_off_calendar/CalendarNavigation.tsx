@@ -4,6 +4,7 @@ import { CalendarViews, SelectedWeek } from './Calendar';
 import { MonthPreview } from './MonthPreview';
 import { NavSelectedMonth } from './NavSelectedMonth';
 import { NavSelectedYear } from './NavSelectedYear';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   selectedDate: Date;
@@ -29,6 +30,7 @@ export const CalendarNavigation = ({
   setSelectedView,
   setSelectedWeek,
 }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const today = new Date();
   return (
     <VStack align={'center'} w={'250px'} h={'100%'} spacing={0} pt={'10px'}>
@@ -59,7 +61,8 @@ export const CalendarNavigation = ({
           <Button
             key={key}
             onClick={() => setSelectedView(key)}
-            colorScheme={selectedView === key ? 'facebook' : 'gray'}
+            colorScheme={selectedView === key ? 'gray' : 'none'}
+            color={selectedView === key ? 'blackAlpha.800' : theme.fontColor}
             w={'100%'}
           >
             {name}

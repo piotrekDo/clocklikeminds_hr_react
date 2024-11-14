@@ -1,5 +1,6 @@
 import { Flex, VStack, Button } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import useThemeState from '../../../state/useThemeState';
 
 interface Props {
   selectedDate: Date;
@@ -22,6 +23,7 @@ const monthNames = [
 ];
 
 export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
+  const theme = useThemeState(s => s.themeConfig);
   const [isMonthHovering, setIsMonthHovering] = useState<boolean>(false);
 
   return (
@@ -32,7 +34,7 @@ export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
       p={1}
       minW={'135px'}
       w={'100%'}
-      color={isMonthHovering ? 'whiteAlpha.900' : ''}
+      color={isMonthHovering ? 'whiteAlpha.900' : theme.fontColor}
       borderRadius={'10px 10px 0 0'}
       background={isMonthHovering ? '#385898' : 'transparent'}
       transition={'color .25s'}
