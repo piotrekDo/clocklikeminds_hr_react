@@ -106,7 +106,7 @@ export const SupervisorDashboard = () => {
                         const isSunday = day.getDay() === 0;
                         const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
                         return (
-                          <SupervisorCallendarCell key={dayIndex} day={day} isSunday={isSunday} isHoliday={isHoliday} />
+                          <SupervisorCallendarCell key={dayIndex} isToday={false} day={day} isSunday={isSunday} isHoliday={isHoliday} />
                         );
                       })}
                     </HStack>

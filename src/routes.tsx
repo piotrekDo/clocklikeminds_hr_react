@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
+import { FinishRegistrationLinkHandler } from './components/FinishRegistrationLinkHandler';
 import { Redirecthandler } from './components/Redirecthandler';
 import { Wrapper } from './components/Wrapper';
 import { AdminGuard } from './guards/AdminGuard';
@@ -9,10 +10,9 @@ import { EmployeesPage } from './pages/EmployeesPage';
 import { LoginError } from './pages/LoginError';
 import { MainPage } from './pages/MainPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { PtoCalendar } from './pages/PtoCalendar';
 import { SupervisorPage } from './pages/SupervisorPage';
 import { TimeOff } from './pages/TimeOff';
-import { PtoCalendar } from './pages/PtoCalendar';
-import { FinishRegistrationLinkHandler } from './components/FinishRegistrationLinkHandler';
 
 const router = createBrowserRouter([
   {
