@@ -3,16 +3,16 @@ import { HolidayOnSaturday } from '../model/Pto';
 import { requestNewHolidayOnSaturday } from '../service/TimeOffHttpService';
 
 const useNewHolidayOnSaturday = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation<HolidayOnSaturday, Error, HolidayOnSaturday>({
-        mutationFn: (request: HolidayOnSaturday) => requestNewHolidayOnSaturday(request).request,
-        onSuccess: (request, response) => {
-          queryClient.invalidateQueries({
-            queryKey: ['holidaysOnSaturdaySummaryForAdmin']
-          })
-        },
+  return useMutation<HolidayOnSaturday, Error, HolidayOnSaturday>({
+    mutationFn: (request: HolidayOnSaturday) => requestNewHolidayOnSaturday(request),
+    onSuccess: (request, response) => {
+      queryClient.invalidateQueries({
+        queryKey: ['holidaysOnSaturdaySummaryForAdmin'],
       });
-}
+    },
+  });
+};
 
 export default useNewHolidayOnSaturday;

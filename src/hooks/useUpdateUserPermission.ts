@@ -6,7 +6,7 @@ const useUpdateUserPermission = (callbackFn: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation<Employee, Error, UpdateUserPermissionRequest>({
-    mutationFn: (request: UpdateUserPermissionRequest) => updateUserPermission(request).request,
+    mutationFn: (request: UpdateUserPermissionRequest) => updateUserPermission(request),
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['employee', response.appUserId],

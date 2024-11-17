@@ -6,7 +6,7 @@ const useResolvePto = () => {
   const queryClient = useQueryClient();
 
   return useMutation<PtoRequestResponse, Error, ResolvePtoRequest>({
-    mutationFn: (request: ResolvePtoRequest) => resolvePto(request).request,
+    mutationFn: (request: ResolvePtoRequest) => resolvePto(request),
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['ptoUnresolved'],

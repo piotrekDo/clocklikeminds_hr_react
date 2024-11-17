@@ -6,7 +6,7 @@ import { fetchPtosByAppliersId } from '../service/TimeOffHttpService';
 const useEmployeePtoRequestsSimplePagination = (empId: number, page: number, size: number) => {
   return useQuery<Page<PtoRequestResponse>, Error>({
     queryKey: ['ptosByEmployee', empId],
-    queryFn: () => fetchPtosByAppliersId(empId, page, size).request,
+    queryFn: ({ signal }) => fetchPtosByAppliersId(empId, page, size, signal),
     keepPreviousData: true,
     enabled: empId > 0,
   });

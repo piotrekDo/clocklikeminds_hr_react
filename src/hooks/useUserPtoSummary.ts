@@ -5,7 +5,7 @@ import { fetchUserPtoSummary } from '../service/TimeOffHttpService';
 const useUserPtoSummary = (userId: number) => {
   return useQuery<UserPtoSummary, Error>({
     queryKey: ['ptoSummary', userId],
-    queryFn: () => fetchUserPtoSummary(userId).request,
+    queryFn: ({ signal }) => fetchUserPtoSummary(userId, signal),
     enabled: userId > 0,
   });
 };

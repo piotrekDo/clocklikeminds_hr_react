@@ -5,7 +5,7 @@ import { fetchEmployeeDetails } from '../service/UsersHttpService';
 const useEmployeeDetails = (employeeId: number) => {
   return useQuery<Employee, Error>({
     queryKey: ['employee', employeeId],
-    queryFn: () => fetchEmployeeDetails(employeeId).request,
+    queryFn: ({ signal }) => fetchEmployeeDetails(employeeId, signal),
     enabled: employeeId > 0,
   });
 };

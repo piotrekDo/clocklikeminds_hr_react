@@ -6,7 +6,7 @@ const useUpdateHolidayData = (callbackFn: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation<Employee, Error, UpdateHolidayDataRequest>({
-    mutationFn: (request: UpdateHolidayDataRequest) => updateHolidayData(request).request,
+    mutationFn: (request: UpdateHolidayDataRequest) => updateHolidayData(request),
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['employee', response.appUserId],

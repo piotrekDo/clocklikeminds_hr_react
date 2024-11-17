@@ -5,7 +5,7 @@ import { updatePositionHistory } from '../service/UsersHttpService';
 const updatePositionHistoryData = (callbackFn: () => void, employeeId: number) => {
     const queryClient = useQueryClient();
     return useMutation<Employee, Error, UpdatePositionHistoryRequest[]>({
-        mutationFn: (request: UpdatePositionHistoryRequest[]) => updatePositionHistory(request, employeeId).request,
+        mutationFn: (request: UpdatePositionHistoryRequest[]) => updatePositionHistory(request, employeeId),
         onSuccess: (response, request) => {
           queryClient.invalidateQueries({
             queryKey: ['employee', response.appUserId],

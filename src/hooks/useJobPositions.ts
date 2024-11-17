@@ -5,7 +5,7 @@ import { fetchJobPositions } from '../service/PositionsHttpService';
 const useJobPostitions = () => {
   return useQuery<EmployeePosition[], Error>({
     queryKey: ['positions'],
-    queryFn: () => fetchJobPositions().request,
+    queryFn: ({ signal }) => fetchJobPositions(signal),
   });
 };
 

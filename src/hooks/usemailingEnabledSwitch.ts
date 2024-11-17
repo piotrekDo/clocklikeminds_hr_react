@@ -4,7 +4,7 @@ import { switchMailingEnabled } from '../service/SettingsService';
 const useSwitchMailing = () => {
   return useQuery<boolean, Error>({
     queryKey: ['settings', 'mailingEnabled'],
-    queryFn: () => switchMailingEnabled().request,
+    queryFn: () => switchMailingEnabled(),
     enabled: false,
   });
 };

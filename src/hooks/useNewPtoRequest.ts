@@ -5,7 +5,7 @@ import { sendNewPtoRequest } from '../service/TimeOffHttpService';
 const useNewPtoRequest = () => {
   const queryClient = useQueryClient();
   return useMutation<PtoRequestResponse, Error, NewPtoRequest>({
-    mutationFn: (request: NewPtoRequest) => sendNewPtoRequest(request).request,
+    mutationFn: (request: NewPtoRequest) => sendNewPtoRequest(request),
     onSuccess: (response, request) => {
       queryClient.invalidateQueries({
         queryKey: ['ptoSummary'],

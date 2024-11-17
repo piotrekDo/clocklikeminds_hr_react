@@ -5,7 +5,7 @@ import { fetchSettings } from '../service/SettingsService';
 const useSettings = (shouldFetch: boolean) => {
   return useQuery<Setting[], Error>({
     queryKey: ['settings'],
-    queryFn: () => fetchSettings().request,
+    queryFn: ({ signal }) => fetchSettings(signal),
     enabled: shouldFetch,
   });
 };

@@ -11,7 +11,7 @@ const useWithdrawTimeOffRequest = (toast: (options: any) => void) => {
   const queryClient = useQueryClient();
 
   return useMutation<WithdrawResponse, Error, WithdrawParams>({
-    mutationFn: ({ requestId, applierNotes }) => withdrawTimeOffRequest(requestId, applierNotes).request,
+    mutationFn: ({ requestId, applierNotes }) => withdrawTimeOffRequest(requestId, applierNotes),
     onSuccess: response => {
       queryClient.invalidateQueries({
         queryKey: ['ptoByUser'],
@@ -33,4 +33,4 @@ const useWithdrawTimeOffRequest = (toast: (options: any) => void) => {
   });
 };
 
-export default useWithdrawTimeOffRequest
+export default useWithdrawTimeOffRequest;

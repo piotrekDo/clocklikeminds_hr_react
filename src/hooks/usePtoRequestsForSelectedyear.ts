@@ -5,8 +5,8 @@ import { getPtoRequestsForSelectedYear } from '../service/TimeOffHttpService';
 const usePtoRequestsForSelectedYear = (userId: number, year: number) => {
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['ptoReqYear', userId, year],
-    queryFn: async () => {
-      const response = await getPtoRequestsForSelectedYear(year, userId).request;
+    queryFn: async ({ signal }) => {
+      const response = await getPtoRequestsForSelectedYear(year, userId, signal);
       return response.map((pto: PtoRequestResponse) => {
         return {
           ...pto,

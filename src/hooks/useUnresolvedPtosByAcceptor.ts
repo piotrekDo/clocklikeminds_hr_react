@@ -5,8 +5,8 @@ import { fetchUnresolvedPtosByAcceptor } from '../service/TimeOffHttpService';
 const useUnresolvedPtosByAcceptor = (acceptorId: number) => {
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['ptoUnresolved', acceptorId],
-    queryFn: async () => {
-      const response = await fetchUnresolvedPtosByAcceptor(acceptorId).request;
+    queryFn: async ({signal}) => {
+      const response = await fetchUnresolvedPtosByAcceptor(acceptorId, signal);
       return response.map((pto: PtoRequestResponse) => {
         return {
           ...pto,

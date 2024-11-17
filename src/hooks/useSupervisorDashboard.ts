@@ -8,8 +8,8 @@ import { PtoRequestResponse } from '../model/Pto';
 const useSupervisorDashboard = (supervisorId: number, calendarStart: string, calendarEnd: string) => {
   return useQuery<SupervisorDashboardFormatted, Error>({
     queryKey: ['supervisorDashboard', supervisorId],
-    queryFn: async () => {
-      const response = await fetchSupervisorDashboardData(supervisorId, calendarStart, calendarEnd).request;
+    queryFn: async ({ signal }) => {
+      const response = await fetchSupervisorDashboardData(supervisorId, calendarStart, calendarEnd, signal);
       const dashboardFormatted: SupervisorDashboardFormatted = {
         requestsForDashboardCalendar: response.requestsForDashboardCalendar.map((req: PtoRequestResponse) => {
           return {

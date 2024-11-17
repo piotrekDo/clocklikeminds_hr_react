@@ -6,7 +6,7 @@ const useFinishRegistration = () => {
   const queryClient = useQueryClient();
 
   return useMutation<Employee, Error, FinishRegistrationRequest>({
-    mutationFn: (request: FinishRegistrationRequest) => finishRegister(request).request,
+    mutationFn: (request: FinishRegistrationRequest, ) => finishRegister(request),
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['employee', response.appUserId]

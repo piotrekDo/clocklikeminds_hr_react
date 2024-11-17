@@ -5,7 +5,7 @@ import { fetchSupervisors } from '../service/UsersHttpService';
 const useSupervisors = () => {
   return useQuery<EmployeeBasic[], Error>({
     queryKey: ['supervisors'],
-    queryFn: () => fetchSupervisors().request,
+    queryFn: ({signal}) => fetchSupervisors(signal),
   });
 };
 

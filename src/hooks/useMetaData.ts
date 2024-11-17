@@ -5,9 +5,9 @@ import { fetchMetaData } from '../service/MetaDataHttpService';
 const useMetaData = (enabled: boolean) => {
   return useQuery<MetaData, Error>({
     queryKey: ['meta'],
-    queryFn: () => fetchMetaData().request,
+    queryFn: ({ signal }) => fetchMetaData(signal),
     staleTime: 86400000,
-    enabled: enabled    
+    enabled: enabled,
   });
 };
 

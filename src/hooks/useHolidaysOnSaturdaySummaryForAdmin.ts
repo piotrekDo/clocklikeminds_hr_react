@@ -5,7 +5,7 @@ import { fetchSaturdayHolidayForAdmin } from '../service/TimeOffHttpService';
 const useHolidaysOnSaturdaySummaryForAdmin = () => {
   return useQuery<HolidayOnSaturdayAdminSummary, Error>({
     queryKey: ['holidaysOnSaturdaySummaryForAdmin'],
-    queryFn: () => fetchSaturdayHolidayForAdmin().request,
+    queryFn: ({ signal }) => fetchSaturdayHolidayForAdmin(signal),
   });
 };
 

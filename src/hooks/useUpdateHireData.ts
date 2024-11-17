@@ -6,7 +6,7 @@ const useUpdateHireData = (callbackFn: () => void) => {
   const queryClient = useQueryClient();
 
   return useMutation<Employee, Error, UpdateHireDataRequest>({
-    mutationFn: (request: UpdateHireDataRequest) => updateHireData(request).request,
+    mutationFn: (request: UpdateHireDataRequest) => updateHireData(request),
     onSuccess: (request, response) => {
       queryClient.invalidateQueries({
         queryKey: ['employee', response.appUserId],

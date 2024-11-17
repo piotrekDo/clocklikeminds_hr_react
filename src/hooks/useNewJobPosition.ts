@@ -3,16 +3,16 @@ import { EmployePositionRequest, EmployeePosition } from '../model/User';
 import { requestNewJobPosition } from '../service/PositionsHttpService';
 
 const useNewJobPosition = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation<EmployeePosition, Error, EmployePositionRequest>({
-        mutationFn: (request: EmployePositionRequest) => requestNewJobPosition(request).request,
-        onSuccess: (request, response) => {
-          queryClient.invalidateQueries({
-            queryKey: ['positions']
-          })
-        },
+  return useMutation<EmployeePosition, Error, EmployePositionRequest>({
+    mutationFn: (request: EmployePositionRequest) => requestNewJobPosition(request),
+    onSuccess: (request, response) => {
+      queryClient.invalidateQueries({
+        queryKey: ['positions'],
       });
-}
+    },
+  });
+};
 
 export default useNewJobPosition;

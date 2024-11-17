@@ -2,14 +2,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { PtoRequestFormatted } from '../model/Pto';
 import { fetchPtosInTimeFrame } from '../service/TimeOffHttpService';
 
-
 const usePtosRequestsForSupervisorCalendar = (acceptorId: number, start: string, end: string, type: string[]) => {
   const queryClient = useQueryClient();
 
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['tempPto'],
-    queryFn: () =>
-      fetchPtosInTimeFrame(acceptorId, start, end).request.then(res =>
+    queryFn: ({ signal }) =>
+      fetchPtosInTimeFrame(acceptorId, start, end, signal).then(res =>
         res.map(pto => {
           const ptoStartLocal = new Date(pto.ptoStart);
           const ptoEndLocal = new Date(pto.ptoEnd);

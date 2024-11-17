@@ -5,8 +5,8 @@ import { fetchPtosByAcceptor } from '../service/TimeOffHttpService';
 const usePtosByAcceptor = (acceptorId: number) => {
   return useQuery<PtoRequestFormatted[], Error>({
     queryKey: ['ptoToAccept', acceptorId],
-    queryFn: () =>
-      fetchPtosByAcceptor(acceptorId).request.then(res =>
+    queryFn: ({signal}) =>
+      fetchPtosByAcceptor(acceptorId, signal).then(res =>
         res.map(pto => {
           const ptoStartLocal =  new Date(pto.ptoStart);
           const ptoEndLocal = new Date(pto.ptoEnd);

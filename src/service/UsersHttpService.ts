@@ -12,79 +12,63 @@ import {
 } from '../model/User';
 import APIclient from './APIclient';
 
-export const fetchSupervisors = () => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.get<EmployeeBasic[]>('/api/v1/users/supervisors').then(
+export const fetchSupervisors = (signal?: AbortSignal) => {
+  return APIclient.get<EmployeeBasic[]>('/api/v1/users/supervisors', { signal }).then(
     (res: AxiosResponse<EmployeeBasic[]>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
-export const fetchEmployeesForSupervisor = (supervisorId: number) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.get<EmployeeInfo[]>('/api/v1/users/employees-by-supervisor', {
+export const fetchEmployeesForSupervisor = (supervisorId: number, signal?: AbortSignal) => {
+  return APIclient.get<EmployeeInfo[]>('/api/v1/users/employees-by-supervisor', {
+    signal,
     params: {
       supervisorId: supervisorId,
     },
   }).then((res: AxiosResponse<EmployeeInfo[]>) => res.data);
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
-export const fetchEmployeePage = (page: PageQuery) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.get<Page<EmployeeBasic>>('/api/v1/users/all-users', {
+export const fetchEmployeePage = (page: PageQuery, signal?: AbortSignal) => {
+  return APIclient.get<Page<EmployeeBasic>>('/api/v1/users/all-users', {
+    signal,
     params: {
       page: page.page,
       size: page.pageSize,
     },
   }).then((res: AxiosResponse<Page<EmployeeBasic>>) => res.data);
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
-export const fetchEmployeeDetails = (employeeId: number) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.get<Employee>(`/api/v1/users/${employeeId}`, {}).then(
+export const fetchEmployeeDetails = (employeeId: number, signal?: AbortSignal) => {
+  return APIclient.get<Employee>(`/api/v1/users/${employeeId}`, { signal }).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
 export const finishRegister = (request: FinishRegistrationRequest) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.post<Employee>('/api/v1/users/finish-register', request).then(
+  return APIclient.post<Employee>('/api/v1/users/finish-register', request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
 export const updateHireData = (request: UpdateHireDataRequest) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.post<Employee>('/api/v1/users/update-hire-data', request).then(
+  return APIclient.post<Employee>('/api/v1/users/update-hire-data', request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
 export const updateHolidayData = (request: UpdateHolidayDataRequest) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.post<Employee>('/api/v1/users/update-holiday-data', request).then(
+  return APIclient.post<Employee>('/api/v1/users/update-holiday-data', request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
 export const updatePositionHistory = (request: UpdatePositionHistoryRequest[], employeeId: number) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.post<Employee>(`/api/v1/users/${employeeId}/update-position-history`, request).then(
+  return APIclient.post<Employee>(`/api/v1/users/${employeeId}/update-position-history`, request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
 
 export const updateUserPermission = (request: UpdateUserPermissionRequest) => {
-  const controller = new AbortController();
-  const httpRequest = APIclient.post<Employee>('/api/v1/users/update-permission', request).then(
+  return APIclient.post<Employee>('/api/v1/users/update-permission', request).then(
     (res: AxiosResponse<Employee>) => res.data
   );
-  return { request: httpRequest, cancel: () => controller.abort() };
 };
