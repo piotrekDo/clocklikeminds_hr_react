@@ -38,6 +38,7 @@ export const TimeOffRequestCardBack = ({ request }: Props) => {
     >
       <Box pos={'absolute'} w={'100%'} h={'100%'} bgImage={bg.get(request.leaveType)} bgPos={'center'} opacity={0.25} />
       <VStack
+        pos={'relative'}
         zIndex={1000}
         p={2}
         w={'100%'}
@@ -47,9 +48,14 @@ export const TimeOffRequestCardBack = ({ request }: Props) => {
         style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
       >
         <VStack w={'100%'} align={'start'}>
-          <HStack fontSize={'1.2rem'}>
-            <FaRobot />
-            <Text>Uwagi aplikacji</Text>
+          <HStack fontSize={'1.2rem'} w={'100%'} justify={'space-between'}>
+            <HStack>
+              <FaRobot />
+              <Text>Uwagi aplikacji</Text>
+            </HStack>
+            <Box color={'whiteAlpha.800'} fontSize={'.8rem'} fontWeight={600}>
+              ID wniosku: {request.id}
+            </Box>
           </HStack>
           <Text fontSize={'1rem'} w={'100%'} border={'1px solid'} borderRadius={'5px'} as={'em'} p={1}>
             {request.applicationNotes ? request.applicationNotes : 'BRAK UWAG APLIKACJI'}
