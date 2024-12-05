@@ -1,7 +1,8 @@
 import React from 'react'
+import { Navigate } from 'react-router-dom'
 
 export const EmployeeDashboard = () => {
   return (
-    <div>EmployeeDashboard</div>
+     <Navigate to={'/timeoff'} replace />
   )
 }
