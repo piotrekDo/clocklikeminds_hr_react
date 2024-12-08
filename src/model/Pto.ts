@@ -141,8 +141,14 @@ export interface HolidayOnSaturdayByUser {
   pto: PtoRequestResponse;
 }
 
+export interface HolidayOnSaturdayByUserFormatted {
+  holiday: HolidayOnSaturday;
+  employee: EmployeeBasic;
+  pto: PtoRequestFormatted | undefined;
+}
+
 export interface HolidayOnSaturdayAdminSummary {
   nextHolidayOnSaturday: HolidayOnSaturday;
   nextHolidayOnSaturdayInDays: number;
-  currentYearHolidaysOnSaturday: HolidayOnSaturdayByUser[];
+  currentYearHolidaysOnSaturday: HolidayOnSaturday[];
 }

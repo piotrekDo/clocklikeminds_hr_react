@@ -3,6 +3,7 @@ import { Page } from '../model/Page';
 import {
   HolidayOnSaturday,
   HolidayOnSaturdayAdminSummary,
+  HolidayOnSaturdayByUser,
   NewPtoRequest,
   PtoRequestResponse,
   ResolvePtoRequest,
@@ -61,19 +62,32 @@ export const fetchPtosByAppliersId = (applierId: number, page: number, size: num
 };
 
 export const getPtoRequestsForSelectedYear = (year: number, userId: number, signal?: AbortSignal) => {
- return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-for-year', {
-  signal,  
-  params: {
+  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-for-year', {
+    signal,
+    params: {
       userId: userId,
       year: year,
     },
   }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
 };
 
-export const fetchSaturdayHolidayForAdmin = (signal?: AbortSignal) => {
-  return APIclient.get<HolidayOnSaturdayAdminSummary>('/api/v1/pto/holidays-on-saturday-admin', {signal}).then(
-    (res: AxiosResponse<HolidayOnSaturdayAdminSummary>) => res.data
-  );
+export const fetchSaturdayHolidayForAdmin = (year: number, signal?: AbortSignal) => {
+  return APIclient.get<HolidayOnSaturdayAdminSummary>('/api/v1/pto/holidays-on-saturday-admin', {
+    signal,
+    params: {
+      year: year,
+    },
+  }).then((res: AxiosResponse<HolidayOnSaturdayAdminSummary>) => res.data);
+};
+
+export const fetchSaturDayOnHolidayByUsers = (holidayId: number, supervisorId: number, signal?: AbortSignal) => {
+  return APIclient.get<HolidayOnSaturdayByUser[]>('/api/v1/pto/holiday-on-saturday-by-users', {
+    signal,
+    params: {
+      holidayId: holidayId,
+      supervisorId: supervisorId,
+    },
+  });
 };
 
 export const requestNewHolidayOnSaturday = (request: HolidayOnSaturday) => {
