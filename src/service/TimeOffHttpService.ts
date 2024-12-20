@@ -7,6 +7,7 @@ import {
   NewPtoRequest,
   PtoRequestResponse,
   ResolvePtoRequest,
+  TimeOffByQueryRequest,
   UserPtoSummary,
   WithdrawResponse,
 } from '../model/Pto';
@@ -87,7 +88,52 @@ export const fetchSaturDayOnHolidayByUsers = (holidayId: number, supervisorId: n
       holidayId: holidayId,
       supervisorId: supervisorId,
     },
-  });
+  }).then((res: AxiosResponse<HolidayOnSaturdayByUser[]>) => res.data);
+};
+
+export const fetchRequestsByCriteriaAdmin = (query: TimeOffByQueryRequest, signal?: AbortSignal) => {
+  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/by-criteria-admin', {
+    signal,
+    params: {
+      id: query.id,
+      employeeId: query.employeeId,
+      employeeEmail: query.employeeEmail,
+      acceptorId: query.acceptorId,
+      acceptorEmail: query.acceptorEmail,
+      wasAccepted: query.wasAccepted,
+      wasRejected: query.wasRejected,
+      isPending: query.isPending,
+      requestDateFrom: query.requestDateFrom,
+      requestDateTo: query.requestDateTo,
+      ptoStartFrom: query.ptoStartFrom,
+      ptoStartTo: query.ptoStartTo,
+      ptoEndFrom: query.ptoEndFrom,
+      ptoEndTo: query.ptoEndTo,
+      useOr: query.useOr,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+};
+
+export const fetchRequestsByCriteriaSupervisor = (query: TimeOffByQueryRequest, signal?: AbortSignal) => {
+  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/by-criteria-supervisor', {
+    signal,
+    params: {
+      id: query.id,
+      employeeId: query.employeeId,
+      employeeEmail: query.employeeEmail,
+      acceptorId: query.acceptorId,
+      acceptorEmail: query.acceptorEmail,
+      wasAccepted: query.wasAccepted,
+      wasRejected: query.wasRejected,
+      isPending: query.isPending,
+      requestDateFrom: query.requestDateFrom,
+      requestDateTo: query.requestDateTo,
+      ptoStartFrom: query.ptoStartFrom,
+      ptoStartTo: query.ptoStartTo,
+      ptoEndFrom: query.ptoEndFrom,
+      ptoEndTo: query.ptoEndTo,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
 };
 
 export const requestNewHolidayOnSaturday = (request: HolidayOnSaturday) => {

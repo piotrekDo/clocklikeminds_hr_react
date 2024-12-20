@@ -12,6 +12,10 @@ import {
 } from '../model/User';
 import APIclient from './APIclient';
 
+export const fetchUserdata = (id: number, signal?: AbortSignal) => {
+  return APIclient.get<Employee>(`/api/v1/users/${id}`, { signal }).then((res: AxiosResponse<Employee>) => res.data);
+};
+
 export const fetchSupervisors = (signal?: AbortSignal) => {
   return APIclient.get<EmployeeBasic[]>('/api/v1/users/supervisors', { signal }).then(
     (res: AxiosResponse<EmployeeBasic[]>) => res.data

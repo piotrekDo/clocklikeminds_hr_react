@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Stack, Text, Tooltip } from '@chakra-ui/react';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { EmployeeBasic } from '../../../model/User';
 import { Activebadge } from '../../badges/Activebadge';
@@ -6,6 +6,7 @@ import { Freelancer } from '../../badges/Freelancer';
 import { InactiveBadge } from '../../badges/InactiveBadge';
 import { UnfinishedRegistrationBadge } from '../../badges/UnfinishedRegistrationBadge';
 import useThemeState from '../../../state/useThemeState';
+import { DaysLeftFromLasyYear } from '../../badges/DaysLeftFromLasyYear';
 
 interface Props {
   employee: EmployeeBasic;
@@ -42,7 +43,7 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       px={3}
       cursor={'pointer'}
       onClick={() => onEmployeeChange(employee.appUserId)}
-      _hover={{ bg: theme.elementBg,}}
+      _hover={{ bg: theme.elementBg }}
     >
       <HStack flexBasis={'50%'}>
         <Box>
@@ -71,6 +72,25 @@ export const EmployeeTab = ({ employee, onEmployeeChange }: Props) => {
       <Text flexBasis={'100%'}>{trimDisplay(employee.lastName)}</Text>
       <Text flexBasis={'100%'}>{employee.position ? trimDisplay(employee.position.displayName) : ''}</Text>
       <Text flexBasis={'100%'}>{determineSeniority()}</Text>
+      <HStack flexBasis={'100%'}>
+        <Tooltip
+          label={
+            <Stack>
+              <Text>Dni naliczone w roku bieżącym: {employee.ptoDaysAccruedCurrentYear}</Text>
+              <Text>Dni pozostałe z roku ubiegłego: {employee.ptoDaysAccruedLastYear} </Text>
+              <Text></Text>
+              <Text>Dni wykorzystane: {employee.ptoDaysTaken}</Text>
+            </Stack>
+          }
+        >
+          <Text cursor={'help'} >
+            {employee.ptoDaysLeftTotal}
+          </Text>
+        </Tooltip>
+        {employee.ptoDaysLeftFromLastYear > 0 && (
+          <DaysLeftFromLasyYear daysleft={employee.ptoDaysLeftFromLastYear} />
+        )}
+      </HStack>
       <Box flexBasis={'50%'}>
         {!employee.registrationFinished && <UnfinishedRegistrationBadge />}
         {employee.active && <Activebadge />}

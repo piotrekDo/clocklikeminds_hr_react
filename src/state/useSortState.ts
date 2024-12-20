@@ -10,7 +10,9 @@ export type SortOrder =
   | 'seniorityAsc'
   | 'seniorityDesc'
   | 'statusAsc'
-  | 'statusDesc';
+  | 'statusDesc'
+  | 'daysLeftAsc'
+  | 'daysLeftDesc';
 
 interface SortState {
   employeeTableSortType: SortOrder;

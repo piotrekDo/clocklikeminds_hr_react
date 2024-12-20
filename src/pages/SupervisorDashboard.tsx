@@ -46,10 +46,6 @@ export const SupervisorDashboard = () => {
     isDashboardError && setError(dashboardError);
   }, [isDashboardError]);
 
-  // useEffect(() => {
-  //   refetchDashboardData;
-  // });
-
   return (
     <AnimatePresence>
       <motion.div

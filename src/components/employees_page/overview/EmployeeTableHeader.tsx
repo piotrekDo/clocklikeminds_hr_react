@@ -178,6 +178,23 @@ export const EmployeeTableHeader = () => {
             />
           </VStack>
         </Flex>
+        <Flex flexBasis={'100%'} px={2}>
+          <Text as='b' fontSize={'.8rem'}>Dni urlopu pozostałe</Text>
+          <VStack spacing={0} ml={3}>
+            <TriangleUpIcon
+              opacity={sortOrder === 'daysLeftAsc' ? 1 : 0.3}
+              boxSize={'.8rem'}
+              cursor={'pointer'}
+              onClick={() => setSortOrder('daysLeftAsc')}
+            />
+            <TriangleDownIcon
+              opacity={sortOrder === 'daysLeftDesc' ? 1 : 0.3}
+              boxSize={'.8rem'}
+              cursor={'pointer'}
+              onClick={() => setSortOrder('daysLeftDesc')}
+            />
+          </VStack>
+        </Flex>
         <Flex flexBasis={'50%'} px={2}>
           <Text as='b'>Status</Text>
           <VStack spacing={0} ml={3}>

@@ -7,7 +7,7 @@ const useHolidayOnSaturdayByUsers = (holidayId: number, supervisorId: number) =>
     queryKey: ['holidaySaturdayByUsers', holidayId, supervisorId],
     queryFn: ({ signal }) =>
       fetchSaturDayOnHolidayByUsers(holidayId, supervisorId, signal).then(response =>
-        response.data.map(data => {
+        response.map(data => {
           const ptoFormatted = getPtoFormatted(data);
           return {
             ...data,

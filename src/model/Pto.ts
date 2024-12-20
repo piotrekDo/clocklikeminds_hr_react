@@ -152,3 +152,21 @@ export interface HolidayOnSaturdayAdminSummary {
   nextHolidayOnSaturdayInDays: number;
   currentYearHolidaysOnSaturday: HolidayOnSaturday[];
 }
+
+export interface TimeOffByQueryRequest {
+  id: number | undefined;
+  employeeId: number | undefined;
+  employeeEmail: string | undefined;
+  acceptorId: number | undefined;
+  acceptorEmail: string | undefined;
+  wasAccepted: boolean | undefined;
+  wasRejected: boolean | undefined;
+  isPending: boolean | undefined;
+  requestDateFrom: string | undefined;
+  requestDateTo: string | undefined;
+  ptoStartFrom: string | undefined;
+  ptoStartTo: string | undefined;
+  ptoEndFrom: string | undefined;
+  ptoEndTo: string | undefined;
+  useOr: boolean | undefined;
+}

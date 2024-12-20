@@ -22,6 +22,7 @@ import useUpdateHireData from '../../../hooks/useUpdateHireData';
 import { Employee, UpdateHireDataRequest } from '../../../model/User';
 import useEmployeeState from '../../../state/useEmployeesState';
 import useHttpErrorState from '../../../state/useHttpErrorState';
+import { determineSeniority } from '../../../utils';
 
 interface Props {
   employee: Employee;
@@ -88,17 +89,6 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
   useEffect(() => {
     isUpdatingError && setError(updatingError);
   }, [isUpdatingError]);
-
-  const determineSeniority = () => {
-    const years = Math.floor(employee.seniorityInMonths / 12);
-    const months = (employee.seniorityInMonths - years * 12) % 12;
-
-    if (years > 0) {
-      return `${years} lat, ${months} miesięcy`;
-    } else {
-      return `${months} miesięcy`;
-    }
-  };
 
   const getTodayInput = () => {
     const today = new Date();
@@ -332,7 +322,7 @@ export const EmployeeContractinformation = ({ employee }: Props) => {
         </VStack>
         <VStack flexBasis={'100%'}>
           <Box as='b'>Staż</Box>
-          <Box>{determineSeniority()}</Box>
+          <Box>{determineSeniority(employee)}</Box>
         </VStack>
       </HStack>
     </VStack>

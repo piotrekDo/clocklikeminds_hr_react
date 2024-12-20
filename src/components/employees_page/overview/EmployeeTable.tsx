@@ -64,6 +64,10 @@ export const EmployeeTable = ({ employees, isEmployeesFetching }: Props) => {
       result = result.sort((a, b) => a.status - b.status);
     } else if (sortOrder === 'statusDesc') {
       result = result.sort((a, b) => b.status - a.status);
+    } else if (sortOrder === 'daysLeftAsc') {
+      result = result.sort((a, b) => a.ptoDaysLeftTotal - b.ptoDaysLeftTotal);
+    } else if (sortOrder === 'daysLeftDesc') {
+      result = result.sort((a, b) => b.ptoDaysLeftTotal - a.ptoDaysLeftTotal);
     }
     return result;
   };
@@ -88,7 +92,7 @@ export const EmployeeTable = ({ employees, isEmployeesFetching }: Props) => {
         h={'100%'}
         overflowY={'scroll'}
         style={{ scrollbarWidth: 'none', overflow: '-moz-scrollbars-none' }}
-        opacity={isEmployeesFetching ? .4: 1}
+        opacity={isEmployeesFetching ? 0.4 : 1}
       >
         {employees &&
           filterResult.map(e => <EmployeeTab key={e.appUserId} employee={e} onEmployeeChange={setEmployee} />)}
