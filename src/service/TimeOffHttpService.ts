@@ -31,13 +31,14 @@ export const fetchUnresolvedPtosByAcceptor = (acceptorId: number, signal?: Abort
   }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
 };
 
-export const fetchPtosByAcceptor = (acceptorId: number, signal?: AbortSignal) => {
-  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-by-acceptor', {
+export const fetchPtosByAcceptor = (page: number, size: number, signal?: AbortSignal) => {
+  return APIclient.get<Page<PtoRequestResponse>>('/api/v1/pto/requests-by-acceptor', {
     signal,
     params: {
-      acceptorId: acceptorId,
+      page: page,
+      size: size,
     },
-  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+  }).then((res: AxiosResponse<Page<PtoRequestResponse>>) => res.data);
 };
 
 export const fetchPtosInTimeFrame = (acceptorId: number, start: string, end: string, signal?: AbortSignal) => {

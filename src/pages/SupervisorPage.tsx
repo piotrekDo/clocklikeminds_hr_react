@@ -1,4 +1,4 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { TimeOffRequestsShelf } from '../components/supervisor/TimeOffRequestsShelf';
@@ -82,7 +82,7 @@ export const SupervisorPage = () => {
           )}
         </VStack>
         <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          {employees && <TeamShelf employees={employees} isFetching={isEmployeesFetching}/>}
+          {employees && <TeamShelf employees={employees} isFetching={isEmployeesFetching} />}
         </VStack>
       </motion.div>
     </AnimatePresence>

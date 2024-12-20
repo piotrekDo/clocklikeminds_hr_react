@@ -11,7 +11,7 @@ interface Props {
 
 export const TimeOffRequestsShelf = ({ requests, title, isFetching }: Props) => {
   const [isCollasped, setIsCollapsed] = useState(requests.length === 0);
-  const [isExpandedd, setIsExpanded] = useState<boolean>(false);
+  // const [isExpandedd, setIsExpanded] = useState<boolean>(false);
 
   useEffect(() => {
     setIsCollapsed(requests.length === 0);
@@ -59,9 +59,9 @@ export const TimeOffRequestsShelf = ({ requests, title, isFetching }: Props) => 
             <Spinner />
           </HStack>
         </HStack>
-        <Box>
+        {/* <Box>
           <Button onClick={e => setIsExpanded(s => !s)}>Pokaż wszystkie</Button>
-        </Box>
+        </Box> */}
       </HStack>
       <HStack
         w={'100%'}
@@ -69,7 +69,7 @@ export const TimeOffRequestsShelf = ({ requests, title, isFetching }: Props) => 
         spacing={5}
         px={2}
         py={5}
-        h={!isExpandedd ? '440px' : ''}
+        // h={!isExpandedd ? '440px' : ''}
         overflow={'hidden'}
       >
         {requests.map(r => (

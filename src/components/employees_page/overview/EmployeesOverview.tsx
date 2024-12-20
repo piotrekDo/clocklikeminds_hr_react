@@ -1,17 +1,17 @@
 import { Box, HStack, Tabs, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import useEmployees from '../../../hooks/useEmployees';
 import useJobPostitions from '../../../hooks/useJobPositions';
+import { Page } from '../../../model/Page';
+import { EmployeeBasic } from '../../../model/User';
 import useHttpErrorState from '../../../state/useHttpErrorState';
+import useThemeState from '../../../state/useThemeState';
 import { EmployeeListTab } from './EmployeeListTab';
 import { NewJobPositionModal } from './NewJobPositionModal';
 import { PositionsListTab } from './PositionsListTab';
 import { TimeOffListTab } from './TimeOffListTab';
-import useThemeState from '../../../state/useThemeState';
-import { useQueryClient } from '@tanstack/react-query';
-import { Page } from '../../../model/Page';
-import { EmployeeBasic } from '../../../model/User';
 
 type Tabs = 'timeoff' | 'employees' | 'positions';
 

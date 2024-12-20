@@ -3,15 +3,13 @@ import { PtoRequestFormatted } from '../model/Pto';
 import { fetchPtosByAcceptor } from '../service/TimeOffHttpService';
 import { mapPtoRequestResponseToFormatted } from '../utils';
 
-const usePtosByAcceptor = (acceptorId: number) => {
+const useLast10PtosByAcceptor = () => {
   return useQuery<PtoRequestFormatted[], Error>({
-    queryKey: ['ptoToAccept', acceptorId],
-    queryFn: ({signal}) =>
-      fetchPtosByAcceptor(acceptorId, signal).then(res =>
-        res.map(pto => mapPtoRequestResponseToFormatted(pto))
-      ),
-    enabled: acceptorId > 0,
+    queryKey: ['ptosByAcceptor'],
+    queryFn: ({ signal }) =>
+      fetchPtosByAcceptor(0, 10, signal).then(res => res.content.map(pto => mapPtoRequestResponseToFormatted(pto))),
+    enabled: false,
   });
 };
 
-export default usePtosByAcceptor;
+export default useLast10PtosByAcceptor;

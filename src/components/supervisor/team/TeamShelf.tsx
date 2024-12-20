@@ -9,12 +9,10 @@ interface Props {
 }
 
 export const TeamShelf = ({ employees, isFetching }: Props) => {
-  const [isCollasped, setIsCollapsed] = useState(employees.length === 0);
-  const [isExpandedd, setIsExpanded] = useState<boolean>(false);
+  const [isCollasped, setIsCollapsed] = useState(true);
+  // const [isExpandedd, setIsExpanded] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsCollapsed(employees.length === 0);
-  }, [employees.length]);
+
   return (
     <VStack
       borderRadius={'20px'}
@@ -57,9 +55,9 @@ export const TeamShelf = ({ employees, isFetching }: Props) => {
             <Spinner />
           </HStack>
         </HStack>
-        <Box>
+        {/* <Box>
           <Button onClick={e => setIsExpanded(s => !s)}>Pokaż wszystkie</Button>
-        </Box>
+        </Box> */}
       </HStack>
       <HStack
         w={'100%'}
@@ -67,7 +65,7 @@ export const TeamShelf = ({ employees, isFetching }: Props) => {
         spacing={5}
         px={2}
         py={5}
-        h={!isExpandedd ? '440px' : ''}
+        // h={!isExpandedd ? '440px' : ''}
         overflow={'hidden'}
       >
         {employees.map(e => (

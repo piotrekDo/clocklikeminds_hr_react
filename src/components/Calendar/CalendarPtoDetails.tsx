@@ -16,7 +16,7 @@ interface Props {
   onClosePtoDetailshandler: () => void;
 }
 
-const leaveTypePolish = new Map<string, string>([
+export const leaveTypePolish = new Map<string, string>([
   ['pto', 'Urlop wypoczynkowy'],
   ['pto_on_demand', 'Urlop na żądanie'],
   ['on_saturday_pto', 'Odbiór za święto w sobotę'],
