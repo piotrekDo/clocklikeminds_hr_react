@@ -1,17 +1,17 @@
 import { Box, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useState } from 'react';
 import { MdOutlineArrowBackIosNew, MdOutlineArrowForwardIos } from 'react-icons/md';
-import usePtoRequestsForSelectedYear from '../../hooks/usePtoRequestsForSelectedyear';
+import useRequestsForUserCalendar from '../../hooks/useRequestsForUserCalendar';
+import { PtoRequestFormatted } from '../../model/Pto';
 import useAuthentication from '../../state/useAuthentication';
 import { CalendarGrid } from './CalendarGrid';
-import { PtoRequestFormatted } from '../../model/Pto';
 import { CalendarPtoDetails } from './CalendarPtoDetails';
 
 export const Calendar = () => {
   const { appUser } = useAuthentication();
   const [showPto, setShowPto] = useState<PtoRequestFormatted | undefined>(undefined);
   const [selectedYear, setSelectedYear] = useState<Date>(new Date());
-  const { data: ptos, isFetching } = usePtoRequestsForSelectedYear(appUser?.userId || -1, selectedYear.getFullYear());
+  const {data: ptos, isFetching} = useRequestsForUserCalendar(selectedYear.getFullYear())
 
   const onArrowRightClickHandler = () => {
     setSelectedYear(s => new Date(s.getFullYear() + 1, 0, 1));
@@ -57,7 +57,7 @@ export const Calendar = () => {
             </HStack>
           )}
         </HStack>
-        <CalendarGrid selectedYear={selectedYear} daysOff={ptos || []} setShowPto={setShowPto} />
+        <CalendarGrid selectedYear={selectedYear} daysOff={ptos} setShowPto={setShowPto} />
       </VStack>
       <Box
         borderRadius={'20px'}

@@ -11,7 +11,7 @@ const useNewPtoRequest = () => {
         queryKey: ['ptoSummary'],
       }),
         queryClient.invalidateQueries({
-          queryKey: ['ptoReqYear'],
+          queryKey: ['requestsForUserCalendadr'],
         }),
         queryClient.invalidateQueries({
           queryKey: ['ptoByUser'],

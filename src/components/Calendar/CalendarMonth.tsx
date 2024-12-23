@@ -1,16 +1,16 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
-import { PtoRequestFormatted } from '../../model/Pto';
+import { MonthSummaryFormatted, PtoRequestFormatted } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
 import { useState } from 'react';
 
 interface Props {
   month: Date;
   holidays: Map<string, string>;
-  daysOff: PtoRequestFormatted[];
+  summary: MonthSummaryFormatted | undefined;
   setShowPto: React.Dispatch<React.SetStateAction<PtoRequestFormatted | undefined>>;
 }
 
-export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) => {
+export const CalendarMonth = ({ month, holidays, summary, setShowPto }: Props) => {
   const { isRequestingPto, startDate, selectedPtoType, setStartDate, setEndDate } = usePtoRequestState();
   const newPtoStartDate = usePtoRequestState(s => s.startDate);
   const newPtoEndDate = usePtoRequestState(s => s.endDate);
@@ -32,13 +32,14 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
     }
   };
 
-  const handleOnPtoClick = (dayOff: PtoRequestFormatted) => {
+  const handleOnPtoClick = (dayOff: PtoRequestFormatted | undefined) => {
     if (!dayOff) {
       setShowPto(undefined);
     } else {
       setShowPto(s => (s?.id === dayOff.id ? undefined : dayOff));
     }
   };
+
 
   return (
     <GridItem
@@ -53,17 +54,18 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
       onMouseLeave={e => setIshovering(false)}
     >
       <VStack align='start' spacing={1}>
-        <Text
-          as='b'
-          fontSize={{ base: '1rem', monitorM: '1.1rem' }}
-          transform={isHovering ? 'none' : 'translateY(20px)'}
-          transition='transform 0.2s'
-        >
-          {month.toLocaleString('pl-PL', { month: 'long' })}
-        </Text>
-        <HStack w='100%' px={1} 
-        opacity={isHovering ? 1 : 0} 
-        transition='opacity 0.4s'>
+        <HStack>
+          <Text
+            as='b'
+            fontSize={{ base: '1rem', monitorM: '1.1rem' }}
+            transform={isHovering ? 'none' : 'translateY(20px)'}
+            transition='transform 0.2s'
+          >
+            {month.toLocaleString('pl-PL', { month: 'long' })}
+          </Text>
+          <Text transitionProperty={'transform opacity'} transitionDuration={'.2s'} transform={isHovering ? 'none' : 'translateY(20px)'} opacity={isHovering ? 1 : 0}> {summary?.hoursWorked}/{summary?.workingHours}h</Text>
+        </HStack>
+        <HStack w='100%' px={1} opacity={isHovering ? 1 : 0} transition='opacity 0.4s'>
           {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'ND'].map((day, index) => (
             <Flex
               key={day}
@@ -79,7 +81,7 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
           ))}
         </HStack>
       </VStack>
-      <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={{base: 1, monitorM: 2}} columnGap={0}>
+      <Grid templateColumns={'repeat(7, 1fr)'} w={'100%'} rowGap={{ base: 1, monitorM: 2 }} columnGap={0}>
         {Array.from({ length: leftPadding }).map((_, index) => (
           <GridItem key={index} w={'100%'} />
         ))}
@@ -90,7 +92,7 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
           const startTimestamp = newPtoStartDate?.getTime();
           const endTimestamp = newPtoEndDate?.getTime();
           const isHoliday: string | undefined = holidays.get(`${day.getMonth()},${day.getDate()}`);
-          const isDayOff = daysOff.filter(testedPto => {
+          const isDayOff = summary?.requests.filter(testedPto => {
             return day.getTime() >= testedPto.ptoStart.getTime() && day.getTime() <= testedPto.ptoEnd.getTime();
           })[0];
           const isToday =
@@ -142,7 +144,7 @@ export const CalendarMonth = ({ month, holidays, daysOff, setShowPto }: Props) =
                 title={isHoliday}
                 outline={isToday ? 'solid' : ''}
               >
-                <Text >{day.getDate()}</Text>
+                <Text>{day.getDate()}</Text>
               </Flex>
             </GridItem>
           );

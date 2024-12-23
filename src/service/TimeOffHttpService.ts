@@ -6,6 +6,7 @@ import {
   HolidayOnSaturdayByUser,
   NewPtoRequest,
   PtoRequestResponse,
+  RequestsForUserCalendar,
   ResolvePtoRequest,
   TimeOffByQueryRequest,
   UserPtoSummary,
@@ -21,6 +22,15 @@ export const fetchUserPtoSummary = (userId: number, signal?: AbortSignal) => {
     },
   }).then((res: AxiosResponse<UserPtoSummary>) => res.data);
 };
+
+export const fetchRequestsForuserCalendar = (year: number, signal?: AbortSignal) => {
+  return APIclient.get<RequestsForUserCalendar>('/api/v1/pto/requests-for-user-calendar', {
+    signal,
+    params: {
+      year: year,
+    },
+  }).then((res: AxiosResponse<RequestsForUserCalendar>) => res.data);
+}
 
 export const fetchUnresolvedPtosByAcceptor = (acceptorId: number, signal?: AbortSignal) => {
   return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/unresolved-by-acceptor', {

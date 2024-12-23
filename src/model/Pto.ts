@@ -78,7 +78,6 @@ interface PtoRequestBase {
   saturday_holiday_desc: string;
   wasMarkedToWithdraw: boolean;
   wasWithdrawn: boolean;
-  
 }
 
 export interface PtoRequestResponse extends PtoRequestBase {
@@ -169,4 +168,22 @@ export interface TimeOffByQueryRequest {
   ptoEndFrom: string | undefined;
   ptoEndTo: string | undefined;
   useOr: boolean | undefined;
+}
+
+export interface MonthSummary {
+  monthIndexJs: number;
+  workingHours: number;
+  hoursWorked: number;
+  requests: PtoRequestResponse[];
+}
+
+export interface MonthSummaryFormatted {
+  monthIndexJs: number;
+  workingHours: number;
+  hoursWorked: number;
+  requests: PtoRequestFormatted[];
+}
+
+export interface RequestsForUserCalendar {
+  months: MonthSummary[];
 }
