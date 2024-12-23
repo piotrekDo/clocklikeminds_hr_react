@@ -1,6 +1,7 @@
 import { VStack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { QueryShelf } from '../components/supervisor/QueryShelf';
 import { TimeOffRequestsShelf } from '../components/supervisor/TimeOffRequestsShelf';
 import { PtoCompareModal } from '../components/supervisor/requests/PtoCompareModal';
 import { TeamShelf } from '../components/supervisor/team/TeamShelf';
@@ -9,15 +10,11 @@ import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useHttpErrorState from '../state/useHttpErrorState';
 import usePtoModalStore from '../state/usePtoModalStore';
-import { QueryShelf } from '../components/supervisor/QueryShelf';
-
-type Tabs = 'requests' | 'employees';
 
 export const SupervisorPage = () => {
   const appUser = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
   const { ptoToCompareDates, ptoExtendedModal, setPtoToCompareDates, setPtoExtendedModal } = usePtoModalStore();
-  const [selectedTab, setSelectedTab] = useState<Tabs>('requests');
 
   const {
     data: unresolvedPtos,
@@ -43,10 +40,6 @@ export const SupervisorPage = () => {
     setPtoToCompareDates(undefined);
   };
 
-  const onClosePtoExtendedModal = () => {
-    setPtoExtendedModal(undefined);
-  };
-
   return (
     <AnimatePresence>
       <motion.div
@@ -61,7 +54,7 @@ export const SupervisorPage = () => {
 
         <VStack w={'100%'} pb={'100px'}>
           <VStack w={'100%'} pt={'50px'} px={'15px'}>
-            <QueryShelf />
+            <QueryShelf employees={employees} isEmployeesFetching={isEmployeesFetching}/>
           </VStack>
 
           <VStack w={'100%'} pt={'50px'} px={'15px'}>

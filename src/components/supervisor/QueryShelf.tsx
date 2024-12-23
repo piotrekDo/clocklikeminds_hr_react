@@ -1,4 +1,4 @@
-import { Badge, Button, HStack, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Badge, Button, HStack, Select, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,14 @@ import useHttpErrorState from '../../state/useHttpErrorState';
 import { leaveTypePolish } from '../Calendar/CalendarPtoDetails';
 import { Freelancer } from '../badges/Freelancer';
 import usePtoModalStore from '../../state/usePtoModalStore';
+import { EmployeeInfo } from '../../model/User';
 
-export const QueryShelf = () => {
+interface Props {
+  employees: EmployeeInfo[] | undefined;
+  isEmployeesFetching: boolean;
+}
+
+export const QueryShelf = ({ employees, isEmployeesFetching }: Props) => {
   const navigate = useNavigate();
   const setError = useHttpErrorState(s => s.setError);
   const [isCollasped, setIsCollapsed] = useState(true);
@@ -47,14 +53,13 @@ export const QueryShelf = () => {
       overflow={'hidden'}
     >
       <HStack w={'100%'} justify={'space-between'} px={5}>
-        <HStack
-          color={'whiteAlpha.800'}
-          textShadow='
-          1px 1px 0 rgba(0, 0, 0, 0.3),  
-          2px 2px 0 rgba(0, 0, 0, 0.3), 
-          3px 3px 4px rgba(0, 0, 0, 0.5)'
-        >
+        <HStack>
           <Text
+            color={'whiteAlpha.800'}
+            textShadow='
+                  1px 1px 0 rgba(0, 0, 0, 0.3),  
+                  2px 2px 0 rgba(0, 0, 0, 0.3), 
+                  3px 3px 4px rgba(0, 0, 0, 0.5)'
             fontSize={'2rem'}
             fontWeight={'700'}
             w={'100%'}
@@ -73,6 +78,19 @@ export const QueryShelf = () => {
           >
             Ostatnich 10
           </Button>
+        </HStack>
+
+        <HStack color={'whiteAlpha.800'}>
+          <Select defaultValue={undefined} placeholder={'Wybierz pracownika'} minW={'200px'} >
+            <optgroup style={{ background: '#385898' }}>
+              {employees &&
+                employees.map(e => (
+                  <option key={e.appUserId} value={e.appUserId}>
+                    {e.firstName} {e.lastName}
+                  </option>
+                ))}
+            </optgroup>
+          </Select>
         </HStack>
       </HStack>
 
