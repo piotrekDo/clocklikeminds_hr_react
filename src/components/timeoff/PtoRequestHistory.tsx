@@ -4,8 +4,6 @@ import React from 'react';
 import { Page } from '../../model/Page';
 import { PtoRequestResponse } from '../../model/Pto';
 import { PtoCard } from './PtoCard';
-import usePtoModalStore from '../../state/usePtoModalStore';
-import { PtoRequestExtendedModal } from './PtoRequestExtendedModal';
 
 interface Props {
   isLoadingPtos: boolean;
@@ -24,17 +22,8 @@ export const PtoRequestHistory = ({
   ptos,
   fetchNextPage,
 }: Props) => {
-  const ptoExtendedForUser = usePtoModalStore(s => s.ptoExtendedForUser);
-  const setPtoExtendedForUser = usePtoModalStore(s => s.setPtoExtendedForUser);
-
-  const onModalClose = () => {
-    setPtoExtendedForUser(undefined);
-  };
-
   return (
     <>
-      <PtoRequestExtendedModal isOpen={!!ptoExtendedForUser} onClose={onModalClose} />
-
       {isLoadingPtos && <Spinner />}
       {!isLoadingPtos && ptos?.pages[0].content.length === 0 && <Heading>Brak historii wniosków</Heading>}
 

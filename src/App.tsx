@@ -8,6 +8,9 @@ import useAuthentication from './state/useAuthentication';
 import useHttpErrorState from './state/useHttpErrorState';
 import useThemeState from './state/useThemeState';
 import { lightBackground } from './library';
+import { PtoRequestExtendedModal } from './components/timeoff/PtoRequestExtendedModal';
+import usePtoModalStore from './state/usePtoModalStore';
+import { PtoRequestExtendedModalForSupervisor } from './components/timeoff/PtoRequestExtendedModalForSupervisor';
 
 export const occasionalLeaveTranslatePL: Map<string, string> = new Map<string, string>();
 
@@ -17,6 +20,10 @@ function App() {
   const { error } = useHttpErrorState();
   const toast = useToast();
   const { isSuccess, data, isError, error: metaDataError } = useMetaData(!!appUser);
+  const setPtoExtendedForUser = usePtoModalStore(s => s.setPtoExtendedForUser);
+  const setPtoExtendedModal = usePtoModalStore(s => s.setPtoExtendedModal);
+  const ptoExtendedForUser = usePtoModalStore(s => s.ptoExtendedForUser);
+  const ptoExtendedModal = usePtoModalStore(s => s.ptoExtendedModal);
 
   useEffect(() => {
     if (isSuccess) {
@@ -47,6 +54,11 @@ function App() {
     }
   }, [error, metaDataError]);
 
+  const onModalClose = () => {
+    setPtoExtendedForUser(undefined);
+    setPtoExtendedModal(undefined);
+  };
+
   return (
     <Flex
       w={'100wv'}
@@ -57,6 +69,9 @@ function App() {
       justifyContent={'end'}
       alignItems={'end'}
     >
+      <PtoRequestExtendedModal isOpen={!!ptoExtendedForUser} onClose={onModalClose} />
+      <PtoRequestExtendedModalForSupervisor isOpen={!!ptoExtendedModal} onClose={onModalClose}/>
+
       {appUser && (
         <>
           <Uppernavbar />

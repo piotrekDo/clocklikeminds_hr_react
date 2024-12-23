@@ -59,30 +59,32 @@ export const SupervisorPage = () => {
       >
         <PtoCompareModal isOpen={!!ptoToCompareDates} onClose={onCloseCompareModal} />
 
-        {/* <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          <QueryShelf />
-        </VStack> */}
+        <VStack w={'100%'} pb={'100px'}>
+          <VStack w={'100%'} pt={'50px'} px={'15px'}>
+            <QueryShelf />
+          </VStack>
 
-        <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          {unresolvedPtos && (
-            <TimeOffRequestsShelf
-              title='Wnioski urlopowe do rozpatrzenia'
-              requests={unresolvedPtos?.filter(p => !p.wasMarkedToWithdraw)}
-              isFetching={isUnresolvedPtosFetching}
-            />
-          )}
-        </VStack>
-        <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          {unresolvedPtos && (
-            <TimeOffRequestsShelf
-              title='Wnioski zgłoszone do wycofania'
-              requests={unresolvedPtos?.filter(p => p.wasMarkedToWithdraw)}
-              isFetching={isUnresolvedPtosFetching}
-            />
-          )}
-        </VStack>
-        <VStack w={'100%'} pt={'50px'} px={'15px'}>
-          {employees && <TeamShelf employees={employees} isFetching={isEmployeesFetching} />}
+          <VStack w={'100%'} pt={'50px'} px={'15px'}>
+            {unresolvedPtos && (
+              <TimeOffRequestsShelf
+                title='Wnioski urlopowe do rozpatrzenia'
+                requests={unresolvedPtos?.filter(p => !p.wasMarkedToWithdraw)}
+                isFetching={isUnresolvedPtosFetching}
+              />
+            )}
+          </VStack>
+          <VStack w={'100%'} pt={'50px'} px={'15px'}>
+            {unresolvedPtos && (
+              <TimeOffRequestsShelf
+                title='Wnioski zgłoszone do wycofania'
+                requests={unresolvedPtos?.filter(p => p.wasMarkedToWithdraw)}
+                isFetching={isUnresolvedPtosFetching}
+              />
+            )}
+          </VStack>
+          <VStack w={'100%'} pt={'50px'} px={'15px'}>
+            {employees && <TeamShelf employees={employees} isFetching={isEmployeesFetching} />}
+          </VStack>
         </VStack>
       </motion.div>
     </AnimatePresence>

@@ -8,11 +8,14 @@ import { CalendarNavigation } from './CalendarNavigation';
 import { Header } from './Header';
 import { MonthView } from './MonthView';
 import { WeekView } from './WeekView';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 export type CalendarViews = 'month' | 'week';
 export type SelectedWeek = { index: number; days: number[] };
 export const Calendar = () => {
-  const today = new Date();
+  const [searchParams, setParams] = useSearchParams();
+  const paramDate = searchParams.get('date');
+  const today = paramDate ? new Date(paramDate) : new Date();
   const user = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(today.getFullYear(), today.getMonth(), 1));

@@ -1,16 +1,16 @@
 import {
-  Box,
-  Heading,
-  HStack,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  VStack,
+    Box,
+    Heading,
+    HStack,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
 
 import { GrNotes } from 'react-icons/gr';
@@ -21,15 +21,14 @@ import on_request_holiday from '../../assets/pto_on_request.jpg';
 import saturday_holiday from '../../assets/saturday_holiday.jpg';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
-import { WithdrawActionButton } from './WithdrawActionButton';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
-  const r = usePtoModalStore(s => s.ptoExtendedForUser);
+export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props) => {
+  const r = usePtoModalStore(s => s.ptoExtendedModal);
 
   if (!r) return null;
   return (
@@ -62,7 +61,13 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
           opacity={r.leaveType === 'on_saturday_pto' || r.leaveType === 'child_care' ? 0.4 : 0.7}
         />
         <ModalHeader zIndex={100} textAlign={'center'} fontWeight={700} color={'black'} fontSize={'1.4rem'}>
-          WNIOSEK URLOPOWY
+          <HStack>
+            <Text flex={1}></Text>
+            <Text flex={1}>WNIOSEK URLOPOWY</Text>
+            <Text flex={1} textAlign={'end'}>
+              ID: {r.id}
+            </Text>
+          </HStack>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody zIndex={100} color={'black'}>
@@ -96,8 +101,8 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
 
             <HStack w={'100%'} fontWeight={'600'} fontSize={'1.6rem'} fontStyle={'italic'}>
               <Text>{r.businessDays == 1 ? 'w dniu:' : 'w dniach:'} </Text>
-              <Text fontWeight={'700'}>{r.ptoStart}</Text>
-              {r.businessDays > 1 && <Text fontWeight={'700'}>- {r.ptoEnd}</Text>}
+              <Text fontWeight={'700'}>{r.ptoStart.toLocaleDateString('pl-PL')}</Text>
+              {r.businessDays > 1 && <Text fontWeight={'700'}>- {r.ptoEnd.toLocaleDateString('pl-PL')}</Text>}
             </HStack>
             <VStack w={'100%'} mt={'50px'}>
               <VStack w={'100%'} mb={10} alignItems={'start'}>
@@ -127,14 +132,16 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
                   <HStack w={'100%'} fontWeight={500}>
                     <Text>Data decyzji: </Text>
                     <Text>
-                      {new Date(r.decisionDateTime).toLocaleString('pl-PL', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                      })}
+                      {r.decisionDateTime
+                        ? r.decisionDateTime.toLocaleString('pl-PL', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                          })
+                        : ''}
                     </Text>
                   </HStack>
                 )}
@@ -142,14 +149,16 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
                   <HStack w={'100%'} fontWeight={500}>
                     <Text>Data wycofania: </Text>
                     <Text>
-                      {new Date(r.withdrawnDateTime).toLocaleString('pl-PL', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                      })}
+                      {r.withdrawnDateTime
+                        ? r.withdrawnDateTime.toLocaleString('pl-PL', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                          })
+                        : ''}
                     </Text>
                   </HStack>
                 )}
@@ -178,9 +187,7 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
           </VStack>
         </ModalBody>
 
-        <ModalFooter zIndex={100}>
-          <WithdrawActionButton request={r} closeModal={onClose} />
-        </ModalFooter>
+        <ModalFooter zIndex={100}></ModalFooter>
       </ModalContent>
     </Modal>
   );

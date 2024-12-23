@@ -1,15 +1,20 @@
-import { Badge, Box, Button, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import useLast10PtosByAcceptor from '../../hooks/usePtosByAcceptor';
-import useHttpErrorState from '../../state/useHttpErrorState';
+import { Badge, Button, HStack, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useLast10PtosByAcceptor from '../../hooks/usePtosByAcceptor';
 import { PtoRequestFormatted } from '../../model/Pto';
+import useHttpErrorState from '../../state/useHttpErrorState';
 import { leaveTypePolish } from '../Calendar/CalendarPtoDetails';
+import { Freelancer } from '../badges/Freelancer';
+import usePtoModalStore from '../../state/usePtoModalStore';
 
 export const QueryShelf = () => {
+  const navigate = useNavigate();
   const setError = useHttpErrorState(s => s.setError);
   const [isCollasped, setIsCollapsed] = useState(true);
   const queryClient = useQueryClient();
+  const setPtoExtended = usePtoModalStore(s => s.setPtoExtendedModal);
 
   const {
     data: last10Requests,
@@ -26,8 +31,11 @@ export const QueryShelf = () => {
   const cachedData = queryClient.getQueryData<PtoRequestFormatted[]>(['ptosByAcceptor']);
   const queryState = queryClient.getQueryState(['ptosByAcceptor']);
   const cacheCreatedAt = queryState?.dataUpdatedAt ? new Date(queryState.dataUpdatedAt) : null;
-  console.log(cacheCreatedAt);
-  console.log(cachedData);
+
+  const onShowCallendar = (ptoStart: Date) => {
+    const date = ptoStart.getFullYear() + '-' + (ptoStart.getMonth() + 1) + '-' + ptoStart.getDate();
+    navigate('/calendar?date=' + date);
+  };
 
   return (
     <VStack
@@ -57,27 +65,78 @@ export const QueryShelf = () => {
           >
             Historia wniosków
           </Text>
-          <Button onClick={e => {
-            refetchLast10();
-            setIsCollapsed(false)
-          }}>Ostatnich 10</Button>
+          <Button
+            onClick={e => {
+              refetchLast10();
+              setIsCollapsed(false);
+            }}
+          >
+            Ostatnich 10
+          </Button>
         </HStack>
       </HStack>
 
       <VStack w={'100%'} p={2}>
-        {islast10Fetching  && <Spinner />}
-        {!islast10Fetching && cachedData &&
+        {islast10Fetching && <Spinner />}
+        {!islast10Fetching &&
+          cachedData &&
           cachedData.map(r => {
-            const isPending = !!r.decisionDateTime == false
+            const isPending = !!r.decisionDateTime == false;
             const wasAccepted = !!r.wasAccepted;
             return (
-              <HStack key={r.id}>
+              <HStack
+                key={r.id}
+                w={'100%'}
+                color={'whiteAlpha.800'}
+                px={10}
+                _hover={{ bgColor: '#233B85' }}
+                py={1}
+                borderRadius={'10px'}
+                onClick={() => setPtoExtended(r)}
+              >
                 <Badge variant={'solid'} colorScheme={isPending ? 'yellow' : wasAccepted ? 'green' : 'red'}>
                   ID: {r.id}
                 </Badge>
-                <Text>{r.applierFirstName}</Text>
-                <Text>{r.applierLastName}</Text>
-                <Text>{leaveTypePolish.get(r.leaveType)}</Text>
+                <HStack flex={1}>
+                  <Text>{r.applierFirstName}</Text>
+                  <Text>{r.applierLastName}</Text>
+                  {r.applierFreelancer && <Freelancer size='' />}
+                </HStack>
+                <Tooltip
+                  label={
+                    r.leaveType === 'occasional_leave'
+                      ? r.occasional_descriptionPolish
+                      : r.leaveType === 'on_saturday_pto'
+                      ? `${r.saturday_holiday_desc} ${r.saturday_holiday_date}`
+                      : ''
+                  }
+                >
+                  <Text flex={1}>{leaveTypePolish.get(r.leaveType)}</Text>
+                </Tooltip>
+                <Tooltip label='Przejdź do kalendarza'>
+                  <HStack
+                    flex={1}
+                    onClick={event => {
+                      event.stopPropagation();
+                      onShowCallendar(r.ptoStart);
+                    }}
+                    cursor={'pointer'}
+                  >
+                    <Text>
+                      {r.ptoStart.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                    </Text>
+                    <Text>-</Text>
+                    <Text>
+                      {r.ptoEnd.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+                    </Text>
+                  </HStack>
+                </Tooltip>
+                <HStack flex={1}>
+                  <Text>Dni roboczych:</Text>
+                  <Text>{r.businessDays}</Text>
+                  <Text ml={2}>kalendarzowych: </Text>
+                  <Text>{r.totalDays}</Text>
+                </HStack>
               </HStack>
             );
           })}
