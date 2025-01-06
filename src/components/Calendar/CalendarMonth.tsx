@@ -1,7 +1,8 @@
-import { Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import { Badge, Flex, Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
 import { MonthSummaryFormatted, PtoRequestFormatted } from '../../model/Pto';
 import usePtoRequestState from '../../state/usePtoRequestState';
-import { useState } from 'react';
+import { generateCreativeWorkTemplate } from '../../service/ReportService';
 
 interface Props {
   month: Date;
@@ -40,6 +41,11 @@ export const CalendarMonth = ({ month, holidays, summary, setShowPto }: Props) =
     }
   };
 
+  const handleGenerateCreativeWorkTemplate = () => {
+    const monthIndex = month.getMonth() + 1;
+    const year = month.getFullYear();
+    generateCreativeWorkTemplate(monthIndex, year);
+  };
 
   return (
     <GridItem
@@ -63,7 +69,36 @@ export const CalendarMonth = ({ month, holidays, summary, setShowPto }: Props) =
           >
             {month.toLocaleString('pl-PL', { month: 'long' })}
           </Text>
-          <Text transitionProperty={'transform opacity'} transitionDuration={'.2s'} transform={isHovering ? 'none' : 'translateY(20px)'} opacity={isHovering ? 1 : 0}> {summary?.hoursWorked}/{summary?.workingHours}h</Text>
+          <HStack cursor={'pointer'} pos={'relative'} role='group' onClick={handleGenerateCreativeWorkTemplate}>
+            <Text
+              transitionProperty={'transform opacity top'}
+              transitionDuration={'.2s'}
+              transform={isHovering ? 'none' : 'translateY(20px)'}
+              opacity={isHovering ? 1 : 0}
+              fontSize={'0.8rem'}
+              pos={'absolute'}
+              top={'-10px'}
+              _groupHover={{ top: '-100%', opacity: 0 }}
+            >
+              {summary?.hoursWorked}/{summary?.workingHours}h
+            </Text>
+            <Badge
+              pos={'absolute'}
+              top={'100%'}
+              transitionProperty={'top opacity'}
+              transitionDuration={'0.2s'}
+              opacity={0}
+              variant={'solid'}
+              colorScheme='green'
+              fontSize={'.6rem'}
+              _groupHover={{
+                opacity: 1,
+                top: '-8px',
+              }}
+            >
+              WYGENERUJ
+            </Badge>
+          </HStack>
         </HStack>
         <HStack w='100%' px={1} opacity={isHovering ? 1 : 0} transition='opacity 0.4s'>
           {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'ND'].map((day, index) => (
