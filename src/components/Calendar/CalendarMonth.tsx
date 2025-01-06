@@ -69,7 +69,7 @@ export const CalendarMonth = ({ month, holidays, summary, setShowPto }: Props) =
           >
             {month.toLocaleString('pl-PL', { month: 'long' })}
           </Text>
-          <HStack cursor={'pointer'} pos={'relative'} role='group' onClick={handleGenerateCreativeWorkTemplate}>
+          {/* <HStack cursor={'pointer'} pos={'relative'} role='group' onClick={handleGenerateCreativeWorkTemplate}>
             <Text
               transitionProperty={'transform opacity top'}
               transitionDuration={'.2s'}
@@ -98,7 +98,7 @@ export const CalendarMonth = ({ month, holidays, summary, setShowPto }: Props) =
             >
               WYGENERUJ
             </Badge>
-          </HStack>
+          </HStack> */}
         </HStack>
         <HStack w='100%' px={1} opacity={isHovering ? 1 : 0} transition='opacity 0.4s'>
           {['PO', 'WT', 'ŚR', 'CZ', 'PI', 'SO', 'ND'].map((day, index) => (
