@@ -1,4 +1,4 @@
-import { HStack, VStack } from '@chakra-ui/react';
+import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import usePtosRequestsForSupervisorCalendar from '../../../hooks/usePtosForSupervisorCalendar';
 import useAuthentication from '../../../state/useAuthentication';
@@ -7,10 +7,10 @@ import { getHolidaysPoland } from '../../Calendar/holidays';
 import { CalendarNavigation } from './CalendarNavigation';
 import { Header } from './Header';
 import { MonthView } from './MonthView';
-import { WeekView } from './WeekView';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { TeamView } from './TeamView';
 
-export type CalendarViews = 'month' | 'week';
+export type CalendarViews = 'month' | 'team';
 export type SelectedWeek = { index: number; days: number[] };
 export const Calendar = () => {
   const [searchParams, setParams] = useSearchParams();
@@ -64,7 +64,9 @@ export const Calendar = () => {
         {selectedView === 'month' && (
           <MonthView selectedDate={selectedDate} holidays={holidays} isPtosFetching={isPtosFetching} />
         )}
-        {selectedView === 'week' && <WeekView />}
+        {selectedView === 'team' && (
+          <TeamView selectedDate={selectedDate} holidays={holidays} isPtosFetching={isPtosFetching} />
+        )}
       </VStack>
     </HStack>
   );

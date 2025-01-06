@@ -18,7 +18,7 @@ interface Props {
 
 const selectViewOptions = new Map<CalendarViews, { name: string }>([
   ['month', { name: 'Miesiąc' }],
-  ['week', { name: 'Tydzień' }],
+  ['team', { name: 'Zespół' }],
 ]);
 
 export const CalendarNavigation = ({
@@ -69,15 +69,6 @@ export const CalendarNavigation = ({
           </Button>
         ))}
       </VStack>
-      <Box
-        w={'100%'}
-        pt={10}
-        opacity={selectedView === 'week' ? 1 : 0}
-        pointerEvents={selectedView === 'week' ? 'auto' : 'none'}
-        transition={'opacity .25s'}
-      >
-        <MonthPreview selectedDate={selectedDate} selectedWeek={selectedWeek} setSelectedWeek={setSelectedWeek} />
-      </Box>
     </VStack>
   );
 };
