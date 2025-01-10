@@ -1,7 +1,7 @@
 import { Badge, Box, HStack, SimpleGrid, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { PtoRequestFormatted } from '../../../model/Pto';
+import { TimeOffRequestsByEmployeeFormatted } from '../../../model/Pto';
 import { SupervisorCallendarCell } from './SupervisorCallendarCell';
 import { SupervisorCallendarDisplayTimeOff } from './SupervisorCallendarDisplayTimeOff';
 
@@ -13,7 +13,7 @@ interface Props {
 
 export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => {
   const queryClient = useQueryClient();
-  let ptos = queryClient.getQueryData<PtoRequestFormatted[]>([
+  let ptos = queryClient.getQueryData<TimeOffRequestsByEmployeeFormatted[]>([
     'supervisorCalendar',
     selectedDate.getMonth().toString(),
   ]);
@@ -58,7 +58,6 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
       boxShadow={'8px 8px 24px 0px rgba(66, 68, 90, 1)'}
       p={2}
       bg={'whiteAlpha.400'}
-      position={'relative'}
     >
       {isPtosFetching && (
         <Badge
@@ -91,19 +90,31 @@ export const MonthView = ({ selectedDate, holidays, isPtosFetching }: Props) => 
           >
             <SimpleGrid w={'100%'} columns={7} pt={'30px'} spacing={0}>
               {ptos &&
-                ptos.map((pto, index) => {
-                  if (pto.ptoStart > sunday || pto.ptoEnd < monday) return;
-                  return (
-                    <SupervisorCallendarDisplayTimeOff
-                      key={index}
-                      pto={pto}
-                      monday={monday}
-                      sunday={sunday}
-                      highlightedPto={highlightedPto}
-                      setHighlightedPto={setHighlightedPto}
-                    />
-                  );
-                })}
+                ptos
+                  .flatMap(ptos => ptos.requestsByTimeFrame)
+                  .sort((a, b) => {
+                    const aStart = a.ptoStart.getTime();
+                    const bStart = b.ptoStart.getTime();
+                    const aEnd = a.ptoEnd.getTime();
+                    const bEnd = b.ptoEnd.getTime();
+                    if (bStart <= aEnd && bEnd >= aStart) {
+                      return 0;
+                    }
+                    return aStart - bStart;
+                  })
+                  .map((pto, index) => {
+                    if (pto.ptoStart > sunday || pto.ptoEnd < monday) return;
+                    return (
+                      <SupervisorCallendarDisplayTimeOff
+                        key={index}
+                        pto={pto}
+                        monday={monday}
+                        sunday={sunday}
+                        highlightedPto={highlightedPto}
+                        setHighlightedPto={setHighlightedPto}
+                      />
+                    );
+                  })}
 
               <HStack position={'absolute'} spacing={0} top={0} left={0} w={'100%'} h={'100%'}>
                 {week.map((day, dayIndex) => {

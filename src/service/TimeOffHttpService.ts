@@ -9,6 +9,7 @@ import {
   RequestsForUserCalendar,
   ResolvePtoRequest,
   TimeOffByQueryRequest,
+  TimeOffRequestsByEmployeeResponse,
   UserPtoSummary,
   WithdrawResponse,
 } from '../model/Pto';
@@ -51,15 +52,14 @@ export const fetchPtosByAcceptor = (page: number, size: number, signal?: AbortSi
   }).then((res: AxiosResponse<Page<PtoRequestResponse>>) => res.data);
 };
 
-export const fetchPtosInTimeFrame = (acceptorId: number, start: string, end: string, signal?: AbortSignal) => {
-  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/requests-for-supervisor-calendar', {
+export const fetchPtosInTimeFrame = (start: string, end: string, signal?: AbortSignal) => {
+  return APIclient.get<TimeOffRequestsByEmployeeResponse[]>('/api/v1/pto/requests-for-supervisor-calendar-by-employees', {
     signal,
     params: {
-      acceptorId: acceptorId,
       start: start,
       end: end,
     },
-  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
+  }).then((res: AxiosResponse<TimeOffRequestsByEmployeeResponse[]>) => res.data);
 };
 
 export const fetchPtosByAppliersId = (applierId: number, page: number, size: number, signal?: AbortSignal) => {

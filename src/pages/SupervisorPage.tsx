@@ -3,19 +3,15 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { QueryShelf } from '../components/supervisor/QueryShelf';
 import { TimeOffRequestsShelf } from '../components/supervisor/TimeOffRequestsShelf';
-import { PtoCompareModal } from '../components/supervisor/requests/PtoCompareModal';
 import { TeamShelf } from '../components/supervisor/team/TeamShelf';
 import useEmployeesForSupervisor from '../hooks/useEmployeesForSupervisor';
 import useUnresolvedPtosByAcceptor from '../hooks/useUnresolvedPtosByAcceptor';
 import useAuthentication from '../state/useAuthentication';
 import useHttpErrorState from '../state/useHttpErrorState';
-import usePtoModalStore from '../state/usePtoModalStore';
 
 export const SupervisorPage = () => {
   const appUser = useAuthentication(s => s.appUser);
   const setError = useHttpErrorState(s => s.setError);
-  const { ptoToCompareDates, ptoExtendedModal, setPtoToCompareDates, setPtoExtendedModal } = usePtoModalStore();
-
   const {
     data: unresolvedPtos,
     isFetching: isUnresolvedPtosFetching,
@@ -36,10 +32,6 @@ export const SupervisorPage = () => {
     employeesIsError && setError(employeesError);
   }, [isUnresolvedPtosError, employeesIsError]);
 
-  const onCloseCompareModal = () => {
-    setPtoToCompareDates(undefined);
-  };
-
   return (
     <AnimatePresence>
       <motion.div
@@ -50,11 +42,9 @@ export const SupervisorPage = () => {
           height: '99%',
         }}
       >
-        <PtoCompareModal isOpen={!!ptoToCompareDates} onClose={onCloseCompareModal} />
-
         <VStack w={'100%'} pb={'100px'}>
           <VStack w={'100%'} pt={'50px'} px={'15px'}>
-            <QueryShelf employees={employees} isEmployeesFetching={isEmployeesFetching}/>
+            <QueryShelf employees={employees} isEmployeesFetching={isEmployeesFetching} />
           </VStack>
 
           <VStack w={'100%'} pt={'50px'} px={'15px'}>

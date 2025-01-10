@@ -2,6 +2,7 @@ import { GridItem, HStack, Text, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { FaRegCircleUser } from 'react-icons/fa6';
 import { PtoRequestFormatted, ptoTypeTranslatePl } from '../../../model/Pto';
+import usePtoModalStore from '../../../state/usePtoModalStore';
 
 interface Props {
   pto: PtoRequestFormatted;
@@ -18,6 +19,7 @@ export const SupervisorCallendarDisplayTimeOff = ({
   highlightedPto,
   setHighlightedPto,
 }: Props) => {
+  const setPtoExtended = usePtoModalStore(s => s.setPtoExtendedModal);
   const startingThisWeek = pto.ptoStart.getTime() >= monday.getTime();
   const endingThisWeek = pto.ptoEnd.getTime() <= sunday.getTime();
   const start = startingThisWeek ? (pto.ptoStart.getDay() === 0 ? 7 : pto.ptoStart.getDay()) : 1;
@@ -35,6 +37,8 @@ export const SupervisorCallendarDisplayTimeOff = ({
       <GridItem
         onMouseEnter={() => setHighlightedPto(pto.id)}
         onMouseLeave={() => setHighlightedPto(-1)}
+        onClick={() => setPtoExtended(pto)}
+        cursor={'pointer'}
         display={'flex'}
         justifyContent={'start'}
         alignItems={'center'}

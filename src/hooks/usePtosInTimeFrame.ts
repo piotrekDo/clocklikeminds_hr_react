@@ -4,10 +4,10 @@ import { fetchPtosInTimeFrame } from '../service/TimeOffHttpService';
 
 const usePtosInTimeFrame = (acceptorId: number, start: string, end: string) => {
   return useQuery<PtoRequestFormatted[], Error>({
-    queryKey: ['ptosInTimeFrame', acceptorId, start, end],
+    queryKey: ['ptosInTimeFrame', start, end],
     queryFn: ({ signal }) =>
-      fetchPtosInTimeFrame(acceptorId, start, end, signal).then(res =>
-        res.map(pto => {
+      fetchPtosInTimeFrame(start, end, signal).then(res =>
+        res.flatMap(res => res.requestsByTimeFrame).map(pto => {
           const ptoStartLocal = new Date(pto.ptoStart);
           const ptoEndLocal = new Date(pto.ptoEnd);
           const withdrawnLocal = pto.withdrawnDateTime ? new Date(pto.withdrawnDateTime) : undefined;

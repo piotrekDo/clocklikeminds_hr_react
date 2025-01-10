@@ -11,6 +11,7 @@ import { lightBackground } from './library';
 import { PtoRequestExtendedModal } from './components/timeoff/PtoRequestExtendedModal';
 import usePtoModalStore from './state/usePtoModalStore';
 import { PtoRequestExtendedModalForSupervisor } from './components/timeoff/PtoRequestExtendedModalForSupervisor';
+import { PtoCompareModal } from './components/supervisor/requests/PtoCompareModal';
 
 export const occasionalLeaveTranslatePL: Map<string, string> = new Map<string, string>();
 
@@ -20,10 +21,14 @@ function App() {
   const { error } = useHttpErrorState();
   const toast = useToast();
   const { isSuccess, data, isError, error: metaDataError } = useMetaData(!!appUser);
-  const setPtoExtendedForUser = usePtoModalStore(s => s.setPtoExtendedForUser);
-  const setPtoExtendedModal = usePtoModalStore(s => s.setPtoExtendedModal);
-  const ptoExtendedForUser = usePtoModalStore(s => s.ptoExtendedForUser);
-  const ptoExtendedModal = usePtoModalStore(s => s.ptoExtendedModal);
+  const {
+    ptoToCompareDates,
+    ptoExtendedModal,
+    ptoExtendedForUser,
+    setPtoToCompareDates,
+    setPtoExtendedModal,
+    setPtoExtendedForUser,
+  } = usePtoModalStore();
 
   useEffect(() => {
     if (isSuccess) {
@@ -59,6 +64,10 @@ function App() {
     setPtoExtendedModal(undefined);
   };
 
+  const onCloseCompareModal = () => {
+    setPtoToCompareDates(undefined);
+  };
+
   return (
     <Flex
       w={'100wv'}
@@ -70,7 +79,8 @@ function App() {
       alignItems={'end'}
     >
       <PtoRequestExtendedModal isOpen={!!ptoExtendedForUser} onClose={onModalClose} />
-      <PtoRequestExtendedModalForSupervisor isOpen={!!ptoExtendedModal} onClose={onModalClose}/>
+      <PtoRequestExtendedModalForSupervisor isOpen={!!ptoExtendedModal} onClose={onModalClose} />
+      <PtoCompareModal isOpen={!!ptoToCompareDates} onClose={onCloseCompareModal} />
 
       {appUser && (
         <>

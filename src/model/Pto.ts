@@ -187,3 +187,13 @@ export interface MonthSummaryFormatted {
 export interface RequestsForUserCalendar {
   months: MonthSummary[];
 }
+
+export interface TimeOffRequestsByEmployeeResponse {
+  employee: EmployeeBasic;
+  requestsByTimeFrame: PtoRequestResponse[];
+}
+
+export interface TimeOffRequestsByEmployeeFormatted {
+  employee: EmployeeBasic;
+  requestsByTimeFrame: PtoRequestFormatted[];
+}
