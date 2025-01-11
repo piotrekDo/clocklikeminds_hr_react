@@ -12,6 +12,7 @@ import { PtoRequestExtendedModal } from './components/timeoff/PtoRequestExtended
 import usePtoModalStore from './state/usePtoModalStore';
 import { PtoRequestExtendedModalForSupervisor } from './components/timeoff/PtoRequestExtendedModalForSupervisor';
 import { PtoCompareModal } from './components/supervisor/requests/PtoCompareModal';
+import useSettingsStore from './state/useSettingsState';
 
 export const occasionalLeaveTranslatePL: Map<string, string> = new Map<string, string>();
 
@@ -29,12 +30,14 @@ function App() {
     setPtoExtendedModal,
     setPtoExtendedForUser,
   } = usePtoModalStore();
+  const parseFetchedSettings = useSettingsStore(s => s.parseFetchedSettings);
 
   useEffect(() => {
     if (isSuccess) {
       data.occasionalLeaveTypes.forEach(type => {
         occasionalLeaveTranslatePL.set(type.occasionalType, type.descriptionPolish);
       });
+      parseFetchedSettings(data.settings);
     }
   }, [isSuccess]);
 

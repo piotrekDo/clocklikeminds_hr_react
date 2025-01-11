@@ -1,16 +1,19 @@
 import {
-    Box,
-    Heading,
-    HStack,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Text,
-    VStack,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
+  Text,
+  Tooltip,
+  VStack,
 } from '@chakra-ui/react';
 
 import { GrNotes } from 'react-icons/gr';
@@ -21,6 +24,9 @@ import on_request_holiday from '../../assets/pto_on_request.jpg';
 import saturday_holiday from '../../assets/saturday_holiday.jpg';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
+import { generateTimeOffPdf, resendMailRequest } from '../../service/TimeOffHttpService';
+import { useState } from 'react';
+import useSettingsStore from '../../state/useSettingsState';
 
 interface Props {
   isOpen: boolean;
@@ -29,7 +35,21 @@ interface Props {
 
 export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props) => {
   const r = usePtoModalStore(s => s.ptoExtendedModal);
+  const isMailingEnabled = useSettingsStore(s => s.isMailingEnabled);
+  const [isSending, setIsSending] = useState(false);
 
+  const resendToHr = () => {
+    if (!r) return;
+    setIsSending(true);
+    resendMailRequest(r.id).then(r => {
+      setIsSending(false);
+    });
+  };
+
+  const onGeneratePdf = () => {
+    if (!r) return;
+    generateTimeOffPdf(r.id);
+  };
   if (!r) return null;
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={'4xl'}>
@@ -187,7 +207,26 @@ export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props)
           </VStack>
         </ModalBody>
 
-        <ModalFooter zIndex={100}></ModalFooter>
+        <ModalFooter zIndex={100} justifyContent={'space-evenly'}>
+          {!r.applierFreelancer && r.decisionDateTime && r.wasAccepted && !r.wasWithdrawn && (
+            <>
+              <Tooltip
+                label={
+                  !isSending
+                    ? 'Naciśnięcie powoduje rozesłanie wiadomości z załącznikiem do kadr oraz wnioskującego i akceptującego.'
+                    : 'Wysyłam...'
+                }
+              >
+                <Button minW={'140px'} colorScheme='green' isDisabled={!isMailingEnabled || isSending} onClick={resendToHr}>
+                  {!isMailingEnabled ? 'Mailing wyłączony- sprawdź ustawienia' : !isSending ? 'Wyślij mail ponownie' : <Spinner />}
+                </Button>
+              </Tooltip>
+              <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
+                Wygeneruj PDF
+              </Button>
+            </>
+          )}
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

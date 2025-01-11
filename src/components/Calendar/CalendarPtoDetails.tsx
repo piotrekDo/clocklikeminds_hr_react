@@ -1,13 +1,14 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { Box, HStack, Text, VStack } from '@chakra-ui/react';
-import holiday_summer from '../../assets/holiday_summer.jpeg';
-import on_request_holiday from '../../assets/pto_on_request.jpg';
-import saturday_holiday from '../../assets/saturday_holiday.jpg';
-import occasional_leave from '../../assets/occasional_leave.jpg';
-import child_care from '../../assets/child_care_leave.jpeg';
-import { PtoRequestFormatted } from '../../model/Pto';
+import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { GrNotes } from 'react-icons/gr';
+import child_care from '../../assets/child_care_leave.jpeg';
+import holiday_summer from '../../assets/holiday_summer.jpeg';
+import occasional_leave from '../../assets/occasional_leave.jpg';
+import on_request_holiday from '../../assets/pto_on_request.jpg';
+import saturday_holiday from '../../assets/saturday_holiday.jpg';
+import { PtoRequestFormatted } from '../../model/Pto';
+import { generateTimeOffPdf } from '../../service/TimeOffHttpService';
 import { TimeOffRequestHistory } from '../timeoff/time_off_request_history/TimeOffRequestHistory';
 import { WithdrawActionButton } from '../timeoff/WithdrawActionButton';
 
@@ -43,9 +44,14 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
     }
   }, [timeOff]);
 
+  const onGeneratePdf = () => {
+    if (!timeOff) return;
+    generateTimeOffPdf(timeOff.id);
+  };
+
   if (!timeOff) return null;
   return (
-    <Box position={'relative'} w={'400px'} borderRadius={'20px'} bg={'white'} fontSize={'1.2rem'} >
+    <Box position={'relative'} w={'400px'} borderRadius={'20px'} bg={'white'} fontSize={'1.2rem'}>
       <CloseIcon
         pos={'absolute'}
         right={'15px'}
@@ -147,7 +153,14 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
             ))}
           </VStack>
         </VStack>
-        <WithdrawActionButton request={timeOff} closeModal={onClosePtoDetailshandler} />
+        <HStack w={'100%'} mb={1}>
+          {!timeOff.applierFreelancer && timeOff.decisionDateTime && timeOff.wasAccepted && !timeOff.wasWithdrawn && (
+            <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
+              Wygeneruj PDF
+            </Button>
+          )}
+          <WithdrawActionButton request={timeOff} closeModal={onClosePtoDetailshandler} />
+        </HStack>
       </VStack>
     </Box>
   );

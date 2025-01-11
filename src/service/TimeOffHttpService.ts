@@ -31,7 +31,7 @@ export const fetchRequestsForuserCalendar = (year: number, signal?: AbortSignal)
       year: year,
     },
   }).then((res: AxiosResponse<RequestsForUserCalendar>) => res.data);
-}
+};
 
 export const fetchUnresolvedPtosByAcceptor = (acceptorId: number, signal?: AbortSignal) => {
   return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/unresolved-by-acceptor', {
@@ -53,13 +53,16 @@ export const fetchPtosByAcceptor = (page: number, size: number, signal?: AbortSi
 };
 
 export const fetchPtosInTimeFrame = (start: string, end: string, signal?: AbortSignal) => {
-  return APIclient.get<TimeOffRequestsByEmployeeResponse[]>('/api/v1/pto/requests-for-supervisor-calendar-by-employees', {
-    signal,
-    params: {
-      start: start,
-      end: end,
-    },
-  }).then((res: AxiosResponse<TimeOffRequestsByEmployeeResponse[]>) => res.data);
+  return APIclient.get<TimeOffRequestsByEmployeeResponse[]>(
+    '/api/v1/pto/requests-for-supervisor-calendar-by-employees',
+    {
+      signal,
+      params: {
+        start: start,
+        end: end,
+      },
+    }
+  ).then((res: AxiosResponse<TimeOffRequestsByEmployeeResponse[]>) => res.data);
 };
 
 export const fetchPtosByAppliersId = (applierId: number, page: number, size: number, signal?: AbortSignal) => {
@@ -71,6 +74,16 @@ export const fetchPtosByAppliersId = (applierId: number, page: number, size: num
       size: size,
     },
   }).then((res: AxiosResponse<Page<PtoRequestResponse>>) => res.data);
+};
+
+export const fetchAllRequestsForYearForUser = (year: number, userId: number, signal?: AbortSignal) => {
+  return APIclient.get<PtoRequestResponse[]>('/api/v1/pto/all-requests-for-user', {
+    signal,
+    params: {
+      userId: userId,
+      year: year,
+    },
+  }).then((res: AxiosResponse<PtoRequestResponse[]>) => res.data);
 };
 
 export const getPtoRequestsForSelectedYear = (year: number, userId: number, signal?: AbortSignal) => {
@@ -169,4 +182,38 @@ export const resolvePto = (resolve: ResolvePtoRequest) => {
   return APIclient.post<PtoRequestResponse>('/api/v1/pto/resolve-request', resolve).then(
     (res: AxiosResponse<PtoRequestResponse>) => res.data
   );
+};
+
+export const resendMailRequest = (requestId: number) => {
+  return APIclient.get<boolean>('/api/v1/pto/resend-request-by-mail', {
+    params: {
+      requestId,
+    },
+  }).then((res: AxiosResponse<boolean>) => res.data);
+};
+
+export const generateTimeOffPdf = (timeOffId: number) => {
+  APIclient.get<Blob>('/api/v1/pto/generate-pdf', {
+    responseType: 'blob',
+    params: {
+      timeOffId,
+    },
+  })
+    .then((response: AxiosResponse<Blob>) => {
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Wniosek.pdf');
+      document.body.appendChild(link);
+      link.click();
+
+      // Sprzątanie
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error('Error while generating the template:', error);
+    });
 };

@@ -1,9 +1,9 @@
 import { Flex, Text, Tooltip } from '@chakra-ui/react';
 import { GoCheckCircleFill, GoClockFill, GoXCircleFill } from 'react-icons/go';
-import { PtoRequestResponse } from '../../model/Pto';
+import { PtoRequestFormatted, PtoRequestResponse } from '../../model/Pto';
 
 interface Props {
-  pto: PtoRequestResponse;
+  pto: PtoRequestResponse | PtoRequestFormatted;
 }
 
 export const PtoCardStatus = ({ pto }: Props) => {

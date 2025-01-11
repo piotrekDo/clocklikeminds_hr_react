@@ -4,7 +4,6 @@ import useSwitchMailing from '../../hooks/usemailingEnabledSwitch';
 import useSettings from '../../hooks/useSettings';
 import useAuthentication from '../../state/useAuthentication';
 import useSettingsStore from '../../state/useSettingsState';
-import { sortFns } from '@tanstack/react-query-devtools/build/lib/utils';
 
 export const AdminSettings = () => {
   const { isMailingEnabled, parseFetchedSettings, updateMailingEnabled } = useSettingsStore();

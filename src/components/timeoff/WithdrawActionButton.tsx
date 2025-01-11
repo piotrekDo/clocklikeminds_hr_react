@@ -1,9 +1,8 @@
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, HStack, Input, Spinner, Text, useToast, VStack } from '@chakra-ui/react';
+import { Button, Flex, HStack, Input, Spinner, Text, useToast } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
-import useHttpErrorState from '../../state/useHttpErrorState';
-import { PtoRequestFormatted, PtoRequestResponse } from '../../model/Pto';
 import useWithdrawTimeOffRequest, { WithdrawParams } from '../../hooks/useEithdrawTimeOffRequest';
+import { PtoRequestFormatted, PtoRequestResponse } from '../../model/Pto';
+import useHttpErrorState from '../../state/useHttpErrorState';
 
 interface Props {
   request: PtoRequestResponse | PtoRequestFormatted;
@@ -40,12 +39,14 @@ export const WithdrawActionButton = ({ request, closeModal }: Props) => {
   };
 
   return (
-    <HStack w={'100%'} h={'50px'} align={'center'} justify={'end'} mt={10}>
+    <HStack w={'100%'} h={'50px'} align={'center'} justify={'end'}>
       {!isLoading && (
         <>
           {!wasWithdrawClicked && (
             <Button
-              isDisabled={(!request.wasAccepted && request.decisionDateTime != undefined) || request.wasMarkedToWithdraw}
+              isDisabled={
+                (!request.wasAccepted && request.decisionDateTime != undefined) || request.wasMarkedToWithdraw
+              }
               colorScheme='red'
               onClick={() => setWasWithdrawClicked(true)}
             >

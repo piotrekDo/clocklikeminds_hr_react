@@ -43,9 +43,9 @@ export const SupervisorPage = () => {
         }}
       >
         <VStack w={'100%'} pb={'100px'}>
-          <VStack w={'100%'} pt={'50px'} px={'15px'}>
+          {/* <VStack w={'100%'} pt={'50px'} px={'15px'}>
             <QueryShelf employees={employees} isEmployeesFetching={isEmployeesFetching} />
-          </VStack>
+          </VStack> */}
 
           <VStack w={'100%'} pt={'50px'} px={'15px'}>
             {unresolvedPtos && (

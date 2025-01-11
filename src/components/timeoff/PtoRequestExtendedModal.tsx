@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Heading,
   HStack,
   Modal,
@@ -19,6 +20,7 @@ import holiday_summer from '../../assets/holiday_summer.jpeg';
 import occasional_leave from '../../assets/occasional_leave.jpg';
 import on_request_holiday from '../../assets/pto_on_request.jpg';
 import saturday_holiday from '../../assets/saturday_holiday.jpg';
+import { generateTimeOffPdf } from '../../service/TimeOffHttpService';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
 import { WithdrawActionButton } from './WithdrawActionButton';
@@ -30,6 +32,11 @@ interface Props {
 
 export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
   const r = usePtoModalStore(s => s.ptoExtendedForUser);
+
+  const onGeneratePdf = () => {
+    if (!r) return;
+    generateTimeOffPdf(r.id);
+  };
 
   if (!r) return null;
   return (
@@ -179,6 +186,11 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
         </ModalBody>
 
         <ModalFooter zIndex={100}>
+          {!r.applierFreelancer && r.decisionDateTime && r.wasAccepted && !r.wasWithdrawn && (
+            <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
+              Wygeneruj PDF
+            </Button>
+          )}
           <WithdrawActionButton request={r} closeModal={onClose} />
         </ModalFooter>
       </ModalContent>
