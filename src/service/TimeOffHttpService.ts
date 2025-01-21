@@ -192,7 +192,8 @@ export const resendMailRequest = (requestId: number) => {
   }).then((res: AxiosResponse<boolean>) => res.data);
 };
 
-export const generateTimeOffPdf = (timeOffId: number) => {
+export const generateTimeOffPdf = async (timeOffId: number, setIsGeneratingPdf: React.Dispatch<React.SetStateAction<boolean>>) => {
+  setIsGeneratingPdf(true)
   APIclient.get<Blob>('/api/v1/pto/generate-pdf', {
     responseType: 'blob',
     params: {
@@ -212,8 +213,10 @@ export const generateTimeOffPdf = (timeOffId: number) => {
       // Sprzątanie
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+      setIsGeneratingPdf(false)
     })
     .catch(error => {
       console.error('Error while generating the template:', error);
+      setIsGeneratingPdf(false)
     });
 };

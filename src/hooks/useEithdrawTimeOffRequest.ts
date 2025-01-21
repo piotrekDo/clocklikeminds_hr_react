@@ -22,6 +22,9 @@ const useWithdrawTimeOffRequest = (toast: (options: any) => void) => {
       queryClient.invalidateQueries({
         queryKey: ['ptoSummary'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['requestsForUserCalendadr'],
+      });
       toast({
         title: response.wasDeleted ? 'Wniosek poprawnie usunięty' : 'Wniosek oznaczony do usunięcia',
         position: 'top-left',

@@ -37,6 +37,7 @@ export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props)
   const r = usePtoModalStore(s => s.ptoExtendedModal);
   const isMailingEnabled = useSettingsStore(s => s.isMailingEnabled);
   const [isSending, setIsSending] = useState(false);
+  const [isGeneratingPf, setIsGeneratingPdf] = useState<boolean>(false);
 
   const resendToHr = () => {
     if (!r) return;
@@ -48,7 +49,7 @@ export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props)
 
   const onGeneratePdf = () => {
     if (!r) return;
-    generateTimeOffPdf(r.id);
+    generateTimeOffPdf(r.id, setIsGeneratingPdf);
   };
   if (!r) return null;
   return (
@@ -217,12 +218,24 @@ export const PtoRequestExtendedModalForSupervisor = ({ isOpen, onClose }: Props)
                     : 'Wysyłam...'
                 }
               >
-                <Button minW={'140px'} colorScheme='green' isDisabled={!isMailingEnabled || isSending} onClick={resendToHr}>
-                  {!isMailingEnabled ? 'Mailing wyłączony- sprawdź ustawienia' : !isSending ? 'Wyślij mail ponownie' : <Spinner />}
+                <Button
+                  minW={'140px'}
+                  colorScheme='green'
+                  isDisabled={!isMailingEnabled || isSending}
+                  onClick={resendToHr}
+                >
+                  {!isMailingEnabled ? (
+                    'Mailing wyłączony- sprawdź ustawienia'
+                  ) : !isSending ? (
+                    'Wyślij mail ponownie'
+                  ) : (
+                    <Spinner />
+                  )}
                 </Button>
               </Tooltip>
               <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
-                Wygeneruj PDF
+                {!isGeneratingPf && 'Wygeneruj PDF'}
+                {isGeneratingPf && <Spinner />}
               </Button>
             </>
           )}

@@ -25,4 +25,4 @@ const BASE_URL_VM = 'https://hr.cloud.clocklikeminds.com:8443';
 export const BASE_URL = BASE_URL_VM;
 
 export const REACT_APP_REDIRECT_URL = BASE_URL + '/login/oauth2/code/google';
-export const GOOGLE_AUTH_URL = `${BASE_URL}/oauth2/authorize/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;
+export const GOOGLE_AUTH_URL = `${BASE_URL}/oauth2/authorization/google?redirect_uri=${REACT_APP_REDIRECT_URL}`;

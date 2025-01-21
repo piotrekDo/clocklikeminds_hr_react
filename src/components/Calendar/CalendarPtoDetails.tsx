@@ -1,5 +1,5 @@
 import { CloseIcon } from '@chakra-ui/icons';
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { GrNotes } from 'react-icons/gr';
 import child_care from '../../assets/child_care_leave.jpeg';
@@ -27,6 +27,8 @@ export const leaveTypePolish = new Map<string, string>([
 
 export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props) => {
   const [bg, setBg] = useState<string>('');
+  const [wasWithdrawClicked, setWasWithdrawClicked] = useState<boolean>(false);
+  const [isGeneratingPf, setIsGeneratingPdf] = useState<boolean>(false);
 
   useEffect(() => {
     if (timeOff?.leaveType === 'pto') {
@@ -46,7 +48,7 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
 
   const onGeneratePdf = () => {
     if (!timeOff) return;
-    generateTimeOffPdf(timeOff.id);
+    generateTimeOffPdf(timeOff.id, setIsGeneratingPdf);
   };
 
   if (!timeOff) return null;
@@ -154,12 +156,23 @@ export const CalendarPtoDetails = ({ timeOff, onClosePtoDetailshandler }: Props)
           </VStack>
         </VStack>
         <HStack w={'100%'} mb={1}>
-          {!timeOff.applierFreelancer && timeOff.decisionDateTime && timeOff.wasAccepted && !timeOff.wasWithdrawn && (
-            <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
-              Wygeneruj PDF
-            </Button>
-          )}
-          <WithdrawActionButton request={timeOff} closeModal={onClosePtoDetailshandler} />
+          {!wasWithdrawClicked &&
+            !timeOff.applierFreelancer &&
+            timeOff.decisionDateTime &&
+            timeOff.wasAccepted &&
+            !timeOff.wasWithdrawn && (
+              <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
+                {!isGeneratingPf && 'Wygeneruj PDF'}
+                {isGeneratingPf && <Spinner />}
+              </Button>
+            )}
+          <WithdrawActionButton
+            request={timeOff}
+            isGeneratingPf={isGeneratingPf}
+            wasWithdrawClicked={wasWithdrawClicked}
+            setWasWithdrawClicked={setWasWithdrawClicked}
+            closeModal={onClosePtoDetailshandler}
+          />
         </HStack>
       </VStack>
     </Box>

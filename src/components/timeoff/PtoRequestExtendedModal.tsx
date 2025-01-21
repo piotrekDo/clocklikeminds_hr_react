@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -24,6 +25,7 @@ import { generateTimeOffPdf } from '../../service/TimeOffHttpService';
 import usePtoModalStore from '../../state/usePtoModalStore';
 import { TimeOffRequestHistory } from './time_off_request_history/TimeOffRequestHistory';
 import { WithdrawActionButton } from './WithdrawActionButton';
+import { useState } from 'react';
 
 interface Props {
   isOpen: boolean;
@@ -32,10 +34,12 @@ interface Props {
 
 export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
   const r = usePtoModalStore(s => s.ptoExtendedForUser);
+  const [wasWithdrawClicked, setWasWithdrawClicked] = useState<boolean>(false);
+  const [isGeneratingPf, setIsGeneratingPdf] = useState<boolean>(false);
 
   const onGeneratePdf = () => {
     if (!r) return;
-    generateTimeOffPdf(r.id);
+    generateTimeOffPdf(r.id, setIsGeneratingPdf);
   };
 
   if (!r) return null;
@@ -186,12 +190,19 @@ export const PtoRequestExtendedModal = ({ isOpen, onClose }: Props) => {
         </ModalBody>
 
         <ModalFooter zIndex={100}>
-          {!r.applierFreelancer && r.decisionDateTime && r.wasAccepted && !r.wasWithdrawn && (
+          {!wasWithdrawClicked && !r.applierFreelancer && r.decisionDateTime && r.wasAccepted && !r.wasWithdrawn && (
             <Button onClick={onGeneratePdf} colorScheme='green' w={'180px'}>
-              Wygeneruj PDF
+              {!isGeneratingPf && 'Wygeneruj PDF'}
+              {isGeneratingPf && <Spinner />}
             </Button>
           )}
-          <WithdrawActionButton request={r} closeModal={onClose} />
+          <WithdrawActionButton
+            request={r}
+            wasWithdrawClicked={wasWithdrawClicked}
+            isGeneratingPf={isGeneratingPf}
+            setWasWithdrawClicked={setWasWithdrawClicked}
+            closeModal={onClose}
+          />
         </ModalFooter>
       </ModalContent>
     </Modal>
