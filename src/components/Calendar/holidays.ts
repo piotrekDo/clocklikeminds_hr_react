@@ -50,7 +50,6 @@ export const calculateBusinessDays = (from: Date, to: Date): NewPtoRequestSummar
   let businessDays = 0;
   const holidayDays: { desc: string; isWeekend: boolean }[] = [];
 
-  console.log(checkedDate)
   while (checkedDate <= to) {
     if (checkedDate.getFullYear() !== year) {
       holidays = getHolidaysPoland(checkedDate.getFullYear());

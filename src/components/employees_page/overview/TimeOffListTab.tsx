@@ -34,10 +34,6 @@ export const TimeOffListTab = () => {
     }
   }, [isError, isHolidaysByUsersError]);
 
-  useEffect(() => {
-    console.log(holidaysByUsers);
-  }, [holidaysByUsers]);
-
   return (
     <VStack w={'100%'} h={'100%'}>
       <HStack w={'100%'} mb={5}>

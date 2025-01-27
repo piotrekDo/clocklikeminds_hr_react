@@ -1,12 +1,13 @@
 import { FormControl, FormLabel, HStack, Switch, Text, VStack } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import useSwitchMailing from '../../hooks/usemailingEnabledSwitch';
 import useSettings from '../../hooks/useSettings';
 import useAuthentication from '../../state/useAuthentication';
 import useSettingsStore from '../../state/useSettingsState';
+import useSwitchMailingLocal from '../../hooks/usemailingEnabledSwitch';
+import useMailingEnabledHr from '../../hooks/useMailingEnabledHr';
 
 export const AdminSettings = () => {
-  const { isMailingEnabled, parseFetchedSettings, updateMailingEnabled } = useSettingsStore();
+  const { isMailingEnabled, isMailingHrEnabled, parseFetchedSettings } = useSettingsStore();
   const isAdmin = useAuthentication(s => s.isAdmin);
   const {
     data: settings,
@@ -20,20 +21,29 @@ export const AdminSettings = () => {
     isError: isMailingSwitchError,
     error: mailingSwitchError,
     isFetching: isMailingSwitchFetching,
-    refetch: switchMailing,
-  } = useSwitchMailing();
+    refetch: switchMailingLocal,
+  } = useSwitchMailingLocal();
+
+  const {
+    data: mailingHrSwitched,
+    isError: isMailingHrSwitchError,
+    error: mailingHrSwitchError,
+    isFetching: isMailingHrSwitchFetching,
+    refetch: switchMailingHr,
+  } = useMailingEnabledHr();
 
   useEffect(() => {
     settings && parseFetchedSettings(settings);
   }, [settings]);
 
-  useEffect(() => {
-    mailingSwitched !== undefined && updateMailingEnabled(mailingSwitched);
-  }, [mailingSwitched]);
-
   const onMailingEnabledSwitch = () => {
-    switchMailing();
+    switchMailingLocal();
   };
+
+  const onMailingHrEnabledSwitch = () => {
+    switchMailingHr();
+  };
+
 
   return (
     <HStack
@@ -54,9 +64,17 @@ export const AdminSettings = () => {
           <FormControl display='flex' alignItems='center'>
             <HStack w={'100%'}>
               <FormLabel flexBasis={'100%'} htmlFor='email-alerts' mb='0'>
-                Mailing
+                Mailing wewnętrzny
               </FormLabel>
               <Switch flexBasis={'50%'} id='email-alerts' isChecked={isMailingEnabled} onChange={onMailingEnabledSwitch}/>
+            </HStack>
+          </FormControl>
+          <FormControl display='flex' alignItems='center'>
+            <HStack w={'100%'}>
+              <FormLabel flexBasis={'100%'} htmlFor='email-alerts' mb='0'>
+                Mailing HR
+              </FormLabel>
+              <Switch flexBasis={'50%'} id='email-alerts' isChecked={isMailingHrEnabled} onChange={onMailingHrEnabledSwitch}/>
             </HStack>
           </FormControl>
         </VStack>

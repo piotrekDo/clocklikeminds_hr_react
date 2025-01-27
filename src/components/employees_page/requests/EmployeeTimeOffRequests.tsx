@@ -32,7 +32,6 @@ export const EmployeeTimeOffRequests = ({ selectedUser }: Props) => {
     refetch();
   }, [selectedYear]);
 
-  console.log(requestsCached);
 
   return (
     <VStack maxW={'1000px'} margin={'0 auto'} position={'relative'} gap={'50px'} color={'whiteAlpha.900'}>

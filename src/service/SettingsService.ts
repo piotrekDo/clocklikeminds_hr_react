@@ -9,6 +9,10 @@ export const fetchSettings = (signal?: AbortSignal) => {
 };
 
 // no abort controller- method used to switch mailing from enabled to disabled
-export const switchMailingEnabled = () => {
-  return APIclient.get<boolean>('/api/v1/settings/switch-mailing').then((res: AxiosResponse<boolean>) => res.data);
+export const switchMailingLocalEnabled = () => {
+  return APIclient.get<boolean>('/api/v1/settings/switch-mailing-local').then((res: AxiosResponse<boolean>) => res.data);
+};
+
+export const switchMailingHrEnabled = () => {
+  return APIclient.get<boolean>('/api/v1/settings/switch-mailing-hr').then((res: AxiosResponse<boolean>) => res.data);
 };

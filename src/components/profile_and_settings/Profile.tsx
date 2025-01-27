@@ -22,7 +22,6 @@ export const Profile = () => {
   useEffect(() => {
     isError && setError(error);
   }, [isError]);
-  console.log(data);
   return (
     <VStack
       w={'100%'}

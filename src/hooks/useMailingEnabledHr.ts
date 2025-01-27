@@ -1,12 +1,12 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { switchMailingLocalEnabled } from '../service/SettingsService';
+import { switchMailingHrEnabled } from '../service/SettingsService';
 
-const useSwitchMailingLocal = () => {
+const useMailingEnabledHr = () => {
   const queryClient = useQueryClient();
 
   return useQuery<boolean, Error>({
-    queryKey: ['settings', 'mailingEnabled'],
-    queryFn: () => switchMailingLocalEnabled(),
+    queryKey: ['settings', 'mailingHrEnabled'],
+    queryFn: () => switchMailingHrEnabled(),
     onSuccess: () => {
       queryClient.invalidateQueries(['settings']);
     },
@@ -14,4 +14,4 @@ const useSwitchMailingLocal = () => {
   });
 };
 
-export default useSwitchMailingLocal;
+export default useMailingEnabledHr;
